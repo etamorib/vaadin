@@ -8,11 +8,16 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
-public class BooksView extends HorizontalLayout {
-	
+public class BooksView extends Composite implements View {
+	public static String name ="BooksView";
 	public BooksView() {
+		setCompositionRoot(new Label("ASSD"));
 		
-		
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }

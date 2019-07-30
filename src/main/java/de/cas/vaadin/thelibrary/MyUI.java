@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.atmosphere.handler.AbstractReflectorAtmosphereHandler.Default;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -25,6 +29,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 import de.cas.vaadin.thelibrary.ui.view.BooksView;
+import de.cas.vaadin.thelibrary.ui.view.DefaultView;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -36,22 +41,43 @@ import de.cas.vaadin.thelibrary.ui.view.BooksView;
 @Theme("mytheme")
 public class MyUI extends UI {
 	
-	private SideMenuBuilder sideMenu;
+	private SideMenuBuilder sideMenu = new SideMenuBuilder();
 	private HorizontalLayout content;
+	private CssLayout viewContainer;
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
-		content=createSideMenu();
-		setContent(content);
+		setNavigation(DefaultView.class, BooksView.class);
+		viewContainer = new CssLayout();
+		HorizontalLayout mainLayout = new HorizontalLayout(createSideMenu(), viewContainer);
+		mainLayout.setSizeFull();
+		setContent(mainLayout);
+		
 		
     }
 	
 	
-	private HorizontalLayout createSideMenu() {
-		sideMenu = new SideMenuBuilder(BooksView.class);
-		sideMenu.setMenuButtonStyle(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
-		sideMenu.setTitleStyle(ValoTheme.MENU_TITLE);
-		//setContent(sideMenu.buildLayout());
-		return sideMenu.buildLayout();
+	private CssLayout createSideMenu() {
+		
+		Label title = new Label("Library");
+		title.addStyleName(ValoTheme.MENU_TITLE);
+		sideMenu.getMenuItems().forEach((k,v)->k.addClickListener(e->{
+			//getNavigator().navigateTo(v.toString());
+			System.out.println(v.toString());
+		}));
+		CssLayout menu = new CssLayout();
+		menu.addComponents(title);
+		sideMenu.getMenuItems().forEach((k,v)->menu.addComponent(k));
+		menu.addStyleName(ValoTheme.MENU_ROOT);
+		return menu;
+		
+	}
+	
+	private void setNavigation(Class<? extends View>... menuItems) {
+		sideMenu.createMenuButtons(menuItems);
+		Navigator navigator = new Navigator(this, viewContainer);
+		sideMenu.getMenuItems().forEach((k,v)->navigator.addView(v.toString(), v));
+		
+		
 	}
 	
 

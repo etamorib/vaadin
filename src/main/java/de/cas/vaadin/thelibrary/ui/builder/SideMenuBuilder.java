@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComponentContainer;
@@ -15,17 +16,17 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class SideMenuBuilder {
-	private HashMap<Button, Class<? extends ComponentContainer>> menuItems = new HashMap<>();
+	private HashMap<Button, Class<? extends View>> menuItems = new HashMap<>();
 	private CssLayout menu, viewContainer;
 	private Label title = new Label("Library");
 	
 	@SafeVarargs
-	public SideMenuBuilder(Class<? extends ComponentContainer>... menuItems) {
+	public SideMenuBuilder(Class<? extends View>... menuItems) {
 		createMenuButtons(menuItems);
-		menu = new CssLayout(title);
-		this.menuItems.forEach((k,v)->menu.addComponent(k));
-		menu.addStyleName(ValoTheme.MENU_ROOT);		
-		viewContainer = new CssLayout();
+		//menu = new CssLayout(title);
+		//this.menuItems.forEach((k,v)->menu.addComponent(k));
+		//menu.addStyleName(ValoTheme.MENU_ROOT);		
+		//viewContainer = new CssLayout();
 
 	}
 
@@ -36,16 +37,19 @@ public class SideMenuBuilder {
 		return builtLayout;
 	}
 	
-	private void createMenuButtons(Class<? extends ComponentContainer>... menuItems) {
-		for(Class<? extends ComponentContainer> c : menuItems) {
+	public void createMenuButtons(Class<? extends View>... menuItems) {
+		for(Class<? extends View> c : menuItems) {
 			
 			//TODO: INTERFACET IRNI EGY OLYAN METODUSRA AMI VISSZAADJA AZ OSZTÁLYBAN
 			//TÁROLD NEVET
-			Button b = new Button(c.getName());
+			Button b = new Button(c.toString());	
+			b.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
 			this.menuItems.put(b, c);
 		}
 		
 	}
+	
+	
 
 	
 	/*GETTERS AND SETTERS*/
@@ -74,6 +78,16 @@ public class SideMenuBuilder {
 
 	public void setTitleStyle(String style) {
 		this.title.addStyleName(style);
+	}
+
+
+	public HashMap<Button, Class<? extends View>> getMenuItems() {
+		return menuItems;
+	}
+
+
+	public void setMenuItems(HashMap<Button, Class<? extends View>> menuItems) {
+		this.menuItems = menuItems;
 	}
 	
 }
