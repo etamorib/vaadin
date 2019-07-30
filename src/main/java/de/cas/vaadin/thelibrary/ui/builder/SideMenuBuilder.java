@@ -1,44 +1,50 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.vaadin.navigator.Navigator;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class SideMenuBuilder {
-
-	private Label title = new Label();
-	private ArrayList<Button> menuItems;
+	private HashMap<Button, Class<? extends ComponentContainer>> menuItems = new HashMap<>();
 	private CssLayout menu, viewContainer;
+	private Label title = new Label("Library");
 	
-	public SideMenuBuilder(String title, ArrayList<String> menuItems) {
-		this.title.setValue(title);
-		this.menuItems = createMenuButtons(menuItems);
-		menu = new CssLayout(this.title);
-		for(Button b : this.menuItems) {
-			menu.addComponent(b);
-		}
+	@SafeVarargs
+	public SideMenuBuilder(Class<? extends ComponentContainer>... menuItems) {
+		createMenuButtons(menuItems);
+		menu = new CssLayout(title);
+		this.menuItems.forEach((k,v)->menu.addComponent(k));
 		menu.addStyleName(ValoTheme.MENU_ROOT);		
 		viewContainer = new CssLayout();
 
 	}
+
 	
-	public HorizontalLayout build() {
-		HorizontalLayout mainLayout = new HorizontalLayout(this.menu, this.viewContainer);
-		mainLayout.setSizeFull();
-		return mainLayout;
+	public HorizontalLayout buildLayout() {
+		HorizontalLayout builtLayout = new HorizontalLayout(this.menu, this.viewContainer);
+		builtLayout.setSizeFull();
+		return builtLayout;
 	}
 	
-	private ArrayList<Button> createMenuButtons(ArrayList<String> menuItems) {
-		ArrayList<Button> menuButtons = new ArrayList<Button>();
-		for(String s : menuItems) {
-			Button b = new Button(s);
-			menuButtons.add(b);
+	private void createMenuButtons(Class<? extends ComponentContainer>... menuItems) {
+		for(Class<? extends ComponentContainer> c : menuItems) {
+			
+			//TODO: INTERFACET IRNI EGY OLYAN METODUSRA AMI VISSZAADJA AZ OSZTÁLYBAN
+			//TÁROLD NEVET
+			Button b = new Button(c.getName());
+			this.menuItems.put(b, c);
 		}
-		return menuButtons;
+		
 	}
 
 	
@@ -52,18 +58,7 @@ public class SideMenuBuilder {
 		this.title.setValue(title);;
 	}
 
-	public ArrayList<Button> getMenuItems() {
-		return menuItems;
-	}
 
-	public void setMenuItems(ArrayList<String> menuItems) {
-		for(String s : menuItems) {
-			Button b = new Button(s);
-			this.menuItems.add(b);
-		}
-	}
-	
-	
 	public CssLayout getViewContainer() {
 		return viewContainer;
 	}
@@ -73,10 +68,8 @@ public class SideMenuBuilder {
 	}
 
 	public void setMenuButtonStyle(String... styles) {
-		for(Button b : menuItems) {
-			b.addStyleNames(styles);
-			
-		}
+		
+		this.menuItems.forEach((k,v)->k.addStyleNames(styles));
 	}
 
 	public void setTitleStyle(String style) {
