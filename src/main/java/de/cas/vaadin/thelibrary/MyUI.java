@@ -45,8 +45,10 @@ public class MyUI extends UI {
 	private SideMenuBuilder sideMenu = new SideMenuBuilder();
 	private HorizontalLayout content;
 	private CssLayout viewContainer;
+	Navigator navigator;
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
+		navigator = new Navigator(this, viewContainer);
 		setNavigation(new DefaultView(), new BooksView());
 		viewContainer = new CssLayout();
 		HorizontalLayout mainLayout = new HorizontalLayout(createSideMenu(), viewContainer);
@@ -62,7 +64,7 @@ public class MyUI extends UI {
 		Label title = new Label("Library");
 		title.addStyleName(ValoTheme.MENU_TITLE);
 		sideMenu.getMenuItems().forEach((k,v)->k.addClickListener(e->{
-			getNavigator().navigateTo(v.name());
+			UI.getCurrent().getNavigator().navigateTo(v.name());
 			
 		}));
 		CssLayout menu = new CssLayout();
@@ -75,13 +77,11 @@ public class MyUI extends UI {
 	
 	private void setNavigation(AbstractViewWrapper... menuItems) {
 		sideMenu.createMenuButtons(menuItems);
-		Navigator navigator = new Navigator(this, viewContainer);
 		sideMenu.getMenuItems().forEach((k,v)->navigator.addView(v.name(), v));
 		
 		
+		
 	}
-	
-
 	
 	
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

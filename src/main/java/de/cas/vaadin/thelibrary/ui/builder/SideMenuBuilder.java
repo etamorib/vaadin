@@ -52,6 +52,7 @@ public class SideMenuBuilder {
 			menuButton = new Button(buttonText);	
 			menuButton.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
 			this.menuItems.put(menuButton, avw);
+			
 		}
 		
 	}

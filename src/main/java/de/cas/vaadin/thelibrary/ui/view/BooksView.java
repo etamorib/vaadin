@@ -10,9 +10,13 @@ import com.vaadin.ui.Label;
 
 import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
 
-public class BooksView extends AbstractViewWrapper implements View {
+public class BooksView extends AbstractViewWrapper{
 	private final String name ="BooksView";
 
+	public BooksView() {
+		System.out.println("ASDASD");
+	}
+	
 	@Override
 	public String name() {
 		return name;
