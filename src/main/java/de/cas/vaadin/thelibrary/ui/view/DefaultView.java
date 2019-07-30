@@ -5,15 +5,15 @@ import com.vaadin.navigator.View;
 import com.vaadin.ui.Composite;
 import com.vaadin.ui.Label;
 
-public class DefaultView extends Composite implements View {
+import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
 
-	public static String name = "";
-	public DefaultView() {
-		setCompositionRoot(new Label("+++"));
-	}
+public class DefaultView extends AbstractViewWrapper implements View {
+
+	public final String name = "";
+	
 
 	@Override
-	public String toString() {
+	public String name() {
 		return name;
 	}
 	

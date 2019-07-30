@@ -15,13 +15,16 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
+
 public class SideMenuBuilder {
-	private HashMap<Button, Class<? extends View>> menuItems = new HashMap<>();
+	private HashMap<Button, AbstractViewWrapper> menuItems = new HashMap<>();
 	private CssLayout menu, viewContainer;
 	private Label title = new Label("Library");
+	Button menuButton;
 	
 	@SafeVarargs
-	public SideMenuBuilder(Class<? extends View>... menuItems) {
+	public SideMenuBuilder(AbstractViewWrapper...menuItems) {
 		createMenuButtons(menuItems);
 		//menu = new CssLayout(title);
 		//this.menuItems.forEach((k,v)->menu.addComponent(k));
@@ -37,14 +40,18 @@ public class SideMenuBuilder {
 		return builtLayout;
 	}
 	
-	public void createMenuButtons(Class<? extends View>... menuItems) {
-		for(Class<? extends View> c : menuItems) {
-			
-			//TODO: INTERFACET IRNI EGY OLYAN METODUSRA AMI VISSZAADJA AZ OSZTÁLYBAN
-			//TÁROLD NEVET
-			Button b = new Button(c.toString());	
-			b.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
-			this.menuItems.put(b, c);
+	public void createMenuButtons(AbstractViewWrapper... menuItems) {
+		for(AbstractViewWrapper avw : menuItems) {
+			String buttonText;
+			if(avw.name().equals("")) {
+				buttonText="Default";
+				
+			}else {
+				buttonText=avw.name();
+			}
+			menuButton = new Button(buttonText);	
+			menuButton.addStyleNames(ValoTheme.BUTTON_LINK, ValoTheme.MENU_ITEM);
+			this.menuItems.put(menuButton, avw);
 		}
 		
 	}
@@ -81,13 +88,16 @@ public class SideMenuBuilder {
 	}
 
 
-	public HashMap<Button, Class<? extends View>> getMenuItems() {
+	public HashMap<Button, AbstractViewWrapper> getMenuItems() {
 		return menuItems;
 	}
 
 
-	public void setMenuItems(HashMap<Button, Class<? extends View>> menuItems) {
+	public void setMenuItems(HashMap<Button, AbstractViewWrapper> menuItems) {
 		this.menuItems = menuItems;
 	}
+
+
+
 	
 }

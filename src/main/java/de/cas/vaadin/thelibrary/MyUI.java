@@ -30,6 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 import de.cas.vaadin.thelibrary.ui.view.BooksView;
 import de.cas.vaadin.thelibrary.ui.view.DefaultView;
+import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -46,7 +47,7 @@ public class MyUI extends UI {
 	private CssLayout viewContainer;
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
-		setNavigation(DefaultView.class, BooksView.class);
+		setNavigation(new DefaultView(), new BooksView());
 		viewContainer = new CssLayout();
 		HorizontalLayout mainLayout = new HorizontalLayout(createSideMenu(), viewContainer);
 		mainLayout.setSizeFull();
@@ -61,8 +62,8 @@ public class MyUI extends UI {
 		Label title = new Label("Library");
 		title.addStyleName(ValoTheme.MENU_TITLE);
 		sideMenu.getMenuItems().forEach((k,v)->k.addClickListener(e->{
-			//getNavigator().navigateTo(v.toString());
-			System.out.println(v.toString());
+			getNavigator().navigateTo(v.name());
+			
 		}));
 		CssLayout menu = new CssLayout();
 		menu.addComponents(title);
@@ -72,10 +73,10 @@ public class MyUI extends UI {
 		
 	}
 	
-	private void setNavigation(Class<? extends View>... menuItems) {
+	private void setNavigation(AbstractViewWrapper... menuItems) {
 		sideMenu.createMenuButtons(menuItems);
 		Navigator navigator = new Navigator(this, viewContainer);
-		sideMenu.getMenuItems().forEach((k,v)->navigator.addView(v.toString(), v));
+		sideMenu.getMenuItems().forEach((k,v)->navigator.addView(v.name(), v));
 		
 		
 	}
