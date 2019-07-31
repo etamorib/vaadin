@@ -39,6 +39,7 @@ import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
  * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
  * overridden to add component to the user interface and initialize non-component functionality.
  */
+/*
 @Theme("mytheme")
 public class MyUI extends UI {
 	
@@ -89,3 +90,4 @@ public class MyUI extends UI {
     public static class MyUIServlet extends VaadinServlet {
     }
 }
+*/
