@@ -36,7 +36,6 @@ public class SideMenuBuilder extends CustomComponent {
 		addMenuItem(BooksView.class, new Button("Books"));
 		addMenuItem(DefaultView.class, new Button("Test"));
 		setCompositionRoot(buildMenu());
-		
 		AppEventBus.register(this);
 		
 	}
