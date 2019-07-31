@@ -2,23 +2,21 @@ package de.cas.vaadin.thelibrary.ui.view;
 
 
 import com.vaadin.navigator.View;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Composite;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
-import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
 
-public class DefaultView extends AbstractViewWrapper {
 
-	public final String name = "";
-	
-	public DefaultView() {
-		super();
+public class DefaultView extends HorizontalLayout {
+
+
+	public DefaultView(ComponentContainer c) {
+		
 	}
 	
 
-	@Override
-	public String name() {
-		return name;
-	}
+	
 	
 }

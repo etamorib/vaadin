@@ -18,9 +18,10 @@ import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
 
+@SuppressWarnings("serial")
 public class CASTheLibraryApplication extends UI {
 	
-private AppEventBus eventBus = new AppEventBus();
+	private AppEventBus eventBus = new AppEventBus();
 	
 	@Override
 	protected void init(VaadinRequest request) {
@@ -61,9 +62,11 @@ private AppEventBus eventBus = new AppEventBus();
 	  public static AppEventBus getEventBus() {
 		  return ((CASTheLibraryApplication)getCurrent()).eventBus;
 	  }
+	  
+	  
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-	    @VaadinServletConfiguration(ui = CASTheLibraryApplication.class, productionMode = false)
-	    public static class MyUIServlet extends VaadinServlet {
-	    }
+	@VaadinServletConfiguration(ui = CASTheLibraryApplication.class, productionMode = false)
+	public static class MyUIServlet extends VaadinServlet {
+	}
 	
 }

@@ -1,6 +1,7 @@
 package de.cas.vaadin.thelibrary.ui.view;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
@@ -19,6 +20,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.event.AppEvent.LoginRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
+import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 
 public class LoginView extends VerticalLayout {
 	
@@ -39,7 +41,7 @@ public class LoginView extends VerticalLayout {
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
         notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(20000);
+        notification.setDelayMsec(4000);
         notification.show(Page.getCurrent());
 	}
 	
@@ -60,11 +62,11 @@ public class LoginView extends VerticalLayout {
 	    fields.addStyleName("fields");
 	
 	    final TextField username = new TextField("Username");
-	    username.setIcon(FontAwesome.USER);
+	    username.setIcon(VaadinIcons.USER);
 	    username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 	
 	    final PasswordField password = new PasswordField("Password");
-	    password.setIcon(FontAwesome.LOCK);
+	    password.setIcon(VaadinIcons.LOCK);
 	    password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 	
 	    final Button signin = new Button("Sign In");
@@ -76,6 +78,13 @@ public class LoginView extends VerticalLayout {
 	    fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 	    
 	    signin.addClickListener(e->{
+	    	
+	    	AuthenticationHandler aut = new AuthenticationHandler(username.getValue(), password.getValue());
+	    	Notification error = aut.check();
+	    	if(error!=null) {
+	    		
+	    		error.show(Page.getCurrent());
+	    	}
 	    	AppEventBus.post(new LoginRequestEvent(username.getValue(), password.getValue()));
 	    	
 	    });
@@ -85,18 +94,20 @@ public class LoginView extends VerticalLayout {
 	private Component buildLabels() {
 		CssLayout labels = new CssLayout();
 	    labels.addStyleName("labels");
-	
+	    
 	    Label welcome = new Label("Welcome");
 	    welcome.setSizeUndefined();
 	    welcome.addStyleName(ValoTheme.LABEL_H4);
 	    welcome.addStyleName(ValoTheme.LABEL_COLORED);
 	    labels.addComponent(welcome);
-	
+	    
 	    Label title = new Label("Vaadin Library App");
 	    title.setSizeUndefined();
 	    title.addStyleName(ValoTheme.LABEL_H3);
 	    title.addStyleName(ValoTheme.LABEL_LIGHT);
 	    labels.addComponent(title);
+	
+	
 	    return labels;
 	}
 

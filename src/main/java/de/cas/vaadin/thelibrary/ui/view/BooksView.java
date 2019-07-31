@@ -10,17 +10,15 @@ import com.vaadin.ui.Label;
 
 import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
 
-public class BooksView extends AbstractViewWrapper{
+public class BooksView extends HorizontalLayout{
 	private final String name ="BooksView";
 
 	public BooksView() {
 		System.out.println("ASDASD");
+		addComponent(new Label("Books"));
 	}
 	
-	@Override
-	public String name() {
-		return name;
-	}
+
 
 
 	

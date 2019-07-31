@@ -1,6 +1,8 @@
 package de.cas.vaadin.thelibrary.handler;
 
+import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 
 import de.cas.vaadin.thelibrary.bean.Admin;
 
@@ -15,12 +17,17 @@ public class AuthenticationHandler {
 	}
 	
 	public Notification check() {
+		Notification error = new Notification("", Type.ERROR_MESSAGE);
+		error.setPosition(Position.TOP_CENTER);
+		error.setDelayMsec(3000);
 		if(username.equals("admin") && password.equals("admin")) {
 			return null;
 		}else if(username.equals("") || password.equals("")) {
-			return new Notification(MISSING,Notification.TYPE_ERROR_MESSAGE);
+			error.setCaption(MISSING);
+			return error;
 		}else {
-			return new Notification(INVALID, Notification.TYPE_ERROR_MESSAGE);
+			error.setCaption("INVALID");
+			return error;
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package de.cas.vaadin.thelibrary.event;
 
+import com.vaadin.ui.ComponentContainer;
+
 public abstract class AppEvent {
 	
 	public static final class LoginRequestEvent{
@@ -24,5 +26,21 @@ public abstract class AppEvent {
 		}
 		
 	}
+	
+	public static final class ChangeViewEvent{
+		private Class<? extends ComponentContainer> container;
+		public ChangeViewEvent(Class<? extends ComponentContainer> container) {
+			this.container = container;
+		}
+		public Class<? extends ComponentContainer> getContainer() {
+			return container;
+		}
+		public void setContainer(Class<? extends ComponentContainer> container) {
+			this.container = container;
+		}
+		
+	}
+	
+	
 
 }
