@@ -44,6 +44,7 @@ public class MainView extends HorizontalLayout {
 	}
 
 	private void updateContent(String str) {
+		content.removeAllComponents();
 		content.addComponent(new BooksView());
 		
 		
