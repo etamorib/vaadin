@@ -1,7 +1,5 @@
 package de.cas.vaadin.thelibrary.event;
 
-import com.vaadin.ui.ComponentContainer;
-
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 public abstract class AppEvent {

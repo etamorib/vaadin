@@ -1,5 +1,9 @@
 package de.cas.vaadin.thelibrary.bean;
 
+/**
+ * @author mate.biro
+ * Bean class for Reader object(s)
+ */
 public class Reader {
 	
 	

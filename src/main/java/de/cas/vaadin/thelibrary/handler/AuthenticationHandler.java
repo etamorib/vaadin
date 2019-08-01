@@ -6,6 +6,11 @@ import com.vaadin.ui.Notification.Type;
 
 import de.cas.vaadin.thelibrary.bean.Admin;
 
+/**
+ * @author mate.biro
+ * Simple class for authenticating login requests.
+ *
+ */
 public class AuthenticationHandler {
 
 	private String username, password;
@@ -16,21 +21,30 @@ public class AuthenticationHandler {
 		this.password = password;
 	}
 	
+	/**
+	 * @return a Notification based on the error type or
+	 * null if there was no error.
+	 * 
+	 */
 	public Notification check() {
 		Notification error = new Notification("", Type.ERROR_MESSAGE);
 		error.setPosition(Position.TOP_CENTER);
-		error.setDelayMsec(3000);
+		error.setDelayMsec(1500);
 		if(username.equals("admin") && password.equals("admin")) {
 			return null;
 		}else if(username.equals("") || password.equals("")) {
 			error.setCaption(MISSING);
 			return error;
 		}else {
-			error.setCaption("INVALID");
+			error.setCaption(INVALID);
 			return error;
 		}
 	}
 	
+	/**
+	 * @return an Admin object is username and password
+	 * are correct or null if they're not.
+	 */
 	public Admin authenticate() {
 		if (username.equals("admin") && password.equals("admin")) {
 			return new Admin(username, password);

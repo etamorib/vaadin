@@ -2,7 +2,6 @@ package de.cas.vaadin.thelibrary.ui.view;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
@@ -22,6 +21,12 @@ import de.cas.vaadin.thelibrary.event.AppEvent.LoginRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 
+/**
+ * @author mate.biro
+ * A Component container class.
+ * Responsible for showing the view of the Login page.
+ */
+@SuppressWarnings("serial")
 public class LoginView extends VerticalLayout {
 	
 	public LoginView() {
@@ -41,10 +46,14 @@ public class LoginView extends VerticalLayout {
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
         notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(4000);
+        notification.setDelayMsec(-1);
         notification.show(Page.getCurrent());
 	}
 	
+	/**
+	 * @return A VerticalLayout component with
+	 * fields and labels. Basically a login form.
+	 */
 	private Component buildLoginForm() {
 		final VerticalLayout loginPanel = new VerticalLayout();
 	    loginPanel.setSizeUndefined();
@@ -57,6 +66,11 @@ public class LoginView extends VerticalLayout {
 	    return loginPanel;
 	}
 
+	/**
+	 * @return A HorizontalLayout with styled textfield,
+	 * passwordfield and a button. Also sets the button's
+	 * ClickListener.
+	 */
 	private Component buildFields() {
 		HorizontalLayout fields = new HorizontalLayout();
 	    fields.addStyleName("fields");
@@ -91,6 +105,10 @@ public class LoginView extends VerticalLayout {
 	    return fields;
 	}
 
+	/**
+	 * @return A CssLayout which contains a styled
+	 * welcome label and a styled title label.
+	 */
 	private Component buildLabels() {
 		CssLayout labels = new CssLayout();
 	    labels.addStyleName("labels");

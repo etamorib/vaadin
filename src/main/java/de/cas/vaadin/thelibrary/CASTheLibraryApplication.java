@@ -13,11 +13,17 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.bean.Admin;
 import de.cas.vaadin.thelibrary.event.AppEvent.LoginRequestEvent;
-import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
+import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.ui.view.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
 
+/**
+ * @author mate.biro
+ * CAS Trial work - the library
+ * This is the entry point of the application
+ *
+ */
 @SuppressWarnings("serial")
 public class CASTheLibraryApplication extends UI {
 	
@@ -33,33 +39,45 @@ public class CASTheLibraryApplication extends UI {
 		
 		
 	}
-	  private void updateContent() {
+	
+	
+	/**
+	 * This method checks sets the content to the LoginView or 
+	 * the MainView depending on the session.
+	 * If there an Admin attribute set to the session, updateContent
+	 * navigates to the MainView, else it navigates to LoginView
+	 */
+	private void updateContent() {
 		Admin admin = (Admin)VaadinSession.getCurrent().getAttribute(Admin.class.getName());
-		System.out.println(VaadinSession.getCurrent().getAttribute(Admin.class.getName()));
 		if(admin!=null) {
 			setContent(new MainView());
-			//getNavigator().navigateTo(getNavigator().getState());
-			System.out.println("UPDATE!");
 			
 		}else {
 			setContent(new LoginView());
 		}
-		
-		
+			
 	}
-	  @Subscribe
+	  /**
+	 * @param LoginRequestEvent e
+	 * loginRequest fires then a LoginRequestEvent e occurs
+	 * The method authenticates the requested login.
+	 * If sucessful, it sets the session attribute and updates the content
+	 */
+	@Subscribe
 	  public void loginRequest(final LoginRequestEvent e) {
 		  AuthenticationHandler aut = new AuthenticationHandler(e.getUsername(), e.getPassword());
 		  if(aut.authenticate()!=null) {
 			  VaadinSession.getCurrent().setAttribute(Admin.class.getName(), aut.authenticate());
-			  System.out.println("Authenticated!");
 			  updateContent();
 
 		  }
 	  }
 	  
-	  //Solved singleton problem
-	  public static AppEventBus getEventBus() {
+	
+	  /**
+	 * @return the AppEventBus of the application
+	 */
+	public static AppEventBus getEventBus() {
 		  return ((CASTheLibraryApplication)getCurrent()).eventBus;
 	  }
 	  

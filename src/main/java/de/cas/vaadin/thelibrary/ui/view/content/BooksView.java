@@ -1,18 +1,10 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
 
-import java.util.List;
-import java.util.Arrays;
-
-import com.vaadin.navigator.View;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Composite;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -40,6 +32,11 @@ public class BooksView  implements CreateContent{
 		pageTitle.addStyleName(ValoTheme.LABEL_H1);
 		layout.addComponent(pageTitle);
 		
+		Button addNew = new Button("Add Book");
+		addNew.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		layout.addComponent(addNew);
+		//TODO: add clicklistener to button
+		
 		Grid<Book> grid = new Grid<>();
 		grid.addColumn(Book::getTitle).setCaption("Title");
 		grid.addColumn(Book::getAuthor).setCaption("Author");
@@ -54,7 +51,6 @@ public class BooksView  implements CreateContent{
 				new Book("history of cheese", "Cheezy",566123, 1667, BookState.Borrowed));
 		
 
-		grid.setCaption("List of books");
 		grid.setSizeFull();
 		layout.addComponent(grid);
 		

@@ -8,6 +8,7 @@ import com.vaadin.ui.TextField;
 
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
+@SuppressWarnings("serial")
 public class WaitList extends HorizontalLayout implements CreateContent {
 	
 	private final String name = "Waitlists";

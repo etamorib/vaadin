@@ -14,16 +14,17 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
 import de.cas.vaadin.thelibrary.ui.view.content.NewRental;
 import de.cas.vaadin.thelibrary.ui.view.content.Readers;
 import de.cas.vaadin.thelibrary.ui.view.content.Rentals;
-import de.cas.vaadin.thelibrary.ui.view.content.WaitList;
-import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;;
+import de.cas.vaadin.thelibrary.ui.view.content.WaitList;;
 
 
+@SuppressWarnings("serial")
 public class SideMenuBuilder extends CustomComponent {
 	private LinkedHashMap<CreateContent, Button> menuItems = new LinkedHashMap<>();
 	
