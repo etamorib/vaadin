@@ -2,6 +2,7 @@ package de.cas.vaadin.thelibrary.ui.view;
 
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -21,10 +22,12 @@ public class MainView extends HorizontalLayout {
 
 	SideMenuBuilder menu = SideMenuBuilder.Instance();
 	CssLayout content ;
+	Content c;
 	
 	public MainView() {
 		setSizeFull();
-		addComponent(new SideMenuBuilder());
+
+		addComponent(menu);
 		content = new CssLayout();
 		content.addComponent(new Label("asd"));
 		addComponent(content);
@@ -34,16 +37,18 @@ public class MainView extends HorizontalLayout {
 		
 	}
 	
-	//Ha az event.getContainer null, akkor a MainView hivodik meg, amugy pedig az update
 	
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
-		System.out.println(event.getContainer());
-		if(!(event.getContainer().toString() == null))
-			updateContent(event.getContainer().toString());
+		
+		c = new Content(event.getContainer());
+		content.removeAllComponents();
+		content.addComponent(c.createContent());
+
+		
 	}
 
-	private void updateContent(String str) {
+	private void updateContent() {
 		content.removeAllComponents();
 		content.addComponent(new BooksView());
 		

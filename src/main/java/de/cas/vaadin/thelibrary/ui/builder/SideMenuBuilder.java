@@ -20,21 +20,36 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.BooksView;
+import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 import de.cas.vaadin.thelibrary.ui.view.DefaultView;
+import de.cas.vaadin.thelibrary.ui.view.NewRental;
+import de.cas.vaadin.thelibrary.ui.view.Readers;
+import de.cas.vaadin.thelibrary.ui.view.Rentals;
+import de.cas.vaadin.thelibrary.ui.view.WaitList;
 import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;;
 
 
 public class SideMenuBuilder extends CustomComponent {
-	private HashMap<Class<? extends ComponentContainer>, Button> menuItems = new HashMap<>();
+	private HashMap<CreateContent, Button> menuItems = new HashMap<>();
 	
 	private static SideMenuBuilder sideMenu = new SideMenuBuilder();
 	
-	public SideMenuBuilder() {
+	private SideMenuBuilder() {
 		addStyleName("valo-menu");
 		setSizeUndefined();
-		addMenuItem(BooksView.class, new Button("Books"));
-		addMenuItem(DefaultView.class, new Button("Test"));
+		
+		//Adding menu items
+		
+		//TODO: At lehet irni az addMenut hogy CreateContent-et kap, es a createcontentbe lenne egy getName metodus is
+		//ekkor eleg lenne csak az osztalyt megadni mert a metoduson belul hozzaadna gombot a megfelelo nevvel
+		addMenuItem(new BooksView(), new Button(BooksView.name));
+		addMenuItem(new Readers(), new Button(Readers.name));
+		addMenuItem(new Rentals(), new Button(Rentals.name));
+		addMenuItem(new NewRental(), new Button(NewRental.name));
+		addMenuItem(new WaitList(), new Button(WaitList.name));
+		
+		
 		setCompositionRoot(buildMenu());
 		AppEventBus.register(this);
 		
@@ -42,11 +57,10 @@ public class SideMenuBuilder extends CustomComponent {
 	
 	public Component buildMenu() {
 		final CssLayout menuContent = new CssLayout();
-        menuContent.addStyleName("sidebar");
+        //menuContent.addStyleName("sidebar");
         menuContent.addStyleName(ValoTheme.MENU_PART);
-        menuContent.addStyleName("no-vertical-drag-hints");
-        menuContent.addStyleName("no-horizontal-drag-hints");
-        menuContent.setWidth("250px");
+       // menuContent.addStyleName("no-vertical-drag-hints");
+       // menuContent.addStyleName("no-horizontal-drag-hints");
         menuContent.setHeight("100%");
         
         menuContent.addComponents(buildTitle(), buildMenuItems());
@@ -89,15 +103,15 @@ public class SideMenuBuilder extends CustomComponent {
 		return sideMenu;
 	}
 	
-	private void addMenuItem(Class<? extends ComponentContainer> view, Button b) {
+	public void addMenuItem(CreateContent view, Button b) {
 		menuItems.put(view, b);
 	}
 
-	public HashMap<Class<? extends ComponentContainer>, Button> getMenuItems() {
+	public HashMap<CreateContent, Button> getMenuItems() {
 		return menuItems;
 	}
 
-	public void setMenuItems(HashMap<Class<? extends ComponentContainer>, Button> menuItems) {
+	public void setMenuItems(HashMap<CreateContent, Button> menuItems) {
 		this.menuItems = menuItems;
 	}
 	
