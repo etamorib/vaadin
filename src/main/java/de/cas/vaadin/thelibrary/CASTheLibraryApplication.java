@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -13,6 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.bean.Admin;
 import de.cas.vaadin.thelibrary.event.AppEvent.LoginRequestEvent;
+import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.ui.view.LoginView;
@@ -72,6 +74,12 @@ public class CASTheLibraryApplication extends UI {
 
 		  }
 	  }
+	
+	@Subscribe
+	public void logoutRequest(final LogoutRequestEvent e) {
+		VaadinSession.getCurrent().close();
+		Page.getCurrent().reload();
+	}
 	  
 	
 	  /**
