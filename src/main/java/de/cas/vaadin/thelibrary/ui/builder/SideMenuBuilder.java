@@ -1,53 +1,49 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
-import com.vaadin.ui.AbstractOrderedLayout;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.event.AppEventBus;
-import de.cas.vaadin.thelibrary.ui.view.BooksView;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
-import de.cas.vaadin.thelibrary.ui.view.DefaultView;
-import de.cas.vaadin.thelibrary.ui.view.NewRental;
-import de.cas.vaadin.thelibrary.ui.view.Readers;
-import de.cas.vaadin.thelibrary.ui.view.Rentals;
-import de.cas.vaadin.thelibrary.ui.view.WaitList;
-import de.cas.vaadin.thelibrary.ui.view.wrapper.AbstractViewWrapper;
+import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
+import de.cas.vaadin.thelibrary.ui.view.content.NewRental;
+import de.cas.vaadin.thelibrary.ui.view.content.Readers;
+import de.cas.vaadin.thelibrary.ui.view.content.Rentals;
+import de.cas.vaadin.thelibrary.ui.view.content.WaitList;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;;
 
 
 public class SideMenuBuilder extends CustomComponent {
-	private HashMap<CreateContent, Button> menuItems = new HashMap<>();
+	private LinkedHashMap<CreateContent, Button> menuItems = new LinkedHashMap<>();
+	
+	private ArrayList<CreateContent> items = new ArrayList<>();
 	
 	private static SideMenuBuilder sideMenu = new SideMenuBuilder();
 	
 	private SideMenuBuilder() {
-		addStyleName("valo-menu");
+		//addStyleName("valo-menu");
 		setSizeUndefined();
 		
 		//Adding menu items
 		
-		//TODO: At lehet irni az addMenut hogy CreateContent-et kap, es a createcontentbe lenne egy getName metodus is
-		//ekkor eleg lenne csak az osztalyt megadni mert a metoduson belul hozzaadna gombot a megfelelo nevvel
-		addMenuItem(new BooksView(), new Button(BooksView.name));
-		addMenuItem(new Readers(), new Button(Readers.name));
-		addMenuItem(new Rentals(), new Button(Rentals.name));
-		addMenuItem(new NewRental(), new Button(NewRental.name));
-		addMenuItem(new WaitList(), new Button(WaitList.name));
+		
+		addMenuItems(addItemsToList(
+				new BooksView(), 
+				new Readers(), 
+				new Rentals(), 
+				new NewRental(),
+				new WaitList()));
 		
 		
 		setCompositionRoot(buildMenu());
@@ -57,11 +53,12 @@ public class SideMenuBuilder extends CustomComponent {
 	
 	public Component buildMenu() {
 		final CssLayout menuContent = new CssLayout();
-        //menuContent.addStyleName("sidebar");
+		//menuContent.addStyleName("sidebar");
         menuContent.addStyleName(ValoTheme.MENU_PART);
-       // menuContent.addStyleName("no-vertical-drag-hints");
-       // menuContent.addStyleName("no-horizontal-drag-hints");
+        //menuContent.addStyleName("no-vertical-drag-hints");
+        //menuContent.addStyleName("no-horizontal-drag-hints");
         menuContent.setHeight("100%");
+        //menuContent.setWidth("20%");
         
         menuContent.addComponents(buildTitle(), buildMenuItems());
         
@@ -99,19 +96,31 @@ public class SideMenuBuilder extends CustomComponent {
 		return titleWrapper;
 	}
 
+	//Instance for singleton
 	public static SideMenuBuilder Instance() {
 		return sideMenu;
 	}
 	
-	public void addMenuItem(CreateContent view, Button b) {
-		menuItems.put(view, b);
+	
+	private ArrayList<CreateContent> addItemsToList(CreateContent...contens) {
+		for(CreateContent c : contens) {
+			this.items.add(c);
+		}
+		return this.items;
+	}
+	
+	private void addMenuItems(ArrayList<CreateContent> list) {
+		
+		for(CreateContent c : list) {
+			menuItems.put(c, new Button(c.getName()));
+		}
 	}
 
-	public HashMap<CreateContent, Button> getMenuItems() {
+	public LinkedHashMap<CreateContent, Button> getMenuItems() {
 		return menuItems;
 	}
 
-	public void setMenuItems(HashMap<CreateContent, Button> menuItems) {
+	public void setMenuItems(LinkedHashMap<CreateContent, Button> menuItems) {
 		this.menuItems = menuItems;
 	}
 	

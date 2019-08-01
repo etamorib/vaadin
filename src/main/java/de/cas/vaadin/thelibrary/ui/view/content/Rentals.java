@@ -1,4 +1,4 @@
-package de.cas.vaadin.thelibrary.ui.view;
+package de.cas.vaadin.thelibrary.ui.view.content;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -6,9 +6,11 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 
+import de.cas.vaadin.thelibrary.ui.view.CreateContent;
+
 public class Rentals extends HorizontalLayout implements CreateContent {
 
-	public static final String name = "Rentals";
+	private final String name = "Rentals";
 	
 	@Override
 	public Component buildContent() {
@@ -16,6 +18,11 @@ public class Rentals extends HorizontalLayout implements CreateContent {
 		layout.addComponent(new TextField());
 		layout.addComponent(new Label("Rentals"));
 		return layout;
+	}
+	
+	@Override
+	public String getName() {
+		return this.name;
 	}
 	
 	
