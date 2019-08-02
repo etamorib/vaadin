@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary;
 import javax.servlet.annotation.WebServlet;
 
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
@@ -26,6 +27,7 @@ import de.cas.vaadin.thelibrary.ui.view.MainView;
  * This is the entry point of the application
  *
  */
+@Theme("mytheme")
 @SuppressWarnings("serial")
 public class CASTheLibraryApplication extends UI {
 	
