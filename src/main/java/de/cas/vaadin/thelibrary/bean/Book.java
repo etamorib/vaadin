@@ -1,5 +1,10 @@
 package de.cas.vaadin.thelibrary.bean;
 
+/**
+ * @author mate.biro
+ * Bean class for Book object(s)
+ *
+ */
 public class Book {
 	
 	//Author maybe new class? For proper name? idk

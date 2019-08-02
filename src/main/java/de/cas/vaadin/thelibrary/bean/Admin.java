@@ -1,5 +1,9 @@
 package de.cas.vaadin.thelibrary.bean;
 
+/**
+ * @author mate.biro
+ * Bean class for Admin object(s)
+ */
 public class Admin {
 	
 	private String username, password;
