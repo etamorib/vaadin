@@ -177,6 +177,7 @@ public class BooksView implements CreateContent{
 		id.setIcon(VaadinIcons.EXCLAMATION);
 		id.setRequiredIndicatorVisible(true);
 		//Year
+		//TODO: Select kéne
 		TextField year = new TextField("Year");
 		year.setIcon(VaadinIcons.CALENDAR);
 		year.setRequiredIndicatorVisible(true);
