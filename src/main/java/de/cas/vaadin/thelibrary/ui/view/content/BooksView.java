@@ -136,6 +136,15 @@ public class BooksView implements CreateContent{
 			System.out.println(listener.getBean());		
 			
 		});
+		
+		
+		//TODO: igy lehet megnezni mennyi van kivalasztva
+		//TODO: ez csak egy teszt, majd mashova kell
+		grid.addSelectionListener(listener->{
+			if(	grid.getSelectedItems().size() >2) {
+				System.out.println("NAGYOBB");
+			}
+		});
 				
 		grid.setSizeFull();
 		layout.addComponent(grid);
