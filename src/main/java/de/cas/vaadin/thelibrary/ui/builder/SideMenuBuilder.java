@@ -4,6 +4,7 @@ package de.cas.vaadin.thelibrary.ui.builder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -11,10 +12,14 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.MenuBar.Command;
+import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
+import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
@@ -34,6 +39,7 @@ public class SideMenuBuilder extends CustomComponent {
 	
 	private SideMenuBuilder() {
 		//addStyleName("valo-menu");
+		setPrimaryStyleName(ValoTheme.MENU_ROOT);
 		setSizeUndefined();
 		
 		//Adding menu items
@@ -62,6 +68,36 @@ public class SideMenuBuilder extends CustomComponent {
         //menuContent.setWidth("20%");
         
         menuContent.addComponents(buildTitle(), buildMenuItems());
+        
+        //Logout
+        MenuBar logoutmenu = new MenuBar();
+        logoutmenu.addItem("Logout", VaadinIcons.SIGN_OUT, new Command() {
+
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+				AppEventBus.post(new LogoutRequestEvent());
+				
+			}
+        	
+        });
+        logoutmenu.addStyleName("user-menu");
+        menuContent.addComponent(logoutmenu);
+        
+        //Responsive
+        final Button showMenu = new Button("Menu");
+        showMenu.addClickListener(e->{
+        	if (menuContent.getStyleName().contains("valo-menu-visible")) {
+            	menuContent.removeStyleName("valo-menu-visible");
+            } else {
+            	menuContent.addStyleName("valo-menu-visible");
+            }
+        });
+        showMenu.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        showMenu.addStyleName(ValoTheme.BUTTON_SMALL);
+        showMenu.addStyleName("valo-menu-toggle");
+        showMenu.setIcon(VaadinIcons.MENU);
+        menuContent.addComponent(showMenu);
+        
         
         return menuContent;
 

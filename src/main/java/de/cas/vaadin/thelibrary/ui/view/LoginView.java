@@ -41,7 +41,8 @@ public class LoginView extends VerticalLayout {
         Notification notification = new Notification(
                 "Welcome to the library app");
         notification
-                .setDescription("<span>This is just a demo project. <br> Username and password are both admin<br> "
+                .setDescription("<span>This is just a trial project. <br> <strong>Username: admin</strong><br>"
+                		+ " <strong>Password: admin<br></strong> "
                 		+ "</span> <span><b>Sign In</b> button to continue.</span>");
         notification.setHtmlContentAllowed(true);
         notification.setStyleName("tray dark small closable login-help");
