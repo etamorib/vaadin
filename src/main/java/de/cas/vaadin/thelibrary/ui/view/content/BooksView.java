@@ -6,28 +6,28 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.vaadin.data.Binder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
-import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.GridDragSource;
-import com.vaadin.ui.components.grid.GridDropTarget;
-import com.vaadin.ui.dnd.DragSourceExtension;
 import com.vaadin.ui.dnd.DropTargetExtension;
-import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.bean.Book;
@@ -36,9 +36,17 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 
 public class BooksView implements CreateContent{
+	HorizontalLayout layout ;
+	VerticalLayout subLayout ;
 	private final String name ="Books";
-	private Grid<Book> grid;
+	private Grid<Book> grid =  new Grid<>(Book.class);
+	VerticalLayout editLayout = new VerticalLayout();
+	Panel panel = new Panel();
 	private Book dragged = null;
+	Label label = new Label("SAJT");
+	Button addNew = new Button();
+	Button del = new Button();
+	Button edit = new Button();
 	
 
 	public BooksView() {
@@ -47,25 +55,30 @@ public class BooksView implements CreateContent{
 
 	@Override
 	public Component buildContent() {
-		VerticalLayout layout = new VerticalLayout();
+		
+		layout = new HorizontalLayout();
+		subLayout = new VerticalLayout();
+		
+		subLayout.setSizeFull();
 		layout.setSizeFull();
-		Label pageTitle = new Label("Books in database");
-		pageTitle.addStyleName(ValoTheme.LABEL_H1);
-		pageTitle.addStyleName(ValoTheme.LABEL_BOLD);
-		pageTitle.addStyleName(ValoTheme.LABEL_H1);
-		layout.addComponent(pageTitle);
+		editLayout.setSizeFull();
+		panel.setSizeFull();
 		
-		Button addNew = new Button("Add Book");
-		addNew.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-		layout.addComponent(addNew);
-		//TODO: add clicklistener to button
-		addNew.addClickListener(e->{
-			addNewPopup();
-		});
 		
+		
+
+		subLayout.addComponents(buildButtonsMenu(), buildGrid());
+		/*layout.addComponent(buildButtonsMenu());
+		layout.addComponent(grid);*/
+		layout.addComponent(subLayout);
+		return layout;
+	}
+
+	private Component buildGrid() {
 		//Grid to show data
-		grid = new Grid<>(Book.class);
+		
 		grid.setStyleName("grid-overall");
+		
 		
 		grid.setColumns("title", "author", "id", "year", "state");
 		grid.setSelectionMode(SelectionMode.MULTI);
@@ -84,16 +97,9 @@ public class BooksView implements CreateContent{
 		
 		//Drop grid
 		
-		VerticalLayout dropTargetLayout = new VerticalLayout();
-		dropTargetLayout.setCaption("Drop to delete");
-		dropTargetLayout.addStyleName("drag-layout");
-		dropTargetLayout.setWidth("40px");
-		dropTargetLayout.setIcon(VaadinIcons.CLOSE_CIRCLE_O);
-
-		// make the layout accept drops
-		DropTargetExtension<VerticalLayout> dropTarget = new DropTargetExtension<>(dropTargetLayout);
+		// make the del button accept drops
+		DropTargetExtension<Button> dropTarget = new DropTargetExtension<>(del);
 		dropTarget.setDropEffect(DropEffect.MOVE);
-		layout.addComponent(dropTargetLayout);
 		
 		//TODO: adatbazisban megoldani
 		dropTarget.addDropListener(e->{
@@ -104,15 +110,12 @@ public class BooksView implements CreateContent{
 			dragged.setState(BookState.Deleted);
 			grid.getDataProvider().refreshAll();
 		});
-		
-		
-		
-		
+			
 		
 		//TODO: use database instead
-		grid.setItems(new Book("sajt", "Lajos",123123, 1994, BookState.Available),
-				new Book("asdasd", "Peter",412123, 2000, BookState.Available),
-				new Book("history of cheese", "Cheezy",566123, 1667, BookState.Borrowed));
+		grid.setItems(new Book("sajt", "Lajos",123123l, 1994, BookState.Available),
+				new Book("asdasd", "Peter",412123l, 2000, BookState.Available),
+				new Book("history of cheese", "Cheezy",566123l, 1667, BookState.Borrowed));
 
 		//Edit grid
 		grid.getColumn("title").setEditorComponent(new TextField("Title"));
@@ -141,13 +144,122 @@ public class BooksView implements CreateContent{
 		//TODO: igy lehet megnezni mennyi van kivalasztva
 		//TODO: ez csak egy teszt, majd mashova kell
 		grid.addSelectionListener(listener->{
-			if(	grid.getSelectedItems().size() >2) {
-				System.out.println("NAGYOBB");
+			if(	grid.getSelectedItems().size() >0) {
+				System.out.println("NAGYOBB");	
+				
 			}
+			
 		});
+		
 				
 		grid.setSizeFull();
-		layout.addComponent(grid);
+		return grid;
+	}
+	
+	private Component buildButtonsMenu() {
+		HorizontalLayout headerButtons = new HorizontalLayout();
+		//Add button
+		addNew.setIcon(VaadinIcons.PLUS);
+		addNew.setDescription("Add new book to database");
+		//TODO: add clicklistener to button
+		addNew.addClickListener(e->{
+			addNewPopup();
+		});
+		
+		//Del button
+		//TODO addClick listener to update status of books
+		del.setIcon(VaadinIcons.TRASH);
+		del.setDescription("Delete selected by pressing or drag items");
+		
+		//Edit button
+		edit.setIcon(VaadinIcons.PENCIL);
+		edit.setDescription("Edit selected items");
+		edit.addClickListener(e->{
+			
+			int selectedItems = grid.getSelectedItems().size();
+			if(selectedItems>0) {
+				layout.addComponent(buildEditLayout(grid.getSelectedItems()));
+				grid.setEnabled(false);
+			}
+			
+		});
+		headerButtons.addComponents(addNew, del, edit);
+
+		return headerButtons;
+		
+	}
+
+	private Component buildEditLayout(Set<Book> selectedItems) {
+		Label formTitle = new Label("Edit book(s)");
+		formTitle.setStyleName(ValoTheme.LABEL_H2);
+		editLayout.addComponent(formTitle);
+		for(Book b : selectedItems) {
+			editLayout.addComponent(buildEditBookForm(b));
+		}
+
+		panel.setContent(editLayout);
+		
+		return panel;
+		
+	}
+
+	private Component buildEditBookForm(Book b) {
+		
+		Button save = new Button("Save");
+		save.addClickListener(e->{
+			grid.setEnabled(true);
+			editLayout.removeAllComponents();
+			
+		});
+		save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+		Button cancel = new Button("Cancel");
+		cancel.addClickListener(e->{
+			grid.setEnabled(true);
+			editLayout.removeAllComponents();
+			grid.setSizeFull();
+			subLayout.removeAllComponents();
+			subLayout.addComponents(buildButtonsMenu(), grid);
+			/*layout.addComponent(buildButtonsMenu());
+			layout.addComponent(grid);*/
+			layout.removeAllComponents();
+			layout.addComponent(subLayout);
+			
+		});
+		cancel.setStyleName(ValoTheme.BUTTON_PRIMARY);
+		
+		
+		
+		
+		Binder<Book> binder = new Binder<>();
+		TextField title = new TextField("Title");
+		title.setValue(b.getTitle());
+		TextField author = new TextField("Author");
+		author.setValue(b.getAuthor());
+		NativeSelect<BookState> state = new NativeSelect<>();
+		state.setCaption("State");
+		state.setValue(b.getState());
+		NativeSelect<Integer> selectYear = new NativeSelect<Integer>();
+		selectYear.setCaption("Year");
+		selectYear.setValue(b.getYear());
+		state.setItems(BookState.Available, BookState.Borrowed, BookState.Deleted);
+		ArrayList<Integer> years = new ArrayList<Integer>();
+		for(int i=1700; i<=Year.now().getValue(); i++) {
+			years.add(i);
+		}
+		selectYear.setItems(years);
+		
+		//TODO: NumberField
+		TextField id = new TextField("id");
+		id.setValue(b.getId().toString());
+		binder.bind(title, Book::getTitle, Book::setTitle);
+		binder.bind(author, Book::getAuthor, Book::setAuthor);
+		binder.bind(selectYear, Book::getYear, Book::setYear);
+		binder.bind(state, Book::getState, Book::setState);
+		
+
+		FormLayout layout = new FormLayout();
+		layout.setSizeFull();
+		layout.addComponents(title, author, state, selectYear, id, save, cancel);
 		
 		return layout;
 	}

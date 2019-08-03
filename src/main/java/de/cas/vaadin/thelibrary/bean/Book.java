@@ -9,11 +9,11 @@ public class Book {
 	
 	//Author maybe new class? For proper name? idk
 	private String title, author;
-	private long Id;
-	private int year;
+	private Long Id;
+	private Integer year;
 	private BookState state;
 	
-	public Book(String title, String author, long Id, int year, BookState state ) {
+	public Book(String title, String author, Long Id, Integer year, BookState state ) {
 		this.title = title;
 		this.author = author;
 		this.Id=Id;
@@ -40,19 +40,19 @@ public class Book {
 		this.author = author;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return Id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		Id = id;
 	}
 
-	public int getYear() {
+	public Integer getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
 

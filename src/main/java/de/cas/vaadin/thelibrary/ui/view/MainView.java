@@ -22,19 +22,22 @@ import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 @SuppressWarnings("serial")
 public class MainView extends HorizontalLayout {
 
-	private SideMenuBuilder menu = SideMenuBuilder.Instance();
+	private SideMenuBuilder menu = new SideMenuBuilder();
 	private VerticalLayout content ;
+	private HorizontalLayout layout = new HorizontalLayout();
 	private Content c;
 	
 	public MainView() {
 		removeAllComponents();
 		setSizeFull();
-		
-		addComponent(menu);
+		System.out.println("MAIN VIEW");
+		layout.addComponent(menu);
+		layout.setHeight("100%");
+		addComponent(layout);
 		content = new VerticalLayout();
 		content.addComponent(new Label("asd"));
 		addComponent(content);
-		setExpandRatio(menu, 1.5f);
+		setExpandRatio(layout, 1.5f);
 		setExpandRatio(content, 8.5f);
 		
 		AppEventBus.register(this);		
@@ -49,7 +52,8 @@ public class MainView extends HorizontalLayout {
 	 */
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
-		
+		layout.removeAllComponents();
+		layout.addComponent(new SideMenuBuilder());
 		c = new Content(event.getContainer());
 		content.removeAllComponents();
 		content.addComponent(c.createContent());

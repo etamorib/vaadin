@@ -35,12 +35,12 @@ public class SideMenuBuilder extends CustomComponent {
 	
 	private ArrayList<CreateContent> items = new ArrayList<>();
 	
-	private static SideMenuBuilder sideMenu = new SideMenuBuilder();
 	
-	private SideMenuBuilder() {
+	
+	public SideMenuBuilder() {
 		//addStyleName("valo-menu");
 		setPrimaryStyleName(ValoTheme.MENU_ROOT);
-		setSizeUndefined();
+		setSizeFull();
 		
 		//Adding menu items
 		
@@ -133,11 +133,7 @@ public class SideMenuBuilder extends CustomComponent {
 		return titleWrapper;
 	}
 
-	//Instance for singleton
-	public static SideMenuBuilder Instance() {
-		return sideMenu;
-	}
-	
+
 	
 	private ArrayList<CreateContent> addItemsToList(CreateContent...contens) {
 		for(CreateContent c : contens) {

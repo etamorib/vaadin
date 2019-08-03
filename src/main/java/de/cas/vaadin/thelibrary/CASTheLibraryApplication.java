@@ -8,6 +8,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
@@ -80,7 +81,8 @@ public class CASTheLibraryApplication extends UI {
 	@Subscribe
 	public void logoutRequest(final LogoutRequestEvent e) {
 		VaadinSession.getCurrent().close();
-		Page.getCurrent().reload();
+		getUI().getPage().setLocation("/");
+		
 	}
 	  
 	
