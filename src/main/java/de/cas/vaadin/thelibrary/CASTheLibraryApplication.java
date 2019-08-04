@@ -14,11 +14,11 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.cas.vaadin.thelibrary.bean.Admin;
 import de.cas.vaadin.thelibrary.event.AppEvent.LoginRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
+import de.cas.vaadin.thelibrary.model.bean.Admin;
 import de.cas.vaadin.thelibrary.ui.view.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
 

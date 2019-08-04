@@ -4,7 +4,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
-import de.cas.vaadin.thelibrary.bean.Admin;
+import de.cas.vaadin.thelibrary.model.bean.Admin;
 
 /**
  * @author mate.biro

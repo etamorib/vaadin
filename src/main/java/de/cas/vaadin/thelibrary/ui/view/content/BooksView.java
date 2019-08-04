@@ -19,7 +19,6 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
@@ -31,8 +30,9 @@ import com.vaadin.ui.components.grid.GridDragSource;
 import com.vaadin.ui.dnd.DropTargetExtension;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.cas.vaadin.thelibrary.bean.Book;
-import de.cas.vaadin.thelibrary.bean.BookState;
+import de.cas.vaadin.thelibrary.controller.BookController;
+import de.cas.vaadin.thelibrary.model.bean.Book;
+import de.cas.vaadin.thelibrary.model.bean.BookState;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 
@@ -48,6 +48,7 @@ public class BooksView implements CreateContent{
 	Button addNew = new Button();
 	Button del = new Button();
 	Button edit = new Button();
+	private BookController controller = new BookController();
 	
 
 	public BooksView() {
@@ -114,9 +115,7 @@ public class BooksView implements CreateContent{
 			
 		
 		//TODO: use database instead
-		grid.setItems(new Book("sajt", "Lajos",123123l, 1994, BookState.Available),
-				new Book("asdasd", "Peter",412123l, 2000, BookState.Available),
-				new Book("history of cheese", "Cheezy",566123l, 1667, BookState.Borrowed));
+		grid.setItems(controller.getItems());
 
 		//Edit grid
 		grid.getColumn("title").setEditorComponent(new TextField("Title"));
@@ -144,9 +143,11 @@ public class BooksView implements CreateContent{
 		
 		//TODO: igy lehet megnezni mennyi van kivalasztva
 		//TODO: ez csak egy teszt, majd mashova kell
+		//TODO: EZ JÓ!!!
 		grid.addSelectionListener(listener->{
-			if(	grid.getSelectedItems().size() >0) {
+			if(	grid.getSelectedItems().size() >2) {
 				System.out.println("NAGYOBB");	
+				grid.deselect(grid.getSelectedItems().iterator().next());
 				
 			}
 			
@@ -253,6 +254,7 @@ public class BooksView implements CreateContent{
 		
 		//TODO: NumberField
 		TextField id = new TextField("id");
+		id.setEnabled(false);
 		id.setValue(b.getId().toString());
 		binder.bind(title, Book::getTitle, Book::setTitle);
 		binder.bind(author, Book::getAuthor, Book::setAuthor);
@@ -299,6 +301,16 @@ public class BooksView implements CreateContent{
 		
 		Button add = new Button("Add");
 		add.setIcon(VaadinIcons.PLUS);
+		add.addClickListener(e->{
+			Book b = new Book(title.getValue(), author.getValue(), Integer.parseInt(id.getValue()), 
+								Integer.parseInt(year.getValue()), BookState.Available);
+			if(controller.add(b)) {
+				window.close();
+				Notification.show("Book has been added to database");
+				grid.setItems(controller.getItems());
+				
+			}
+		});
 		
 		form.addComponents(author, title, id, year, add);
 		form.setSizeUndefined();

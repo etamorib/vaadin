@@ -1,19 +1,20 @@
-package de.cas.vaadin.thelibrary.bean;
+package de.cas.vaadin.thelibrary.model.bean;
 
 /**
  * @author mate.biro
  * Bean class for Book object(s)
  *
  */
-public class Book {
+public class Book implements DatabaseBean{
 	
 	//Author maybe new class? For proper name? idk
 	private String title, author;
-	private Long Id;
+	private Integer Id;
 	private Integer year;
 	private BookState state;
+	public static final String DBname = "book.db";
 	
-	public Book(String title, String author, Long Id, Integer year, BookState state ) {
+	public Book(String title, String author, Integer Id, Integer year, BookState state ) {
 		this.title = title;
 		this.author = author;
 		this.Id=Id;
@@ -40,11 +41,11 @@ public class Book {
 		this.author = author;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return Id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		Id = id;
 	}
 
@@ -63,6 +64,10 @@ public class Book {
 	public void setState(BookState state) {
 		this.state = state;
 	}
+
+
+
+
 	
 	
 

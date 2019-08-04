@@ -1,10 +1,10 @@
-package de.cas.vaadin.thelibrary.bean;
+package de.cas.vaadin.thelibrary.model.bean;
 
 /**
  * @author mate.biro
  * Bean class for Reader object(s)
  */
-public class Reader {
+public class Reader implements DatabaseBean {
 	
 	
 	//TODO: maybe address class datatype?
@@ -12,6 +12,7 @@ public class Reader {
 	private int Id;
 	//TODO: maybe phone number builder class?
 	private long phoneNumber;
+	public static final String DBName = "reader.db";
 	
 	public Reader(String firstName, String lastName, String address, 
 			String email, int id, long phoneNumber) {
@@ -74,7 +75,7 @@ public class Reader {
 	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	
 	
 	

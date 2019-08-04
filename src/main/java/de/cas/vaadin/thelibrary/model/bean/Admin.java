@@ -1,4 +1,4 @@
-package de.cas.vaadin.thelibrary.bean;
+package de.cas.vaadin.thelibrary.model.bean;
 
 /**
  * @author mate.biro

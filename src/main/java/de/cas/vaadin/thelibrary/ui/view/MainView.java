@@ -1,13 +1,7 @@
 package de.cas.vaadin.thelibrary.ui.view;
 
-import org.vaadin.teemusa.sidemenu.SideMenu;
-
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
