@@ -1,8 +1,12 @@
 package de.cas.vaadin.thelibrary.ui.view;
 
+import org.vaadin.teemusa.sidemenu.SideMenu;
+
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
@@ -23,24 +27,12 @@ import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 public class MainView extends HorizontalLayout {
 
 	private SideMenuBuilder menu = new SideMenuBuilder();
-	private VerticalLayout content ;
-	private HorizontalLayout layout = new HorizontalLayout();
 	private Content c;
 	
 	public MainView() {
-		removeAllComponents();
 		setSizeFull();
-		System.out.println("MAIN VIEW");
-		layout.addComponent(menu);
-		layout.setHeight("100%");
-		addComponent(layout);
-		content = new VerticalLayout();
-		content.addComponent(new Label("asd"));
-		addComponent(content);
-		setExpandRatio(layout, 1.5f);
-		setExpandRatio(content, 8.5f);
-		
-		AppEventBus.register(this);		
+		AppEventBus.register(this);
+		addComponent(menu.getSideMenu());
 	}
 	
 	
@@ -52,11 +44,14 @@ public class MainView extends HorizontalLayout {
 	 */
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
-		layout.removeAllComponents();
-		layout.addComponent(new SideMenuBuilder());
+		removeAllComponents();
+		//New menu always needed to refresh the views
+		//in sidemenubuilder constructor
+		menu = new SideMenuBuilder();
+		addComponent(menu.getSideMenu());
 		c = new Content(event.getContainer());
-		content.removeAllComponents();
-		content.addComponent(c.createContent());
+		menu.getSideMenu().setContent(c.createContent());
+
 
 		
 	}

@@ -9,6 +9,7 @@ import java.util.Set;
 import com.vaadin.data.Binder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.ui.Button;
@@ -59,10 +60,10 @@ public class BooksView implements CreateContent{
 		layout = new HorizontalLayout();
 		subLayout = new VerticalLayout();
 		
-		subLayout.setSizeFull();
+		//subLayout.setSizeFull();
 		layout.setSizeFull();
-		editLayout.setSizeFull();
-		panel.setSizeFull();
+		//editLayout.setSizeFull();
+		//panel.setSizeFull();
 		
 		
 		
@@ -190,6 +191,7 @@ public class BooksView implements CreateContent{
 	}
 
 	private Component buildEditLayout(Set<Book> selectedItems) {
+		VerticalLayout panel = new VerticalLayout();
 		Label formTitle = new Label("Edit book(s)");
 		formTitle.setStyleName(ValoTheme.LABEL_H2);
 		editLayout.addComponent(formTitle);
@@ -197,7 +199,8 @@ public class BooksView implements CreateContent{
 			editLayout.addComponent(buildEditBookForm(b));
 		}
 
-		panel.setContent(editLayout);
+		//panel.setContent(editLayout);
+		panel.addComponent(editLayout);
 		
 		return panel;
 		
@@ -317,6 +320,11 @@ public class BooksView implements CreateContent{
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public Resource menuIcon() {
+		return VaadinIcons.BOOK;
 	}
 	
 	

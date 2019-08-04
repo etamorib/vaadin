@@ -1,10 +1,14 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import org.vaadin.teemusa.sidemenu.SideMenu;
+
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -31,130 +35,76 @@ import de.cas.vaadin.thelibrary.ui.view.content.WaitList;;
 
 @SuppressWarnings("serial")
 public class SideMenuBuilder extends CustomComponent {
-	private LinkedHashMap<CreateContent, Button> menuItems = new LinkedHashMap<>();
 	
-	private ArrayList<CreateContent> items = new ArrayList<>();
+	private ArrayList<CreateContent> menuItems ;
+	private final String title = "CAS Library";
 	
-	
+
+	private SideMenu menu = new SideMenu();
 	
 	public SideMenuBuilder() {
-		//addStyleName("valo-menu");
-		setPrimaryStyleName(ValoTheme.MENU_ROOT);
-		setSizeFull();
-		
-		//Adding menu items
-		
-		
-		addMenuItems(addItemsToList(
-				new BooksView(), 
-				new Readers(), 
-				new Rentals(), 
-				new NewRental(),
-				new WaitList()));
-		
-		
-		setCompositionRoot(buildMenu());
+		menuItems =  new ArrayList<>();
+		menuItems.clear();
+		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList());
+		System.out.println(menuItems.size());
+		addItemsToMenu(menuItems);
 		AppEventBus.register(this);
+		styleMenu();
+		setAdmin();
+
 		
 	}
 	
-	public Component buildMenu() {
-		final CssLayout menuContent = new CssLayout();
-		//menuContent.addStyleName("sidebar");
-        menuContent.addStyleName(ValoTheme.MENU_PART);
-        //menuContent.addStyleName("no-vertical-drag-hints");
-        //menuContent.addStyleName("no-horizontal-drag-hints");
-        menuContent.setHeight("100%");
-        //menuContent.setWidth("20%");
-        
-        menuContent.addComponents(buildTitle(), buildMenuItems());
-        
-        //Logout
-        MenuBar logoutmenu = new MenuBar();
-        logoutmenu.addItem("Logout", VaadinIcons.SIGN_OUT, new Command() {
-
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				AppEventBus.post(new LogoutRequestEvent());
-				
-			}
-        	
-        });
-        logoutmenu.addStyleName("user-menu");
-        menuContent.addComponent(logoutmenu);
-        
-        //Responsive
-        final Button showMenu = new Button("Menu");
-        showMenu.addClickListener(e->{
-        	if (menuContent.getStyleName().contains("valo-menu-visible")) {
-            	menuContent.removeStyleName("valo-menu-visible");
-            } else {
-            	menuContent.addStyleName("valo-menu-visible");
-            }
-        });
-        showMenu.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        showMenu.addStyleName(ValoTheme.BUTTON_SMALL);
-        showMenu.addStyleName("valo-menu-toggle");
-        showMenu.setIcon(VaadinIcons.MENU);
-        menuContent.addComponent(showMenu);
-        
-        
-        return menuContent;
-
+	private void styleMenu() {
+		menu.setMenuCaption(title);
 	}
 	
-	private Component buildMenuItems() {
-		CssLayout menuItemsLayout = new CssLayout();
-		VerticalLayout buttonWrapper = new VerticalLayout();
-		menuItemsLayout.setStyleName("valo-menuitems");
-		menuItems.forEach((k,v)->{
-			v.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-			
-			v.addClickListener(e->{
-				AppEventBus.post(new ChangeViewEvent(k));
-			});
-			
-			buttonWrapper.addComponent(v);
-			buttonWrapper.setComponentAlignment(v, Alignment.MIDDLE_CENTER);
-			
-			
+	//TODO: if there was more admin
+	//i could have a name + personal icon
+	private void setAdmin() {
+		menu.setUserName("Admin");
+		menu.setUserIcon(VaadinIcons.USER_CHECK);
+		menu.clearUserMenu();
+		menu.addUserMenuItem("Sign out", VaadinIcons.SIGN_OUT,()->{
+			AppEventBus.post(new LogoutRequestEvent());
 		});
-		menuItemsLayout.addComponent(buttonWrapper);
-		return menuItemsLayout;
 	}
-
-	private Component buildTitle() {
-		Label title = new Label("LibraryApp");
-		title.setSizeUndefined();
-		HorizontalLayout titleWrapper = new HorizontalLayout(title);
-		titleWrapper.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-		titleWrapper.addStyleName("valo-menu-title");
-		titleWrapper.setSpacing(false);
-		return titleWrapper;
-	}
-
-
 	
-	private ArrayList<CreateContent> addItemsToList(CreateContent...contens) {
-		for(CreateContent c : contens) {
-			this.items.add(c);
+	private void addItemsToMenu(ArrayList<CreateContent> contents) {
+		for(CreateContent c : contents) {
+			menu.addMenuItem(c.getName(), c.menuIcon(),()->{
+				AppEventBus.post(new ChangeViewEvent(c));
+			});		
+			
 		}
-		return this.items;
-	}
-	
-	private void addMenuItems(ArrayList<CreateContent> list) {
 		
-		for(CreateContent c : list) {
-			menuItems.put(c, new Button(c.getName()));
+	}
+	
+	private void fillArray(CreateContent ...contents) {
+		for(CreateContent c : contents) {
+			menuItems.add(c);
 		}
 	}
-
-	public LinkedHashMap<CreateContent, Button> getMenuItems() {
+	
+	public void addNewItem(CreateContent c) {
+		menuItems.add(c);
+	}
+	
+	public void addNewItemWithPosition(CreateContent c, int index) {
+		menuItems.add(index, c);
+	}
+	
+	
+	public ArrayList<CreateContent> getMenuItems() {
 		return menuItems;
 	}
 
-	public void setMenuItems(LinkedHashMap<CreateContent, Button> menuItems) {
+	public void setMenuItems(ArrayList<CreateContent> menuItems) {
 		this.menuItems = menuItems;
+	}
+
+	public SideMenu getSideMenu() {
+		return this.menu;
 	}
 	
 

@@ -1,5 +1,7 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -24,6 +26,11 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public Resource menuIcon() {
+		return VaadinIcons.PLUS;
 	}
 	
 	
