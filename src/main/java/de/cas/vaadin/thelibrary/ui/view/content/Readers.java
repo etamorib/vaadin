@@ -274,7 +274,8 @@ public class Readers extends HorizontalLayout implements CreateContent {
 			if(controller.add(reader)) {
 				window.close();
 				Notification.show("Book has been added to database");
-				grid.setItems(controller.getItems());
+				dataProvider = new ListDataProvider<>(controller.getItems());
+				grid.setDataProvider(dataProvider);
 				
 			}
 		});

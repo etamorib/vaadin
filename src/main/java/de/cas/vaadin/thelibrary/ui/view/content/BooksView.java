@@ -303,7 +303,8 @@ public class BooksView implements CreateContent{
 			if(controller.add(b)) {
 				window.close();
 				Notification.show("Book has been added to database");
-				grid.setItems(controller.getItems());
+				dataProvider = new ListDataProvider<>(controller.getItems());
+				grid.setDataProvider(dataProvider);
 				
 			}
 		});
