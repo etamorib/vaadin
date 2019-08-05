@@ -15413,3 +15413,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .add-window {
 	padding: 50px 30px 30px 30px;
 }
+
+.mytheme .gradient-background {
+	background-color: red;
+}

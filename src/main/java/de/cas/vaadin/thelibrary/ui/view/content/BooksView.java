@@ -52,6 +52,7 @@ public class BooksView implements CreateContent{
 	@Override
 	public Component buildContent() {
 		mainLayout = new HorizontalLayout();
+		mainLayout.setStyleName("gradient-background");
 		mainLayout.setSizeFull();
 		left = new VerticalLayout();
 		Label title = new Label("Books in the database");
@@ -66,11 +67,10 @@ public class BooksView implements CreateContent{
 		//To make sure column order
 		grid.setColumns("title", "author", "id", "year", "state");
 		grid.setSelectionMode(SelectionMode.MULTI);
-		//grid.setItems(controller.getItems());
+		grid.setStyleName("grid-overall");
 		grid.setDataProvider(dataProvider);
 		NativeSelect<BookState> state = new NativeSelect<>();
 		state.setItems(BookState.Available, BookState.Borrowed, BookState.Deleted);
-		//dataProvider.setFilter(Book -> Book.getTitle().equals(state.getValue().toString()));
 		state.addSelectionListener(e->{
 			if(e.getValue()!=null) {
 				dataProvider.setFilter(book -> book.getState() ==e.getValue());
@@ -134,7 +134,6 @@ public class BooksView implements CreateContent{
 			cancel.addClickListener(e->{
 				if(editLayout.getComponentCount()>1) {
 					editLayout.fancyRemoveComponent(editForm);
-					System.out.println(editLayout.getComponentCount()+ "Van most");
 							
 				}else {	
 					grid.setEnabled(true);
@@ -185,7 +184,7 @@ public class BooksView implements CreateContent{
 										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue()))) {
 						Notification.show("Update successful");
 						editLayout.fancyRemoveComponent(editForm);
-						grid.setItems(controller.getItems());
+						
 					}else {
 						Notification.show("Something went wrong!");
 						editLayout.fancyRemoveComponent(editForm);
@@ -201,8 +200,8 @@ public class BooksView implements CreateContent{
 					mainLayout.removeComponent(editLayout);
 					grid.setSizeFull();
 					grid.deselectAll();
-					grid.setItems(controller.getItems());
-					
+					dataProvider = new ListDataProvider<>(controller.getItems());
+					grid.setDataProvider(dataProvider);
 				}
 				
 			});
