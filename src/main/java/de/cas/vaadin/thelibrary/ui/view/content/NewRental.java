@@ -24,6 +24,7 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 @SuppressWarnings("serial")
 public class NewRental extends HorizontalLayout implements CreateContent {
 	
+	private final int maxSelect = 5;
 	private final String name = "New Rentals";
 	private VerticalLayout mainLayout;
 	private TabSheet tab;
@@ -55,7 +56,7 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 	
 	private Component booksLayout() {
 		books = new VerticalLayout();
-		
+		Label counter = new Label();
 		//Grid
 		Grid<Book> bookGrid = new Grid<>(Book.class);
 		bookDataProvider = new ListDataProvider<>(bookController.getItems());
@@ -79,10 +80,28 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 			
 		});
 		
+		//
+		bookGrid.addSelectionListener(e->{
+			int currentlySelected = bookGrid.getSelectedItems().size();
+			
+			updateCounter(counter, currentlySelected);
+			if(currentlySelected> maxSelect) {
+				bookGrid.deselect(bookGrid.getSelectedItems().iterator().next());
+			}
+		});
+		
 		bookGrid.addHeaderRowAt(1);
 		bookGrid.getHeaderRow(1).getCell("state").setComponent(state);
+		
+		
 		books.addComponent(bookGrid);
+		books.addComponent(counter);
 		return books;
+	}
+	
+	private void updateCounter(Label l, int i) {
+		l.setCaption(i+" items are selected, "+ (maxSelect-i)+" remaining.");
+		
 	}
 	
 	@Override
