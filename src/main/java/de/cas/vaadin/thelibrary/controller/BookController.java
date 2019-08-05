@@ -1,6 +1,7 @@
 package de.cas.vaadin.thelibrary.controller;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import de.cas.vaadin.thelibrary.model.BookDAO;
 import de.cas.vaadin.thelibrary.model.bean.Book;
@@ -11,8 +12,7 @@ public class BookController implements ControllerInterface<Book>  {
 
 	@Override
 	public boolean update(Book bean) {
-		
-		return bookDAO.add(bean);
+		return bookDAO.update(bean);
 	}
 
 	@Override
@@ -21,9 +21,8 @@ public class BookController implements ControllerInterface<Book>  {
 	}
 
 	@Override
-	public boolean delete(Book bean) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Set<Book> beans) {
+		return bookDAO.delete(beans);
 	}
 
 	@Override

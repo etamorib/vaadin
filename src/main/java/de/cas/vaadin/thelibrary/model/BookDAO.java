@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Set;
 
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
@@ -14,7 +15,7 @@ import de.cas.vaadin.thelibrary.model.bean.BookState;
 public class BookDAO implements DaoInterface<Book> {
 	
 	private final String CONN = DaoInterface.connectionString() + Book.DBname;
-	private final String UPDATE = "UPDATE BOOK SET TITLE=?, AUTHOR=?, YEAR=?, STATUS=? WHERE ID=?";
+	private final String UPDATE = "UPDATE BOOK SET TITLE=?, AUTHOR=?, YEAR=?, STATE=? WHERE ID=?";
 	private final String ADD = "INSERT INTO BOOK(ID,TITLE, AUTHOR, YEAR, STATE) VALUES(?,?,?,?,?)";
 	private final String DEL = "UPDATE BOOK SET STATE = ? WHERE ID=?";
 	private final String LIST = "SELECT * FROM BOOK";
@@ -77,9 +78,27 @@ public class BookDAO implements DaoInterface<Book> {
 	}
 
 	@Override
-	public boolean delete(Book bean) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Set<Book> books) {
+		try(Connection conn = DriverManager.getConnection(CONN);
+				PreparedStatement pst = conn.prepareStatement(DEL)
+				){
+				for(Book bean : books) {
+					System.out.println(bean);
+					pst.setString(1, BookState.Deleted.toString());
+					pst.setInt(2, bean.getId());
+					
+					
+					int affected = pst.executeUpdate();
+					if(affected!=1) {
+						return false;
+					}
+				}
+				return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
@@ -99,6 +118,10 @@ public class BookDAO implements DaoInterface<Book> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public ArrayList<Book> getItemsByPattern(String s){
+		
 	}
 
 	

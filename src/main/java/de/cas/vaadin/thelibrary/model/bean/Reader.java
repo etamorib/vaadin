@@ -75,6 +75,8 @@ public class Reader implements DatabaseBean {
 	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
+
 
 	
 	

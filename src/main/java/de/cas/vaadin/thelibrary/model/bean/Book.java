@@ -64,6 +64,11 @@ public class Book implements DatabaseBean{
 	public void setState(BookState state) {
 		this.state = state;
 	}
+	
+	@Override
+	public String toString() {
+		return title +" "+ author +" "+Id +" "+ year+" "+ state;
+	}
 
 
 

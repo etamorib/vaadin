@@ -46,6 +46,18 @@
 	<dependencies>
 	
 		<dependency>
+		   <groupId>org.vaadin.addons</groupId>
+		   <artifactId>vaadin-grid-util</artifactId>
+		   <version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+		   <groupId>org.vaadin.alump.fancylayouts</groupId>
+		   <artifactId>fancylayouts-addon</artifactId>
+		   <version>2.0.0</version>
+		</dependency>
+	
+		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
 		    <version>3.15.1</version>
