@@ -8,78 +8,84 @@ public class Reader implements DatabaseBean {
 	
 	
 	//TODO: maybe address class datatype?
-	private String firstName, lastName, address, email;
-	private int Id;
+	private String name, address, email;
+	private Integer Id;
 	//TODO: maybe phone number builder class?
-	private long phoneNumber;
-	public static final String DBName = "reader.db";
+	private Long phoneNumber;
+	public static final String DBname = "reader.db";
 	
-	public Reader(String firstName, String lastName, String address, 
-			String email, int id, long phoneNumber) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.email = email;
-		Id = id;
-		this.phoneNumber = phoneNumber;
-	}
 	
 	public Reader() {
 		
 	}
 
-	public String getFirstName() {
-		return firstName;
+
+	public Reader(String name, String address, String email, Integer id, Long phoneNumber) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.email = email;
+		Id = id;
+		this.phoneNumber = phoneNumber;
+	}
+	
+	public Reader(String name, String address, String email, Long phoneNumber) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+	public String getName() {
+		return name;
 	}
 
-	public String getLastName() {
-		return lastName;
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public String getAddress() {
 		return address;
 	}
 
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 
 	public String getEmail() {
 		return email;
 	}
 
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public int getId() {
+
+	public Integer getId() {
 		return Id;
 	}
 
-	public void setId(int id) {
+
+	public void setId(Integer id) {
 		Id = id;
 	}
 
-	public long getPhoneNumber() {
+
+	public Long getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(long phoneNumber) {
+
+	public void setPhoneNumber(Long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
-
 
 	
-	
-	
-
 }

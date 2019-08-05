@@ -7,5 +7,15 @@
 .mytheme {
   @include addons;
   @include mytheme;
+  
+  .v-tabsheet-tabitemcell{
+  	width: 100%;
+  	border-left : 1px solid #dfdfdf;
+  }
+  
+  .v-grid-tablewrapper {
+  	border: none;
+  }
+  
 
 }

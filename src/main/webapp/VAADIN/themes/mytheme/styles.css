@@ -15417,3 +15417,12 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .gradient-background {
 	background-color: red;
 }
+
+.mytheme .v-tabsheet-tabitemcell {
+	width: 100%;
+	border-left: 1px solid #dfdfdf;
+}
+
+.mytheme .v-grid-tablewrapper {
+	border: none;
+}

@@ -9,6 +9,7 @@ import org.vaadin.alump.fancylayouts.FancyCssLayout;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
@@ -52,7 +53,6 @@ public class BooksView implements CreateContent{
 	@Override
 	public Component buildContent() {
 		mainLayout = new HorizontalLayout();
-		mainLayout.setStyleName("gradient-background");
 		mainLayout.setSizeFull();
 		left = new VerticalLayout();
 		Label title = new Label("Books in the database");
@@ -65,7 +65,7 @@ public class BooksView implements CreateContent{
 	private Component buildGrid() {
 		dataProvider = new ListDataProvider<>(controller.getItems());
 		//To make sure column order
-		grid.setColumns("title", "author", "id", "year", "state");
+		grid.setColumns("author","title", "id", "year", "state");
 		grid.setSelectionMode(SelectionMode.MULTI);
 		grid.setStyleName("grid-overall");
 		grid.setDataProvider(dataProvider);
@@ -75,7 +75,6 @@ public class BooksView implements CreateContent{
 			if(e.getValue()!=null) {
 				dataProvider.setFilter(book -> book.getState() ==e.getValue());
 			}else {
-				System.out.println("null");
 				dataProvider.clearFilters();
 			}
 			
@@ -85,8 +84,7 @@ public class BooksView implements CreateContent{
 		grid.getHeaderRow(1).getCell("state").setComponent(state);
 		//Drag grid
 		GridDragSource<Book> source = new GridDragSource<Book>(grid);
-		source.setEffectAllowed(EffectAllowed.MOVE);
-		
+		source.setEffectAllowed(EffectAllowed.MOVE);	
 		
 		//Drop grid
 		DropTargetExtension<Button> dropDeleteTarget = new DropTargetExtension<>(del);
@@ -95,7 +93,6 @@ public class BooksView implements CreateContent{
 		dropEditTarget.setDropEffect(DropEffect.MOVE);
 		dropDeleteTarget.addDropListener(e->{
 			if(controller.delete(grid.getSelectedItems())) {
-				System.out.println("DELETED");
 				new Notification("",
 					    "Book(s) have been deleted!",
 					    Notification.Type.WARNING_MESSAGE, true)
@@ -123,19 +120,18 @@ public class BooksView implements CreateContent{
 	private void buildEditLayout(final FancyCssLayout editLayout, Book b) {
 		
 			final FormLayout editForm = new FormLayout();
-			System.out.println("MADE: "+editForm);
 			
 			//Buttons
 			Button save = new Button("Save");
 			save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 			Button cancel = new Button("Cancel");
 			cancel.setStyleName(ValoTheme.BUTTON_PRIMARY);
-			System.out.println("Cancel button: " + cancel);
 			cancel.addClickListener(e->{
 				if(editLayout.getComponentCount()>1) {
 					editLayout.fancyRemoveComponent(editForm);
 							
 				}else {	
+					editLayout.removeAllComponents();
 					grid.setEnabled(true);
 					mainLayout.removeComponent(editLayout);
 					grid.deselectAll();
@@ -143,7 +139,6 @@ public class BooksView implements CreateContent{
 				}
 				
 			});
-			
 			
 			
 			//Form
@@ -178,11 +173,11 @@ public class BooksView implements CreateContent{
 			save.addClickListener(e->{
 				Book book = new Book(title.getValue(), author.getValue(),
 										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue());
-				System.out.println(book);
 				if(editLayout.getComponentCount()>1) {
-					if(controller.update(new Book(title.getValue(), author.getValue(),
-										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue()))) {
+					if(controller.update(book)) {
 						Notification.show("Update successful");
+						dataProvider = new ListDataProvider<>(controller.getItems());
+						grid.setDataProvider(dataProvider);
 						editLayout.fancyRemoveComponent(editForm);
 						
 					}else {
@@ -197,6 +192,7 @@ public class BooksView implements CreateContent{
 						Notification.show("Something went wrong");
 					}
 					grid.setEnabled(true);
+					editLayout.removeAllComponents();
 					mainLayout.removeComponent(editLayout);
 					grid.setSizeFull();
 					grid.deselectAll();
@@ -228,7 +224,9 @@ public class BooksView implements CreateContent{
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
 			controller.delete(grid.getSelectedItems());
-			grid.setItems(controller.getItems());
+			dataProvider = new ListDataProvider<>(controller.getItems());
+			grid.setDataProvider(dataProvider);
+
 		});
 		
 		//Edit button
@@ -255,8 +253,10 @@ public class BooksView implements CreateContent{
 		search.setPlaceholder("Search...");
 		search.setValueChangeMode(ValueChangeMode.EAGER);
 		search.addValueChangeListener(e->{
-			dataProvider.setFilter(book-> book.getTitle().toLowerCase().contains(e.getValue().toLowerCase()));
-			dataProvider.setFilter(book-> book.getAuthor().toLowerCase().contains(e.getValue().toLowerCase()));
+			//Filter for both title and author
+			dataProvider.setFilter(book -> book.getAuthor().toLowerCase().contains(e.getValue().toLowerCase())||
+					book.getTitle().toLowerCase().contains(e.getValue().toLowerCase()));
+			
 			
 		});
 		buttons.addComponents(add, del, edit, search);
@@ -264,12 +264,11 @@ public class BooksView implements CreateContent{
 	}
 
 	
-	
 	private void addingWindow() {
 		Window window = new Window();
+		window.setCaption("Add new book");
 		//VerticalLayout layout = new VerticalLayout();
 		//layout.addComponents(new Label("Title:"),new TextField(), new Button("Add"));
-		
 		FormLayout form = new FormLayout();
 		
 		//author
@@ -295,6 +294,8 @@ public class BooksView implements CreateContent{
 		year.setRequiredIndicatorVisible(true);
 		
 		Button add = new Button("Add");
+		add.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		add.setClickShortcut(KeyCode.ENTER);
 		add.setIcon(VaadinIcons.PLUS);
 		add.addClickListener(e->{
 			Book b = new Book(title.getValue(), author.getValue(), Integer.parseInt(id.getValue()), 
@@ -319,8 +320,7 @@ public class BooksView implements CreateContent{
 		window.setModal(true);
 		
 		UI.getCurrent().addWindow(window);
-		
-		
+				
 	}
 	@Override
 	public String getName() {
@@ -332,9 +332,5 @@ public class BooksView implements CreateContent{
 		return VaadinIcons.BOOK;
 	}
 
-	
-
-	
-	
 
 }

@@ -120,9 +120,7 @@ public class BookDAO implements DaoInterface<Book> {
 		}
 	}
 	
-	public ArrayList<Book> getItemsByPattern(String s){
-		
-	}
+
 
 	
 	

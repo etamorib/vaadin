@@ -32,7 +32,6 @@ public class SideMenuBuilder extends CustomComponent {
 		menuItems =  new ArrayList<>();
 		menuItems.clear();
 		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList());
-		System.out.println(menuItems.size());
 		addItemsToMenu(menuItems);
 		AppEventBus.register(this);
 		styleMenu();
