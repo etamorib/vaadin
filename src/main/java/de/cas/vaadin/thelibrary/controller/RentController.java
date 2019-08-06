@@ -23,5 +23,9 @@ public class RentController implements ControllerInterface<Rent> {
 	public ArrayList<Rent> getItems() {
 		return dao.getItems();
 	}
+	
+	public Rent getRentByBookId(Integer id) {
+		return dao.getRentByBookId(id);
+	}
 
 }

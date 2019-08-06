@@ -11,6 +11,8 @@ import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
@@ -20,14 +22,16 @@ import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.controller.BookController;
 import de.cas.vaadin.thelibrary.controller.ReaderController;
 import de.cas.vaadin.thelibrary.controller.RentController;
-import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
+import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
@@ -35,7 +39,7 @@ import de.cas.vaadin.thelibrary.model.bean.Rent;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 @SuppressWarnings("serial")
-public class NewRental extends HorizontalLayout implements CreateContent {
+public class NewRental implements CreateContent {
 	
 	private RentController rentController = new RentController();
 	private BookController bookController = new BookController();
@@ -186,10 +190,8 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 			wl.setSizeFull();
 			wl.addClickListener(e->{
 				//TODO:
+				waitlistWindow(borrowedList);
 				
-				if(left.getComponentCount()==2) {
-					AppEventBus.post(new ChangeViewEvent(new NewRental()));
-				}
 			});
 			left.addComponents(borrowedGrid, wl);
 		}
@@ -198,6 +200,65 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		
 		
 		return deadline;
+	}
+	
+	private void waitlistWindow(ArrayList<Book> borrowedBooks) {
+		Window window = new Window();
+		window.setCaption("Set date");
+		
+		
+		HorizontalLayout layout = new HorizontalLayout();
+		
+		for(Book b: borrowedBooks) {
+			FormLayout form = new FormLayout();
+			//Author
+			TextField author = new TextField("Author");
+			author.setIcon(VaadinIcons.PENCIL);
+			author.setValue(b.getAuthor());
+					
+			//title
+			TextField title = new TextField("Title");
+			title.setIcon(VaadinIcons.TEXT_LABEL);
+			title.setValue(b.getTitle());
+
+			//Year
+			//TODO: Select kéne
+			TextField year = new TextField("Year");
+			year.setIcon(VaadinIcons.CALENDAR);
+			year.setValue(b.getYear().toString());
+			
+			TextField rentedUntil = new TextField("Rented until");
+			year.setIcon(VaadinIcons.CALENDAR_USER);
+			rentedUntil.setValue(rentController.getRentByBookId(b.getId()).getReturnTime().toString());
+			DateField dateField = new DateField();
+			dateField.setValue(rentController.getRentByBookId(b.getId()).getReturnTime());
+			Button add = new Button("Set date");
+			add.addClickListener(e->{
+				//TODO: save date, book and add to database
+				//TODO: make waitlist database 
+				layout.removeComponent(form);
+				if(layout.getComponentCount()==0) {
+					window.close();
+					Notification.show("Books have been added to waitlist");
+					AppEventBus.post(new ChangeViewEvent(new NewRental()));
+				}
+				
+			});
+			
+			form.addComponents(author, title, year, rentedUntil, dateField ,add);
+			layout.addComponent(form);
+		}
+		window.setContent(layout);
+		window.addStyleName("add-window");
+		window.setResizable(false);
+		window.center();
+		window.setDraggable(false);
+		window.setModal(true);
+		
+			
+		UI.getCurrent().addWindow(window);
+
+		
 	}
 	
 

@@ -1,5 +1,8 @@
+E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\RentDAO.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\Readers.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\bean\Reader.java
+E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\controller\RentController.java
+E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\ExtraDaoInterface.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\controller\BookController.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\bean\DatabaseBean.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\controller\ReaderController.java
@@ -16,7 +19,9 @@ E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\Rent
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\BooksView.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\CASTheLibraryApplication.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\bean\Book.java
+E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\bean\Rent.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\ui\view\CreateContent.java
+E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\controller\ExtraControllerInterface.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\model\ReaderDAO.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\ui\builder\SideMenuBuilder.java
 E:\THELIBRARy\vaadin\src\main\java\de\cas\vaadin\thelibrary\handler\AuthenticationHandler.java

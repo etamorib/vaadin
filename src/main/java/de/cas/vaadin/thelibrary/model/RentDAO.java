@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 
+import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
 
 public class RentDAO implements DaoInterface<Rent> {
@@ -18,6 +19,7 @@ public class RentDAO implements DaoInterface<Rent> {
 	private final String ADD = "INSERT INTO RENT (BOOKID, READERID, RENTDATE, RETURNDATE) VALUES(?,?,?,?)";
 	private final String DEL = "DELETE FROM RENT WHERE BOOKID =? AND READERID=?";
 	private final String LIST = "SELECT * FROM RENT";
+	private final String RENT_BY_BOOKID = "SELECT * FROM RENT WHERE BOOKID=?";
 	
 	public RentDAO() {
 		try {
@@ -91,6 +93,25 @@ public class RentDAO implements DaoInterface<Rent> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public Rent getRentByBookId(Integer id) {
+		Rent rent = null;
+		try(Connection conn = DriverManager.getConnection(CONN);
+				PreparedStatement pst = conn.prepareStatement(RENT_BY_BOOKID)
+					){
+				pst.setInt(1, id);
+				ResultSet rs = pst.executeQuery();
+				while(rs.next()) {
+					rent = new Rent(LocalDate.parse(rs.getString("rentdate")), LocalDate.parse(rs.getString("returndate")), 
+							rs.getInt("bookid"), rs.getInt("readerid"));
+				}
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		return rent;
+		
 	}
 	
 	

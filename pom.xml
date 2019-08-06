@@ -44,7 +44,7 @@
 	</dependencyManagement>
 
 	<dependencies>
-	
+
 		<dependency>
 		   <groupId>org.vaadin.addons</groupId>
 		   <artifactId>vaadin-grid-util</artifactId>

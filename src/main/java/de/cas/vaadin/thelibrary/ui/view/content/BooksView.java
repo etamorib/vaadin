@@ -154,6 +154,11 @@ public class BooksView implements CreateContent{
 			NativeSelect<Integer> selectYear = new NativeSelect<Integer>();
 			selectYear.setCaption("Year");
 			selectYear.setValue(b.getYear());
+			
+			//From borrowed state you cant change
+			if(b.getState()==BookState.Borrowed) {
+				state.setEnabled(false);
+			}
 			state.setItems(BookState.Available, BookState.Deleted);
 			ArrayList<Integer> years = new ArrayList<Integer>();
 			for(int i=1700; i<=Year.now().getValue(); i++) {
@@ -186,8 +191,7 @@ public class BooksView implements CreateContent{
 						editLayout.fancyRemoveComponent(editForm);
 					}
 				}else {
-					if(controller.update(new Book(title.getValue(), author.getValue(),
-										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue()))) {
+					if(controller.update(book)) {
 						Notification.show("Update successful");
 					}else {
 						Notification.show("Something went wrong");
@@ -276,7 +280,7 @@ public class BooksView implements CreateContent{
 		TextField author = new TextField("Author");
 		author.setIcon(VaadinIcons.PENCIL);
 		author.setRequiredIndicatorVisible(true);
-		form.addComponent(author);
+		
 		
 		//title
 		TextField title = new TextField("Title");
