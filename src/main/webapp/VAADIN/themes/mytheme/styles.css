@@ -15418,6 +15418,14 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: red;
 }
 
+.mytheme .select-book-button:hover {
+	background-image: none;
+	background-color: #464646;
+	content: "Add books!";
+	color: #fafafa;
+	border: none;
+}
+
 .mytheme .v-tabsheet-tabitemcell {
 	width: 100%;
 	border-left: 1px solid #dfdfdf;

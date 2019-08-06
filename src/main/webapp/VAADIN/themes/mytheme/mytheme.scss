@@ -50,4 +50,17 @@
     .gradient-background {
         background-color: red;
     }
+    
+    
+    .select-book-button:hover{
+    	background-image: none;
+    	background-color: #464646;
+    	content: "Add books!";
+    	color: #fafafa;
+    	border: none;
+    	
+    	
+    }
+
+    
 }

@@ -67,7 +67,7 @@ public class Book implements DatabaseBean{
 	
 	@Override
 	public String toString() {
-		return title +" "+ author +" "+Id +" "+ year+" "+ state;
+		return title +" by "+ author +" published in "+year +" | id: "+ Id+" "+ state;
 	}
 
 
