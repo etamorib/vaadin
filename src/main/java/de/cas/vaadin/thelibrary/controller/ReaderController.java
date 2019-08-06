@@ -6,7 +6,7 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.ReaderDAO;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 
-public class ReaderController implements ControllerInterface<Reader> {
+public class ReaderController implements ControllerInterface<Reader>, ExtraControllerInterface<Reader> {
 
 	private ReaderDAO dao = new ReaderDAO();
 	
@@ -28,6 +28,11 @@ public class ReaderController implements ControllerInterface<Reader> {
 	@Override
 	public ArrayList<Reader> getItems() {
 		return dao.getItems();
+	}
+
+	@Override
+	public Reader findById(Integer id) {
+		return dao.findById(id);
 	}
 
 }

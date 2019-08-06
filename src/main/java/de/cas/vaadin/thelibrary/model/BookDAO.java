@@ -12,13 +12,14 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 
-public class BookDAO implements DaoInterface<Book> {
+public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 	
 	private final String CONN = DaoInterface.connectionString() + Book.DBname;
 	private final String UPDATE = "UPDATE BOOK SET TITLE=?, AUTHOR=?, YEAR=?, STATE=? WHERE ID=?";
 	private final String ADD = "INSERT INTO BOOK(ID,TITLE, AUTHOR, YEAR, STATE) VALUES(?,?,?,?,?)";
 	private final String DEL = "UPDATE BOOK SET STATE = ? WHERE ID=?";
 	private final String LIST = "SELECT * FROM BOOK";
+	private final String FIND = "SELECT * FROM BOOK WHERE ID=?";
 
 	public BookDAO() {
 		try {
@@ -118,6 +119,26 @@ public class BookDAO implements DaoInterface<Book> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public Book findById(Integer id) {
+		Book b = null;
+		try(Connection conn = DriverManager.getConnection(CONN);
+			PreparedStatement pst = conn.prepareStatement(FIND)
+				){
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				b = new Book(rs.getString(2), rs.getString(3), rs.getInt(1), rs.getInt(4), BookState.valueOf(rs.getString(5)));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+		
 	}
 	
 

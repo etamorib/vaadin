@@ -6,7 +6,7 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.BookDAO;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 
-public class BookController implements ControllerInterface<Book>  {
+public class BookController implements ControllerInterface<Book>, ExtraControllerInterface<Book>  {
 	
 	private BookDAO bookDAO = new BookDAO();
 
@@ -28,6 +28,11 @@ public class BookController implements ControllerInterface<Book>  {
 	@Override
 	public ArrayList<Book> getItems() {
 		return bookDAO.getItems();
+	}
+
+	@Override
+	public Book findById(Integer id) {
+		return bookDAO.findById(id);
 	}
 
 }

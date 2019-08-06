@@ -11,13 +11,15 @@ import java.util.Set;
 
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 
-public class ReaderDAO implements DaoInterface<Reader> {
+public class ReaderDAO implements DaoInterface<Reader>, ExtraDaoInterface<Reader> {
+	
 	
 	private final String CONN = DaoInterface.connectionString() + Reader.DBname;
 	private final String UPDATE = "UPDATE READER SET NAME=?, ADDRESS=?, EMAIL=?, PHONE=? WHERE ID=?";
 	private final String ADD = "INSERT INTO READER(NAME, ADDRESS, EMAIL, PHONE) VALUES(?,?,?,?)";
 	private final String DEL = "DELETE FROM READER WHERE ID=?";
 	private final String LIST = "SELECT * FROM READER";
+	private final String FIND = "SELECT * FROM READER WHERE ID=?";
 
 	
 	public ReaderDAO() {
@@ -115,6 +117,27 @@ public class ReaderDAO implements DaoInterface<Reader> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	@Override
+	public Reader findById(Integer id) {
+		Reader r = null;
+		try(Connection conn = DriverManager.getConnection(CONN);
+			PreparedStatement pst = conn.prepareStatement(FIND)
+				){
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				r = new Reader(rs.getString("name"), rs.getString("address"), 
+									rs.getString("email"), rs.getInt("id"), rs.getLong("phone"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return r;
+		
 	}
 
 }

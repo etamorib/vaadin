@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
@@ -16,6 +17,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -23,20 +25,26 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.controller.BookController;
 import de.cas.vaadin.thelibrary.controller.ReaderController;
+import de.cas.vaadin.thelibrary.controller.RentController;
+import de.cas.vaadin.thelibrary.event.AppEventBus;
+import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
+import de.cas.vaadin.thelibrary.model.bean.Rent;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 @SuppressWarnings("serial")
 public class NewRental extends HorizontalLayout implements CreateContent {
+	
+	private RentController rentController = new RentController();
+	private BookController bookController = new BookController();
 	
 	private final int maxSelect = 5;
 	private final String name = "New Rentals";
 	private VerticalLayout mainLayout;
 	private TabSheet tab;
 	private VerticalLayout books, readers, deadline;
-	private BookController bookController = new BookController();
 	private ReaderController readerController = new ReaderController();
 	private ListDataProvider<Book> bookDataProvider ;
 	private ListDataProvider<Reader> readerDataProvider;
@@ -44,6 +52,10 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 	private Grid<Book> bookGrid;
 	private Grid<Reader> readerGrid;
 	private ListSelect<Book> list = null;
+	
+	public NewRental() {
+		AppEventBus.register(this);
+	}
 	
 	
 	@Override
@@ -138,14 +150,33 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		borrowedGrid.setSizeFull();
 		
 		if(availableList.size()>0) {
+			
 			Button rent = new Button("Borrow");
 			rent.setSizeFull();
 			rent.addClickListener(e->{
 				//TODO: adatbázisba
+				boolean error = false;
 				left.fancyRemoveComponent(availableGrid);
 				left.fancyRemoveComponent(rent);
 				for(Book b: availableList) {
-					bookGrid.deselect(b);
+					
+					if(!rentController.add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), selectedReader.getId()))) {
+						error = true;
+					}else {
+						b.setState(BookState.Borrowed);
+						bookController.update(b);
+						bookGrid.deselect(b);
+					}
+					
+				}
+				if(error) {
+					Notification.show("ERROR");
+				}else {
+					Notification.show("SUCCESS");
+				}
+				
+				if(left.getComponentCount()==2) {
+					AppEventBus.post(new ChangeViewEvent(new NewRental()));
 				}
 			});
 			left.addComponents(availableGrid, rent);
@@ -155,11 +186,16 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 			wl.setSizeFull();
 			wl.addClickListener(e->{
 				//TODO:
+				
+				if(left.getComponentCount()==2) {
+					AppEventBus.post(new ChangeViewEvent(new NewRental()));
+				}
 			});
 			left.addComponents(borrowedGrid, wl);
 		}
 		deadline.addComponents(left, selectedReader!=null? new VerticalLayout(currentReaderForm(selectedReader)):
 								new Label("No user"));
+		
 		
 		return deadline;
 	}
@@ -244,8 +280,9 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		search.setValueChangeMode(ValueChangeMode.EAGER);
 		search.addValueChangeListener(e->{
 			//Filter for both title and author
-			bookDataProvider.setFilter(book -> book.getAuthor().toLowerCase().contains(e.getValue().toLowerCase())||
-					book.getTitle().toLowerCase().contains(e.getValue().toLowerCase()));
+			bookDataProvider.setFilter(book -> (book.getAuthor().toLowerCase().contains(e.getValue().toLowerCase())||
+					book.getTitle().toLowerCase().contains(e.getValue().toLowerCase())) &&
+					book.getState()!=BookState.Deleted);
 					
 		});
 		

@@ -154,7 +154,7 @@ public class BooksView implements CreateContent{
 			NativeSelect<Integer> selectYear = new NativeSelect<Integer>();
 			selectYear.setCaption("Year");
 			selectYear.setValue(b.getYear());
-			state.setItems(BookState.Available, BookState.Borrowed, BookState.Deleted);
+			state.setItems(BookState.Available, BookState.Deleted);
 			ArrayList<Integer> years = new ArrayList<Integer>();
 			for(int i=1700; i<=Year.now().getValue(); i++) {
 				years.add(i);
