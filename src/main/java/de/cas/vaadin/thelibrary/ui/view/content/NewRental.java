@@ -19,7 +19,6 @@ import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.controller.BookController;
@@ -145,6 +144,9 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 				//TODO: adatbázisba
 				left.fancyRemoveComponent(availableGrid);
 				left.fancyRemoveComponent(rent);
+				for(Book b: availableList) {
+					bookGrid.deselect(b);
+				}
 			});
 			left.addComponents(availableGrid, rent);
 		}
@@ -289,6 +291,7 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		readerGrid.setStyleName("grid-overall single-select");
 		readerGrid.setDataProvider(readerDataProvider);
 		readerGrid.setSizeFull();
+		
 
 		//continue if reader is selected
 		readerGrid.addSelectionListener(e->{

@@ -97,7 +97,8 @@ public class BooksView implements CreateContent{
 					    "Book(s) have been deleted!",
 					    Notification.Type.WARNING_MESSAGE, true)
 					    .show(Page.getCurrent());
-				grid.setItems(controller.getItems());
+				dataProvider = new ListDataProvider<>(controller.getItems());
+				grid.setDataProvider(dataProvider);
 				grid.deselectAll();
 			}
 		});
