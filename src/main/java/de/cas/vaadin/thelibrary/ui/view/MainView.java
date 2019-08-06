@@ -6,6 +6,7 @@ import com.vaadin.ui.HorizontalLayout;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
+import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
 
 
 
@@ -22,11 +23,14 @@ public class MainView extends HorizontalLayout {
 
 	private SideMenuBuilder menu = new SideMenuBuilder();
 	private Content c;
-	
+	private BooksView startView = new BooksView();
 	public MainView() {
 		setSizeFull();
 		AppEventBus.register(this);
 		addComponent(menu.getSideMenu());
+		
+		//Just for the start
+		menu.getSideMenu().setContent(startView.buildContent());
 	}
 	
 	

@@ -1,7 +1,8 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+
+import org.vaadin.alump.fancylayouts.FancyCssLayout;
 
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
@@ -18,6 +19,7 @@ import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.controller.BookController;
@@ -94,10 +96,72 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 	
 	/*BUILDING BOOKS TAB*/
 	
+	private Component currentReaderForm(Reader reader) {
+		VerticalLayout layout = new VerticalLayout();
+		layout.setCaption("Renter");
+		Label name, address, email, tel, id;
+		name = new Label(reader.getName());
+		address = new Label(reader.getAddress());
+		email = new Label(reader.getEmail());
+		tel = new Label(reader.getPhoneNumber().toString());
+		id = new Label(reader.getId().toString());
+		layout.addComponents(name, address, email, tel, id);
+		return layout;
+	}
+	
 	private Component deadlineLayout() {
-		VerticalLayout deadline = new VerticalLayout();
+		HorizontalLayout deadline = new HorizontalLayout();
+		FancyCssLayout left = new FancyCssLayout();
+		left.setSizeFull();
+		deadline.setSizeFull();
+		Grid<Book> availableGrid = new Grid<>(Book.class);
+		Grid<Book> borrowedGrid = new Grid<>(Book.class);
+
+		ArrayList<Book> availableList = new ArrayList<Book>();
+		ArrayList<Book> borrowedList = new ArrayList<Book>();
+		for(Book b: bookGrid.getSelectedItems()) {
+			if(b.getState() ==BookState.Available) {
+				availableList.add(b);
+			}
+			if(b.getState() == BookState.Borrowed) {
+				borrowedList.add(b);
+			}
+		}
+		
+		//Grid for available books
+		availableGrid.setItems(availableList);
+		availableGrid.setCaption("Currently available books for renting");
+		availableGrid.setSizeFull();
+		
+		//Grid for borrowed books
+		borrowedGrid.setItems(borrowedList);
+		borrowedGrid.setCaption("Currently borrowed books - to waitlist");
+		borrowedGrid.setSizeFull();
+		
+		if(availableList.size()>0) {
+			Button rent = new Button("Borrow");
+			rent.setSizeFull();
+			rent.addClickListener(e->{
+				//TODO: adatbázisba
+				left.fancyRemoveComponent(availableGrid);
+				left.fancyRemoveComponent(rent);
+			});
+			left.addComponents(availableGrid, rent);
+		}
+		if(borrowedList.size()>0) {
+			Button wl = new Button("Add to waitlist");
+			wl.setSizeFull();
+			wl.addClickListener(e->{
+				//TODO:
+			});
+			left.addComponents(borrowedGrid, wl);
+		}
+		deadline.addComponents(left, selectedReader!=null? new VerticalLayout(currentReaderForm(selectedReader)):
+								new Label("No user"));
+		
 		return deadline;
 	}
+	
 
 	private Component booksLayout() {
 		//Returned main layout
@@ -161,6 +225,7 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 				});
 			}else {
 				tab.getTab(readers).setEnabled(false);
+				add.setEnabled(false);
 			}
 		});
 		
@@ -214,6 +279,8 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		//Add reader button
 		Button add = new Button("Select reader");
 		add.setSizeFull();
+		add.setStyleName("select-book-button");
+		add.setEnabled(false);
 		
 		//Reader grid
 		readerGrid = new Grid<>(Reader.class);
@@ -226,14 +293,21 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		//continue if reader is selected
 		readerGrid.addSelectionListener(e->{
 			if(readerGrid.getSelectedItems().size()>0) {
+				
+				selectedReader = readerGrid.getSelectedItems().iterator().next();
+				add.setEnabled(true);
 				add.addClickListener(event->{
 					tab.getTab(deadline).setEnabled(true);
 					tab.setSelectedTab(deadline);
 				});
 			}else {
+				//TODO: selectedReadert nullra állitani
+				//vagy ez ...
 				tab.getTab(deadline).setEnabled(false);
+				add.setEnabled(false);
 			}
 		});
+
 		
 		//Searchfield
 		TextField search  = new TextField();
@@ -252,15 +326,11 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		});
 		
 		//TODO: maybe shortcut to register user here?
-		
-		
-		
+			
 		readers.addComponents(title,search ,readerGrid, add);
 		return readers;
 		
 	}
-	
-
 	
 	@Override
 	public String getName() {
@@ -272,6 +342,4 @@ public class NewRental extends HorizontalLayout implements CreateContent {
 		return VaadinIcons.PLUS;
 	}
 	
-	
-
 }
