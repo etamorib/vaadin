@@ -49,9 +49,11 @@ public class NewRental implements CreateContent {
 	private VerticalLayout mainLayout;
 	private TabSheet tab;
 	private VerticalLayout books, readers, deadline;
+	private FancyCssLayout left ;
 	private ReaderController readerController = new ReaderController();
 	private ListDataProvider<Book> bookDataProvider ;
 	private ListDataProvider<Reader> readerDataProvider;
+	private ListDataProvider<Book> borrowedBookProvider;
 	private Reader selectedReader = null;
 	private Grid<Book> bookGrid;
 	private Grid<Reader> readerGrid;
@@ -126,11 +128,15 @@ public class NewRental implements CreateContent {
 	
 	private Component deadlineLayout() {
 		HorizontalLayout deadline = new HorizontalLayout();
-		FancyCssLayout left = new FancyCssLayout();
+		left = new FancyCssLayout();
 		left.setSizeFull();
 		deadline.setSizeFull();
 		Grid<Book> availableGrid = new Grid<>(Book.class);
 		Grid<Book> borrowedGrid = new Grid<>(Book.class);
+		
+		//Labels for grid titles:
+		Label ava = new Label("Currently available books - rent");
+		Label borr = new Label("Currently borrowed books - to waitlist");
 
 		ArrayList<Book> availableList = new ArrayList<Book>();
 		ArrayList<Book> borrowedList = new ArrayList<Book>();
@@ -145,12 +151,11 @@ public class NewRental implements CreateContent {
 		
 		//Grid for available books
 		availableGrid.setItems(availableList);
-		availableGrid.setCaption("Currently available books for renting");
 		availableGrid.setSizeFull();
 		
 		//Grid for borrowed books
-		borrowedGrid.setItems(borrowedList);
-		borrowedGrid.setCaption("Currently borrowed books - to waitlist");
+		borrowedBookProvider = new ListDataProvider<>(borrowedList);
+		borrowedGrid.setDataProvider(borrowedBookProvider);
 		borrowedGrid.setSizeFull();
 		
 		if(availableList.size()>0) {
@@ -160,6 +165,7 @@ public class NewRental implements CreateContent {
 			rent.addClickListener(e->{
 				//TODO: adatbázisba
 				boolean error = false;
+				left.fancyRemoveComponent(ava);
 				left.fancyRemoveComponent(availableGrid);
 				left.fancyRemoveComponent(rent);
 				for(Book b: availableList) {
@@ -183,17 +189,17 @@ public class NewRental implements CreateContent {
 					AppEventBus.post(new ChangeViewEvent(new NewRental()));
 				}
 			});
-			left.addComponents(availableGrid, rent);
+			left.addComponents(ava, availableGrid, rent);
 		}
 		if(borrowedList.size()>0) {
 			Button wl = new Button("Add to waitlist");
 			wl.setSizeFull();
 			wl.addClickListener(e->{
 				//TODO:
-				waitlistWindow(borrowedList);
+				waitlistWindow(borrowedList, borr, borrowedGrid, wl);
 				
 			});
-			left.addComponents(borrowedGrid, wl);
+			left.addComponents(borr, borrowedGrid, wl);
 		}
 		deadline.addComponents(left, selectedReader!=null? new VerticalLayout(currentReaderForm(selectedReader)):
 								new Label("No user"));
@@ -202,7 +208,7 @@ public class NewRental implements CreateContent {
 		return deadline;
 	}
 	
-	private void waitlistWindow(ArrayList<Book> borrowedBooks) {
+	private void waitlistWindow(ArrayList<Book> borrowedBooks, Label borr, Grid<Book> borrowedGrid, Button wl) {
 		Window window = new Window();
 		window.setCaption("Set date");
 		
@@ -237,10 +243,19 @@ public class NewRental implements CreateContent {
 				//TODO: save date, book and add to database
 				//TODO: make waitlist database 
 				layout.removeComponent(form);
+				borrowedBooks.remove(b);
+				borrowedBookProvider = new ListDataProvider<>(borrowedBooks);
+				borrowedGrid.setDataProvider(borrowedBookProvider);
 				if(layout.getComponentCount()==0) {
+					left.fancyRemoveComponent(borr);
+					left.fancyRemoveComponent(borrowedGrid);
+					left.fancyRemoveComponent(wl);
 					window.close();
 					Notification.show("Books have been added to waitlist");
-					AppEventBus.post(new ChangeViewEvent(new NewRental()));
+					
+					if(left.getComponentCount()==3) {
+						AppEventBus.post(new ChangeViewEvent(new NewRental()));
+					}
 				}
 				
 			});
