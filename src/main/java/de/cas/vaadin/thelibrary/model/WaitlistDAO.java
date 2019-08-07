@@ -10,17 +10,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
 
-import de.cas.vaadin.thelibrary.model.bean.Rent;
+import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 
-public class RentDAO implements DaoInterface<Rent> {
+public class WaitlistDAO implements DaoInterface<Waitlist> {
 	
-	private final String CONN = DaoInterface.connectionString() + Rent.DBname;
-	private final String ADD = "INSERT INTO RENT (BOOKID, READERID, RENTDATE, RETURNDATE) VALUES(?,?,?,?)";
-	private final String DEL = "DELETE FROM RENT WHERE BOOKID =? AND READERID=?";
-	private final String LIST = "SELECT * FROM RENT";
-	private final String RENT_BY_BOOKID = "SELECT * FROM RENT WHERE BOOKID=?";
+	private final String CONN = DaoInterface.connectionString() + Waitlist.DBname;
+	private final String ADD = "INSERT INTO WAITLIST (BOOKID, READERID, REQUESTDATE, WAITDATE) VALUES(?,?,?,?)";
+	private final String DEL = "DELETE FROM WAITLIST WHERE BOOKID =? AND READERID =?";
+	private final String LIST = "SELECT * FROM WAITLIST";
 	
-	public RentDAO() {
+	public WaitlistDAO() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 		}catch(ClassNotFoundException e) {
@@ -29,14 +28,14 @@ public class RentDAO implements DaoInterface<Rent> {
 	}
 	
 	@Override
-	public boolean add(Rent bean) {
+	public boolean add(Waitlist bean) {
 		try(Connection conn = DriverManager.getConnection(CONN);
 				PreparedStatement pst = conn.prepareStatement(ADD)	
 					){
 				pst.setInt(1, bean.getBookId());
 				pst.setInt(2, bean.getReaderId());
-				pst.setString(3, bean.getRentTime().toString());
-				pst.setString(4, bean.getReturnTime().toString());
+				pst.setString(3, bean.getRequestDate().toString());
+				pst.setString(4, bean.getWaitDate().toString());
 				
 				
 				int affected = pst.executeUpdate();
@@ -53,11 +52,11 @@ public class RentDAO implements DaoInterface<Rent> {
 	}
 
 	@Override
-	public boolean delete(Set<Rent> rents) {
+	public boolean delete(Set<Waitlist> waitlists) {
 		try(Connection conn = DriverManager.getConnection(CONN);
 				PreparedStatement pst = conn.prepareStatement(DEL)
 				){
-				for(Rent bean : rents) {
+				for(Waitlist bean : waitlists) {
 					pst.setInt(1, bean.getBookId());
 					pst.setInt(2, bean.getReaderId());
 			
@@ -75,16 +74,16 @@ public class RentDAO implements DaoInterface<Rent> {
 	}
 
 	@Override
-	public ArrayList<Rent> getItems() {
-		ArrayList<Rent> result = new ArrayList<>();
+	public ArrayList<Waitlist> getItems() {
+		ArrayList<Waitlist> result = new ArrayList<>();
 		try(Connection conn = DriverManager.getConnection(CONN);
 			Statement st = conn.createStatement()
 				){
 			ResultSet rs = st.executeQuery(LIST);
 			while(rs.next()) {
-				Rent r = new Rent(LocalDate.parse(rs.getString("rentdate")), LocalDate.parse(rs.getString("returndate")), 
-						rs.getInt("bookid"), rs.getInt("readerid"));
-				result.add(r);
+				Waitlist w = new Waitlist(rs.getInt("bookid"), rs.getInt("readerid"), 
+						LocalDate.parse(rs.getString("requestdate")), LocalDate.parse(rs.getString("waitdate")));
+				result.add(w);
 			}
 			return result;
 		} catch (SQLException e) {
@@ -93,28 +92,5 @@ public class RentDAO implements DaoInterface<Rent> {
 			return null;
 		}
 	}
-	
-	public Rent getRentByBookId(Integer id) {
-		Rent rent = null;
-		try(Connection conn = DriverManager.getConnection(CONN);
-				PreparedStatement pst = conn.prepareStatement(RENT_BY_BOOKID)
-					){
-				pst.setInt(1, id);
-				ResultSet rs = pst.executeQuery();
-				while(rs.next()) {
-					rent = new Rent(LocalDate.parse(rs.getString("rentdate")), LocalDate.parse(rs.getString("returndate")), 
-							rs.getInt("bookid"), rs.getInt("readerid"));
-				}
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		return rent;
-		
-	}
-	
-	
-
-	
 
 }

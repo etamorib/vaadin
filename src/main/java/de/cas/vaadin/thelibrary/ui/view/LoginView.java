@@ -33,6 +33,7 @@ public class LoginView extends VerticalLayout {
 	 	setSizeFull();
         setMargin(false);
         setSpacing(false);
+        setStyleName("login-background");
 
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
@@ -76,13 +77,17 @@ public class LoginView extends VerticalLayout {
 		HorizontalLayout fields = new HorizontalLayout();
 	    fields.addStyleName("fields");
 	
-	    final TextField username = new TextField("Username");
+	    final TextField username = new TextField();
+	    //username.setStyleName("text-color-white");
 	    username.setIcon(VaadinIcons.USER);
 	    username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+	    username.setPlaceholder("Username");
 	
-	    final PasswordField password = new PasswordField("Password");
+	    final PasswordField password = new PasswordField();
+	    //password.setStyleName("text-color-white");
 	    password.setIcon(VaadinIcons.LOCK);
 	    password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+	    password.setPlaceholder("Password");
 	
 	    final Button signin = new Button("Sign In");
 	    signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -116,14 +121,15 @@ public class LoginView extends VerticalLayout {
 	    
 	    Label welcome = new Label("Welcome");
 	    welcome.setSizeUndefined();
-	    welcome.addStyleName(ValoTheme.LABEL_H4);
+	    welcome.addStyleName(ValoTheme.LABEL_H3);
 	    welcome.addStyleName(ValoTheme.LABEL_COLORED);
 	    labels.addComponent(welcome);
 	    
 	    Label title = new Label("Vaadin Library App");
 	    title.setSizeUndefined();
-	    title.addStyleName(ValoTheme.LABEL_H3);
+	    title.addStyleName(ValoTheme.LABEL_H2);
 	    title.addStyleName(ValoTheme.LABEL_LIGHT);
+	    title.addStyleName("text-color-white");
 	    labels.addComponent(title);
 	
 	

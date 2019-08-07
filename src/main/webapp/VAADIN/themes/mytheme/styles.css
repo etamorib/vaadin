@@ -15414,16 +15414,32 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 50px 30px 30px 30px;
 }
 
-.mytheme .gradient-background {
-	background-color: red;
-}
-
 .mytheme .select-book-button:hover {
 	background-image: none;
 	background-color: #464646;
 	content: "Add books!";
 	color: #fafafa;
 	border: none;
+}
+
+.mytheme .login-background {
+	background-image: url("../../images/login-background.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+.mytheme .v-caption-text-color-white {
+	color: white;
+}
+
+.mytheme .text-color-white {
+	color: white;
+}
+
+.mytheme .gradient-background {
+	background-image: none;
+	background-image: linear, to bottom right, #fafafa, #464646;
 }
 
 .mytheme .v-tabsheet-tabitemcell {

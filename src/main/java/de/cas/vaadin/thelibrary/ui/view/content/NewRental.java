@@ -30,19 +30,21 @@ import com.vaadin.ui.themes.ValoTheme;
 import de.cas.vaadin.thelibrary.controller.BookController;
 import de.cas.vaadin.thelibrary.controller.ReaderController;
 import de.cas.vaadin.thelibrary.controller.RentController;
+import de.cas.vaadin.thelibrary.controller.WaitlistController;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
+import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
-@SuppressWarnings("serial")
 public class NewRental implements CreateContent {
 	
 	private RentController rentController = new RentController();
 	private BookController bookController = new BookController();
+	private WaitlistController waitlistController = new WaitlistController();
 	
 	private final int maxSelect = 5;
 	private final String name = "New Rentals";
@@ -185,7 +187,7 @@ public class NewRental implements CreateContent {
 					Notification.show("SUCCESS");
 				}
 				
-				if(left.getComponentCount()==2) {
+				if(left.getComponentCount()==3) {
 					AppEventBus.post(new ChangeViewEvent(new NewRental()));
 				}
 			});
@@ -242,6 +244,12 @@ public class NewRental implements CreateContent {
 			add.addClickListener(e->{
 				//TODO: save date, book and add to database
 				//TODO: make waitlist database 
+				if(!waitlistController.add(new Waitlist(b.getId(), 
+						selectedReader.getId(), LocalDate.now(), dateField.getValue()))) {
+					Notification.show("Something went wrong!");
+				}else {
+					Notification.show("Request added to waitlist");
+				}
 				layout.removeComponent(form);
 				borrowedBooks.remove(b);
 				borrowedBookProvider = new ListDataProvider<>(borrowedBooks);

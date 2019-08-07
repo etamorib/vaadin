@@ -30,8 +30,8 @@ import de.cas.vaadin.thelibrary.controller.ReaderController;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
-@SuppressWarnings("serial")
-public class Readers extends HorizontalLayout implements CreateContent {
+
+public class Readers implements CreateContent {
 	
 	private final String name = "Readers";
 	private HorizontalLayout mainLayout;
