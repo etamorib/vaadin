@@ -10,17 +10,23 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.Slider.ValueOutOfBoundsException;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.cas.vaadin.thelibrary.controller.BookController;
 import de.cas.vaadin.thelibrary.controller.RentController;
+import de.cas.vaadin.thelibrary.controller.WaitlistController;
+import de.cas.vaadin.thelibrary.event.AppEvent.NotificationEvent;
+import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
+import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 
@@ -28,6 +34,7 @@ public class Rentals implements CreateContent {
 
 	private RentController controller = new RentController();
 	private BookController bookController = new BookController();
+	private WaitlistController waitlistController = new WaitlistController();
 	
 	private final String name = "Rents";
 	private Grid<Rent> grid = new Grid<>(Rent.class);
@@ -37,7 +44,7 @@ public class Rentals implements CreateContent {
 	
 	@Override
 	public Component buildContent() {
-
+		AppEventBus.register(this);
 		layout = new VerticalLayout();
 		Label title = new Label("Current rents");
 		title.setStyleName(ValoTheme.LABEL_H1);
@@ -65,12 +72,20 @@ public class Rentals implements CreateContent {
 		del.setIcon(VaadinIcons.TRASH);
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
-			controller.delete(grid.getSelectedItems());
+			
 			for(Rent r : grid.getSelectedItems()) {
 				Book b = bookController.findById(r.getBookId());
 				b.setState(BookState.Available);
 				bookController.update(b);
+				
+				for(Waitlist w : waitlistController.getItems()) {
+					if(w.getBookId().intValue()==b.getId().intValue()) {
+						Notification.show("You have new notification", Type.TRAY_NOTIFICATION);
+						AppEventBus.post(new NotificationEvent(b.getTitle() +" by "+b.getAuthor() +" is now available for waitlisters"));
+					}
+				}
 			}
+			controller.delete(grid.getSelectedItems());
 			dataProvider = new ListDataProvider<>(controller.getItems());
 			grid.setDataProvider(dataProvider);
 
@@ -78,16 +93,20 @@ public class Rentals implements CreateContent {
 		
 		NumberField search  = new NumberField();
 		search.setDecimalAllowed(false);
-		search.setIcon(VaadinIcons.SEARCH);
+		search.setNegativeAllowed(false);
+		search.setGroupingUsed(false);
+		search.setIcon(VaadinIcons.SEARCH);	
 	    search.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-		search.setPlaceholder("Reader id or Book id");
 		search.setValueChangeMode(ValueChangeMode.EAGER);
 		search.addValueChangeListener(e->{
-			//Filter for both title and author
-			dataProvider.setFilter(rent->rent.getBookId()==Integer.parseInt(e.getValue())||
-										rent.getReaderId()==Integer.parseInt(e.getValue()));
-			
+			//To prevent NumberFormatException
+			if(!e.getValue().equals("")) {
+				dataProvider.setFilter(rent->rent.getBookId()==Integer.parseInt(e.getValue())||
+											rent.getReaderId()==Integer.parseInt(e.getValue()));
+			}else {
+				dataProvider.clearFilters();
+			}
 			
 		});
 			

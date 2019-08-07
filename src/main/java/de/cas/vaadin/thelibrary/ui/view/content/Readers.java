@@ -1,6 +1,7 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
+import org.vaadin.ui.NumberField;
 
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -261,7 +262,9 @@ public class Readers implements CreateContent {
 		email.setRequiredIndicatorVisible(true);
 		//Year
 		//TODO: Select kéne
-		TextField phone = new TextField("Phone number");
+		NumberField phone = new NumberField("Phone number");
+		phone.setNegativeAllowed(false);
+		phone.setGroupingUsed(false);
 		phone.setIcon(VaadinIcons.PHONE);
 		phone.setRequiredIndicatorVisible(true);
 		

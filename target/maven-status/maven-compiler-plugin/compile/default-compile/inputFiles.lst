@@ -11,6 +11,7 @@ C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thel
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\ReaderDAO.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\NewRental.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\CreateContent.java
+C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\bean\Waitlist.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\bean\Admin.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\Content.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\event\AppEvent.java
@@ -18,6 +19,7 @@ C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thel
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\BookDAO.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\handler\AuthenticationHandler.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\DaoInterface.java
+C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\controller\WaitlistController.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\builder\SideMenuBuilder.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\WaitList.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\LoginView.java
@@ -25,6 +27,7 @@ C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thel
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\BooksView.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\bean\Book.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\bean\Rent.java
+C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\WaitlistDAO.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\Readers.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\controller\ExtraControllerInterface.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\bean\BookState.java

@@ -11,6 +11,7 @@ import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
@@ -115,16 +116,22 @@ public class NewRental implements CreateContent {
 	
 	/*BUILDING BOOKS TAB*/
 	
-	private Component currentReaderForm(Reader reader) {
+	private ComponentContainer currentReaderForm(Reader reader, boolean available) {
 		VerticalLayout layout = new VerticalLayout();
 		layout.setCaption("Renter");
-		Label name, address, email, tel, id;
-		name = new Label(reader.getName());
-		address = new Label(reader.getAddress());
-		email = new Label(reader.getEmail());
-		tel = new Label(reader.getPhoneNumber().toString());
-		id = new Label(reader.getId().toString());
+		Label name, address, email, tel, id, deadline;
+		name = new Label("Name: "+reader.getName());
+		address = new Label("Address: "+reader.getAddress());
+		email = new Label("Email: "+reader.getEmail());
+		tel = new Label("Phone number: "+reader.getPhoneNumber().toString());
+		id = new Label("ID: "+reader.getId().toString());
+		deadline = new Label("Books can be rented until: "+ LocalDate.now().plusMonths(2).toString());
+		
+		deadline.setStyleName(ValoTheme.LABEL_BOLD);
 		layout.addComponents(name, address, email, tel, id);
+		if(available) {
+			layout.addComponent(deadline);
+		}
 		return layout;
 	}
 	
@@ -197,14 +204,12 @@ public class NewRental implements CreateContent {
 			Button wl = new Button("Add to waitlist");
 			wl.setSizeFull();
 			wl.addClickListener(e->{
-				//TODO:
 				waitlistWindow(borrowedList, borr, borrowedGrid, wl);
-				
 			});
 			left.addComponents(borr, borrowedGrid, wl);
 		}
-		deadline.addComponents(left, selectedReader!=null? new VerticalLayout(currentReaderForm(selectedReader)):
-								new Label("No user"));
+		deadline.addComponents(left, selectedReader!=null?availableList.size()>0? new VerticalLayout(currentReaderForm(selectedReader, true)):
+								new VerticalLayout(currentReaderForm(selectedReader, false)):new Label("no user"));
 		
 		
 		return deadline;
@@ -223,21 +228,24 @@ public class NewRental implements CreateContent {
 			TextField author = new TextField("Author");
 			author.setIcon(VaadinIcons.PENCIL);
 			author.setValue(b.getAuthor());
+			author.setEnabled(false);
 					
 			//title
 			TextField title = new TextField("Title");
 			title.setIcon(VaadinIcons.TEXT_LABEL);
 			title.setValue(b.getTitle());
+			title.setEnabled(false);
 
-			//Year
-			//TODO: Select kéne
+			
 			TextField year = new TextField("Year");
 			year.setIcon(VaadinIcons.CALENDAR);
 			year.setValue(b.getYear().toString());
+			year.setEnabled(false);
 			
 			TextField rentedUntil = new TextField("Rented until");
 			year.setIcon(VaadinIcons.CALENDAR_USER);
 			rentedUntil.setValue(rentController.getRentByBookId(b.getId()).getReturnTime().toString());
+			rentedUntil.setEnabled(false);
 			DateField dateField = new DateField();
 			dateField.setValue(rentController.getRentByBookId(b.getId()).getReturnTime());
 			Button add = new Button("Set date");

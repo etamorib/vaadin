@@ -5,11 +5,20 @@ import java.util.ArrayList;
 
 import org.vaadin.teemusa.sidemenu.SideMenu;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
+import de.cas.vaadin.thelibrary.event.AppEvent.NotificationEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
@@ -24,6 +33,8 @@ public class SideMenuBuilder extends CustomComponent {
 	
 	private ArrayList<CreateContent> menuItems ;
 	private final String title = "CAS Library";
+	private Window notificationWindow;
+	private HorizontalLayout notificationLayout = new HorizontalLayout();
 	
 
 	private SideMenu menu = new SideMenu();
@@ -53,6 +64,36 @@ public class SideMenuBuilder extends CustomComponent {
 		menu.addUserMenuItem("Sign out", VaadinIcons.SIGN_OUT,()->{
 			AppEventBus.post(new LogoutRequestEvent());
 		});
+		menu.addUserMenuItem("Notifications", ()->{
+			openNotifications();
+		});
+	}
+	
+	@Subscribe
+	public void addNotification(final NotificationEvent e) {
+		
+		Label msg = new Label(e.getNotificationMessage());
+		Button remove = new Button();
+		remove.setIcon(VaadinIcons.CLOSE);
+		remove.addClickListener(event->{
+			notificationLayout.removeComponent(msg);
+			notificationLayout.removeComponent(remove);
+		});
+		notificationLayout.addComponents(msg, remove);
+	}
+	
+	private void openNotifications() {
+		notificationWindow = new Window();
+		notificationWindow.setModal(true);
+		if(notificationLayout.getComponentCount()==0) {
+			Notification.show("You have no notifications");
+		}else {
+			notificationWindow.setContent(notificationLayout);
+			UI.getCurrent().addWindow(notificationWindow);
+		}
+		
+		
+
 	}
 	
 	private void addItemsToMenu(ArrayList<CreateContent> contents) {

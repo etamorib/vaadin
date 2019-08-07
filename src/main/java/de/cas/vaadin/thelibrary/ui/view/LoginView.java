@@ -46,7 +46,7 @@ public class LoginView extends VerticalLayout {
                 		+ " <strong>Password: admin<br></strong> "
                 		+ "</span> <span><b>Sign In</b> button to continue.</span>");
         notification.setHtmlContentAllowed(true);
-        notification.setStyleName("tray dark small closable login-help");
+        notification.setStyleName("closable");
         notification.setPosition(Position.BOTTOM_CENTER);
         notification.setDelayMsec(-1);
         notification.show(Page.getCurrent());

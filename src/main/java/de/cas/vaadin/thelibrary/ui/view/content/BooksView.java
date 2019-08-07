@@ -6,6 +6,7 @@ import java.time.Year;
 import java.util.ArrayList;
 
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
+import org.vaadin.ui.NumberField;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.ListDataProvider;
@@ -288,15 +289,17 @@ public class BooksView implements CreateContent{
 		title.setRequiredIndicatorVisible(true);
 		
 		//ID
-		//TODO: NumberField jobb lenne
-		TextField id = new TextField("Id");
+		NumberField id = new NumberField("Id");
 		id.setIcon(VaadinIcons.EXCLAMATION);
 		id.setRequiredIndicatorVisible(true);
+		id.setNegativeAllowed(false);
+		id.setGroupingUsed(false);
 		//Year
-		//TODO: Select kéne
-		TextField year = new TextField("Year");
+		NumberField year = new NumberField("Year");
 		year.setIcon(VaadinIcons.CALENDAR);
 		year.setRequiredIndicatorVisible(true);
+		year.setNegativeAllowed(false);
+		year.setGroupingUsed(false);
 		
 		Button add = new Button("Add");
 		add.setStyleName(ValoTheme.BUTTON_FRIENDLY);

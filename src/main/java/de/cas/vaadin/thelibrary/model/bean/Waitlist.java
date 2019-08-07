@@ -56,6 +56,11 @@ public class Waitlist implements DatabaseBean {
 		return DBname;
 	}
 	
+	@Override
+	public String toString() {
+		return "BOOKID: " + bookId;
+	}
+	
 	
 	
 	

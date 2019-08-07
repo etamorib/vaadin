@@ -45,6 +45,20 @@ public abstract class AppEvent {
 		
 	}
 	
+	public static final class NotificationEvent{
+		private String notificationMessage;
+		public NotificationEvent(String notificationMessage) {
+			this.notificationMessage = notificationMessage;
+		}
+		public String getNotificationMessage() {
+			return notificationMessage;
+		}
+		public void setNotificationMessage(String notificationMessage) {
+			this.notificationMessage = notificationMessage;
+		}
+		
+	}
+	
 	
 
 }
