@@ -26,7 +26,12 @@ public class WaitlistDAO implements DaoInterface<Waitlist> {
 			e.printStackTrace();
 		}
 	}
-	
+	/** 
+	 * Adds a new waitlist the the Waitlist database.
+	 * @return true if adding was successful <br>
+	 * false it adding was unsuccessful
+	 * @param Waitlist object
+	 */
 	@Override
 	public boolean add(Waitlist bean) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -50,7 +55,12 @@ public class WaitlistDAO implements DaoInterface<Waitlist> {
 				return false;
 			}
 	}
-
+	/**
+	 * Deletes one or more row from the waitlist database.
+	 * @return true if deleting was successful <br>
+	 * false if deleting was unsuccessful
+	 * @param A set of Waitlist objects
+	 */
 	@Override
 	public boolean delete(Set<Waitlist> waitlists) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -72,7 +82,10 @@ public class WaitlistDAO implements DaoInterface<Waitlist> {
 			return false;
 		}
 	}
-
+	/**
+	 * Return every data from the Waitlist database
+	 * @return ArrayList of Waitlist objects
+	 */
 	@Override
 	public ArrayList<Waitlist> getItems() {
 		ArrayList<Waitlist> result = new ArrayList<>();

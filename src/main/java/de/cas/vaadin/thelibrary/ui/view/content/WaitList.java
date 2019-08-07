@@ -22,6 +22,10 @@ import de.cas.vaadin.thelibrary.model.bean.Rent;
 import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
+/**This class is the view of the waitlist
+ * @author mate.biro
+ *
+ */
 public class WaitList implements CreateContent {
 	
 	private final String name = "Waitlists";

@@ -6,6 +6,11 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.ReaderDAO;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 
+/**
+ * @author mate.biro
+ * Controller class for Reader database actions
+ *
+ */
 public class ReaderController implements ControllerInterface<Reader>, ExtraControllerInterface<Reader> {
 
 	private ReaderDAO dao = new ReaderDAO();

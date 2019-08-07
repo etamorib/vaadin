@@ -30,6 +30,10 @@ import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 
+/**This class is the view of the rentals
+ * @author mate.biro
+ *
+ */
 public class Rentals implements CreateContent {
 
 	private RentController controller = new RentController();
@@ -73,6 +77,9 @@ public class Rentals implements CreateContent {
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
 			
+			
+			//If a book is deleted, which is on the waitlist, it automatically goes to rent
+			//else it is just deleted
 			for(Rent r : grid.getSelectedItems()) {
 				Book b = bookController.findById(r.getBookId());
 				b.setState(BookState.Available);
@@ -90,7 +97,7 @@ public class Rentals implements CreateContent {
 			grid.setDataProvider(dataProvider);
 
 		});
-		
+		//Search for id
 		NumberField search  = new NumberField();
 		search.setDecimalAllowed(false);
 		search.setNegativeAllowed(false);

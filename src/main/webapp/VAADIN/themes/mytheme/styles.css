@@ -15552,6 +15552,10 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid black;
 }
 
+.mytheme .v-select-select option {
+	color: white;
+}
+
 .mytheme .v-tabsheet-tabitemcell {
 	width: 100%;
 	border-left: 1px solid #dfdfdf;

@@ -1,7 +1,11 @@
 package de.cas.vaadin.thelibrary.model.bean;
 
 import java.time.LocalDate;
-
+/**
+ * @author mate.biro
+ * Bean class for Waitlist object(s)
+ *
+ */
 public class Waitlist implements DatabaseBean {
 
 	private Integer bookId, readerId;

@@ -27,7 +27,11 @@ import de.cas.vaadin.thelibrary.ui.view.content.Readers;
 import de.cas.vaadin.thelibrary.ui.view.content.Rentals;
 import de.cas.vaadin.thelibrary.ui.view.content.WaitList;;
 
-
+/**
+ * @author mate.biro
+ * This class builds the sidemenu.
+ *
+ */
 @SuppressWarnings("serial")
 public class SideMenuBuilder extends CustomComponent {
 	
@@ -51,12 +55,13 @@ public class SideMenuBuilder extends CustomComponent {
 		
 	}
 	
+	//This method is for adding styles to the sidemenu
 	private void styleMenu() {
 		menu.setMenuCaption(title);
 	}
 	
-	//TODO: if there was more admin
-	//i could have a name + personal icon
+	//This method sets the UserMenuItem
+	//TODO: if there was more admin, it could be set correspondingly 
 	private void setAdmin() {
 		menu.setUserName("Admin");
 		menu.setUserIcon(VaadinIcons.USER_CHECK);
@@ -69,6 +74,10 @@ public class SideMenuBuilder extends CustomComponent {
 		});
 	}
 	
+	/*This method waits for NotificationEvent
+	*If a notification event occurs, it sets the
+	*message of the event to a label, and adds to a layout
+	 */
 	@Subscribe
 	public void addNotification(final NotificationEvent e) {
 		
@@ -82,6 +91,10 @@ public class SideMenuBuilder extends CustomComponent {
 		notificationLayout.addComponents(msg, remove);
 	}
 	
+	/*This makes a pop-up window. The window contains nothing, if there
+	 * is no notification.
+	 * If there was a notification, it contains the message of that.
+	 * */
 	private void openNotifications() {
 		notificationWindow = new Window();
 		notificationWindow.setModal(true);
@@ -95,7 +108,10 @@ public class SideMenuBuilder extends CustomComponent {
 		
 
 	}
-	
+	/*Sets the menu items, and sets the action of the items.
+	 * If a menu item is clicked it posts a ChangeViewEvent,
+	 * which will change the "view"
+	 */
 	private void addItemsToMenu(ArrayList<CreateContent> contents) {
 		for(CreateContent c : contents) {
 			menu.addMenuItem(c.getName(), c.menuIcon(),()->{
@@ -105,17 +121,26 @@ public class SideMenuBuilder extends CustomComponent {
 		}
 		
 	}
-	
+	/*Basically fills the menuItem array with contents
+	 * in the parameter
+	*/
 	private void fillArray(CreateContent ...contents) {
 		for(CreateContent c : contents) {
 			menuItems.add(c);
 		}
 	}
-	
+	/**
+	 * Adds a new menu item to the sidebar
+	 * @param A CreateContent object
+	 */
 	public void addNewItem(CreateContent c) {
 		menuItems.add(c);
 	}
-	
+	/**
+	 * Adds a new menu item to the sidebar
+	 * @param A CreateContent object
+	 * @param index where it will be put
+	 */
 	public void addNewItemWithPosition(CreateContent c, int index) {
 		menuItems.add(index, c);
 	}

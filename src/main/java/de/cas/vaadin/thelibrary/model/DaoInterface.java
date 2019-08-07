@@ -5,6 +5,11 @@ import java.util.Set;
 
 import de.cas.vaadin.thelibrary.model.bean.DatabaseBean;
 
+/**
+ * @author mate.biro
+ * Generic interface for basic dao methods
+ *
+ */
 public interface DaoInterface<T extends DatabaseBean> {
 	boolean add(T bean);
 	boolean delete(Set<T> bean);

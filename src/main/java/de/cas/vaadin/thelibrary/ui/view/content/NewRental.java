@@ -41,6 +41,11 @@ import de.cas.vaadin.thelibrary.model.bean.Rent;
 import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
+/**This is the view of new rentals.
+ * It consists of 3 stages: Book selection, reader selection and borrowing / adding to waitlist
+ * @author mate.biro
+ *
+ */
 public class NewRental implements CreateContent {
 	
 	private RentController rentController = new RentController();
@@ -72,11 +77,13 @@ public class NewRental implements CreateContent {
 		Label title = new Label("Add new rentals");
 		title.setStyleName(ValoTheme.LABEL_H1);
 		
+		//The main layout
 		mainLayout = new VerticalLayout(title);
+		
+		//Tab for different stages
 		tab = new TabSheet();
 		tab.setSizeFull();
 		tab.setResponsive(true);
-		
 		
 		//Book tab
 		books = new VerticalLayout();
@@ -105,7 +112,10 @@ public class NewRental implements CreateContent {
 		mainLayout.addComponents(tab);
 		return mainLayout;
 	}
-	
+	/*Tabs are built in the beginning
+	//This method gives a little dynamic to them, so they refresh
+	every time we change tab
+	*/
 	private void updateLayouts() {
 		readers.removeAllComponents();
 		readers.addComponent(readersLayout());
@@ -115,11 +125,12 @@ public class NewRental implements CreateContent {
 		
 	}
 	
-	/*BUILDING BOOKS TAB*/
-	
+	//Build a form for the reader who wants to rent
 	private ComponentContainer currentReaderForm(Reader reader, boolean available) {
 		VerticalLayout layout = new VerticalLayout();
 		layout.setCaption("Renter");
+		
+		//All the neccessary labels
 		Label name, address, email, tel, id, deadline;
 		name = new Label("Name: "+reader.getName());
 		address = new Label("Address: "+reader.getAddress());
@@ -130,12 +141,16 @@ public class NewRental implements CreateContent {
 		
 		deadline.setStyleName(ValoTheme.LABEL_BOLD);
 		layout.addComponents(name, address, email, tel, id);
+		
+		//Available tells if there were any available books selected
+		//If so, a deadline date is also shown
 		if(available) {
 			layout.addComponent(deadline);
 		}
 		return layout;
 	}
 	
+	//DEADLINE TAB
 	private Component deadlineLayout() {
 		HorizontalLayout deadline = new HorizontalLayout();
 		left = new FancyCssLayout();
@@ -150,6 +165,7 @@ public class NewRental implements CreateContent {
 		Label ava = new Label("Currently available books - rent");
 		Label borr = new Label("Currently borrowed books - to waitlist");
 
+		//Containers for available books and borrowed books
 		ArrayList<Book> availableList = new ArrayList<Book>();
 		ArrayList<Book> borrowedList = new ArrayList<Book>();
 		for(Book b: bookGrid.getSelectedItems()) {
@@ -175,16 +191,18 @@ public class NewRental implements CreateContent {
 			Button rent = new Button("Borrow");
 			rent.setSizeFull();
 			rent.addClickListener(e->{
-				//TODO: adatbázisba
+				//Adds rent to database and removes components from layout
 				boolean error = false;
 				left.fancyRemoveComponent(ava);
 				left.fancyRemoveComponent(availableGrid);
 				left.fancyRemoveComponent(rent);
 				for(Book b: availableList) {
-					
+					//Checks if there is error while adding to rent database
 					if(!rentController.add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), selectedReader.getId()))) {
 						error = true;
-					}else {
+					}
+					//If there was no error it updates the database (sets book to borrowed)
+					else {
 						b.setState(BookState.Borrowed);
 						bookController.update(b);
 						bookGrid.deselect(b);
@@ -193,31 +211,36 @@ public class NewRental implements CreateContent {
 				}
 				if(error) {
 					Notification.show("ERROR");
-				}else {
+				}
+				else {
 					Notification.show("SUCCESS");
 				}
-				
+				//If no more components left, it sends back to the beginning of the view
 				if(left.getComponentCount()==3) {
 					AppEventBus.post(new ChangeViewEvent(new NewRental()));
 				}
 			});
 			left.addComponents(ava, availableGrid, rent);
 		}
+		//If there was any borrowed books selected
 		if(borrowedList.size()>0) {
 			Button wl = new Button("Add to waitlist");
 			wl.setSizeFull();
 			wl.addClickListener(e->{
+				//Creates a popup window
 				waitlistWindow(borrowedList, borr, borrowedGrid, wl);
 			});
 			left.addComponents(borr, borrowedGrid, wl);
 		}
+		//Calls the current reader form and with the right boolean parameter
+		//to show deadline date
 		deadline.addComponents(left, selectedReader!=null?availableList.size()>0? new VerticalLayout(currentReaderForm(selectedReader, true)):
 								new VerticalLayout(currentReaderForm(selectedReader, false)):new Label("no user"));
 		
 		
 		return deadline;
 	}
-	
+	//Popup window to set date
 	private void waitlistWindow(ArrayList<Book> borrowedBooks, Label borr, Grid<Book> borrowedGrid, Button wl) {
 		Window window = new Window();
 		window.setCaption("Set date");
@@ -226,6 +249,7 @@ public class NewRental implements CreateContent {
 		HorizontalLayout layout = new HorizontalLayout();
 		
 		for(Book b: borrowedBooks) {
+			//Form for the book's data
 			FormLayout form = new FormLayout();
 			//Author
 			TextField author = new TextField("Author");
@@ -247,20 +271,26 @@ public class NewRental implements CreateContent {
 			
 			TextField rentedUntil = new TextField("Rented until");
 			year.setIcon(VaadinIcons.CALENDAR_USER);
+			//Sets the time when the book will be returned
 			rentedUntil.setValue(rentController.getRentByBookId(b.getId()).getReturnTime().toString());
 			rentedUntil.setEnabled(false);
 			DateField dateField = new DateField();
+			//DateFields starts from the return date
 			dateField.setValue(rentController.getRentByBookId(b.getId()).getReturnTime());
 			Button add = new Button("Set date");
 			add.addClickListener(e->{
-				//TODO: save date, book and add to database
-				//TODO: make waitlist database 
+				//If adding to waitlist database is not successful
 				if(!waitlistController.add(new Waitlist(b.getId(), 
 						selectedReader.getId(), LocalDate.now(), dateField.getValue()))) {
 					Notification.show("Something went wrong!");
-				}else {
+				}
+				//If it was successful
+				else {
 					Notification.show("Request added to waitlist");
 				}
+				
+				//Logic of removing components based on their number
+				//and refreshing the view
 				layout.removeComponent(form);
 				borrowedBooks.remove(b);
 				borrowedBookProvider = new ListDataProvider<>(borrowedBooks);
@@ -288,14 +318,12 @@ public class NewRental implements CreateContent {
 		window.center();
 		window.setDraggable(false);
 		window.setModal(true);
-		
-			
+		//Show the window		
 		UI.getCurrent().addWindow(window);
-
-		
+	
 	}
 	
-
+	//TAB OF BOOK SELECTION
 	private Component booksLayout() {
 		//Returned main layout
 		VerticalLayout books = new VerticalLayout();
@@ -325,6 +353,7 @@ public class NewRental implements CreateContent {
 		bookDataProvider.setFilter(book->book.getState() == BookState.Available || book.getState()==BookState.Borrowed);
 		NativeSelect<BookState> state = new NativeSelect<>();
 		state.setItems(BookState.Available, BookState.Borrowed);
+		//Filter for state
 		state.addSelectionListener(e->{
 			if(e.getValue()!=null) {
 				bookDataProvider.setFilter(book -> book.getState() ==e.getValue());
@@ -340,24 +369,27 @@ public class NewRental implements CreateContent {
 			int currentlySelected = bookGrid.getSelectedItems().size();
 			
 			updateCounter(counter, currentlySelected);
+			//If there are more than 5 selections, it deselects the first, then second ...
 			if(currentlySelected> maxSelect) {
 				bookGrid.deselect(bookGrid.getSelectedItems().iterator().next());
 			}
 			if(currentlySelected > 0) {
-				//Adding selected items to the ListSelect
+				//Adding selected items to the ListSelect to show on next tab
 				list = new ListSelect<>();
 				list.addStyleName("white-text");
 				list.setItems(bookGrid.getSelectedItems());
 				list.setSizeFull();
 	
-				//Handling further actions
+				//Go to next tab
 				add.setEnabled(true);
 				add.addClickListener(event->{
 					tab.getTab(readers).setEnabled(true);
 					tab.setSelectedTab(readers);
 
 				});
-			}else {
+			}
+			//If books are deselected further tabs are disabled
+			else {
 				tab.getTab(readers).setEnabled(false);
 				add.setEnabled(false);
 			}
@@ -386,6 +418,7 @@ public class NewRental implements CreateContent {
 		return books;
 	}
 	
+	//Updates the counter for selected books
 	private void updateCounter(Label l, int i) {
 		l.setCaption(i+" items are selected, "+ (maxSelect-i)+" remaining.");
 		
@@ -435,9 +468,9 @@ public class NewRental implements CreateContent {
 					tab.getTab(deadline).setEnabled(true);
 					tab.setSelectedTab(deadline);
 				});
-			}else {
-				//TODO: selectedReadert nullra állitani
-				//vagy ez ...
+			}
+			else {
+				
 				tab.getTab(deadline).setEnabled(false);
 				add.setEnabled(false);
 			}
@@ -452,7 +485,7 @@ public class NewRental implements CreateContent {
 		search.setPlaceholder("Find a reader...");
 		search.setValueChangeMode(ValueChangeMode.EAGER);
 		search.addValueChangeListener(e->{
-			//Filter for both title and author
+			//Filter for both title or author or email or phone
 			readerDataProvider.setFilter(reader-> reader.getName().toLowerCase().contains(e.getValue().toLowerCase())||
 									reader.getAddress().toLowerCase().contains(e.getValue().toLowerCase())||
 									reader.getEmail().toLowerCase().contains(e.getValue().toLowerCase())||

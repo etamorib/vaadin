@@ -6,6 +6,11 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.RentDAO;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
 
+/**
+ * @author mate.biro
+ * Controller class for Rent database actions
+ *
+ */
 public class RentController implements ControllerInterface<Rent> {
 	private RentDAO dao = new RentDAO();
 

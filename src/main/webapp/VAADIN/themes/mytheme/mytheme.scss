@@ -137,17 +137,16 @@
         border-radius: 0px;
         border: none;
         background: none;
-  
     }
 
-    .white-text{
-        color:white;
+    .white-text {
+        color: white;
     }
 
     .v-grid-cell v-select select {
-        background:white;
-        color:black;
-    } 
+        background: white;
+        color: black;
+    }
 
     .v-grid-row > td {
         color: white;
@@ -187,8 +186,12 @@
     }
 
     .dropdown-select {
-        color:black !important;
+        color: black !important;
         background: white;
         border: 1px solid black;
+    }
+
+    .v-select-select option {
+        color: white;
     }
 }

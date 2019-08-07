@@ -2,8 +2,13 @@ package de.cas.vaadin.thelibrary.event;
 
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
+/**
+ * @author mate.biro
+ * Class for actions that uses EventBus actions
+ *
+ */
 public abstract class AppEvent {
-	
+	/*Handles a login request and sets the username-password pair*/
 	public static final class LoginRequestEvent{
 		private String username, password;
 		public LoginRequestEvent(String username, String password) {
@@ -26,7 +31,8 @@ public abstract class AppEvent {
 		}
 		
 	}
-	
+	/*Handles events to change the view of the app. It needs a 
+	 * CreateContent object as contructor parameter*/
 	public static final class ChangeViewEvent{
 		private CreateContent container;
 		public ChangeViewEvent(CreateContent container) {
@@ -40,11 +46,12 @@ public abstract class AppEvent {
 		}
 		
 	}
-	
+	/*Handles logout requests. There is nothing needed to be done*/
 	public static final class LogoutRequestEvent{
 		
 	}
-	
+	/*Handles the event when notification is sent to the admin.
+	 * Right now, it only can happen when deleting rents*/
 	public static final class NotificationEvent{
 		private String notificationMessage;
 		public NotificationEvent(String notificationMessage) {

@@ -27,7 +27,12 @@ public class RentDAO implements DaoInterface<Rent> {
 			e.printStackTrace();
 		}
 	}
-	
+	/** 
+	 * Adds a new rent the the Rent database.
+	 * @return true if adding was successful <br>
+	 * false it adding was unsuccessful
+	 * @param Rent object
+	 */
 	@Override
 	public boolean add(Rent bean) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -51,7 +56,12 @@ public class RentDAO implements DaoInterface<Rent> {
 				return false;
 			}
 	}
-
+	/**
+	 * Deletes one or more row from the rent database.
+	 * @return true if deleting was successful <br>
+	 * false if deleting was unsuccessful
+	 * @param A set of Rent objects
+	 */
 	@Override
 	public boolean delete(Set<Rent> rents) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -73,7 +83,10 @@ public class RentDAO implements DaoInterface<Rent> {
 			return false;
 		}
 	}
-
+	/**
+	 * Return every data from the Rent database
+	 * @return ArrayList of Rent objects
+	 */
 	@Override
 	public ArrayList<Rent> getItems() {
 		ArrayList<Rent> result = new ArrayList<>();

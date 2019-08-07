@@ -32,6 +32,12 @@ import de.cas.vaadin.thelibrary.model.bean.Reader;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 
+/**
+ * This class is similar to BooksView
+ * Adding , deleting, updating users is possible
+ * @author mate.biro
+ *
+ */
 public class Readers implements CreateContent {
 	
 	private final String name = "Readers";
@@ -100,6 +106,7 @@ public class Readers implements CreateContent {
 		return grid;
 	}
 	
+	//Building the layout for right side editing
 	private void buildEditLayout(final FancyCssLayout editLayout, Reader b) {
 		
 			final FormLayout editForm = new FormLayout();
@@ -113,7 +120,9 @@ public class Readers implements CreateContent {
 				if(editLayout.getComponentCount()>1) {
 					editLayout.fancyRemoveComponent(editForm);
 							
-				}else {	
+				}
+				//If there are no more components, remove everything and reset the view
+				else {	
 					grid.setEnabled(true);
 					editLayout.removeAllComponents();
 					mainLayout.removeComponent(editLayout);
@@ -122,7 +131,6 @@ public class Readers implements CreateContent {
 				}
 				
 			});
-			
 			
 			
 			//Form
@@ -134,34 +142,42 @@ public class Readers implements CreateContent {
 			TextField address = new TextField("Address");
 			address.setValue(b.getAddress());
 			
-			//TODO: NumberField
+			
 			TextField email = new TextField("Email");
 			email.setValue(b.getEmail());
-			TextField phone = new TextField("Phone number");
+			NumberField phone = new NumberField("Phone number");
 			phone.setValue(String.valueOf(b.getPhoneNumber()));
 
 			
 			//Save button
 			save.addClickListener(e->{
+				//New reader object based on the values of the fields
 				Reader reader = new Reader(name.getValue(), address.getValue(), email.getValue(), 
 											Integer.parseInt(id.getValue()), Long.parseLong(phone.getValue()));
+				
 				if(editLayout.getComponentCount()>1) {
 					if(controller.update(reader)) {
 						Notification.show("Update successful");
+						//Reset the grid
 						dataProvider = new ListDataProvider<>(controller.getItems());
 						grid.setDataProvider(dataProvider);
 						editLayout.fancyRemoveComponent(editForm);
 						
-					}else {
+					}
+					//If update was unsuccessful
+					else {
 						Notification.show("Something went wrong!");
 						editLayout.fancyRemoveComponent(editForm);
 					}
-				}else {
+				}
+				else {
 					if(controller.update(reader)) {
 						Notification.show("Update successful");
-					}else {
+					}
+					else {
 						Notification.show("Something went wrong");
 					}
+					//Reset everything to normal
 					grid.setEnabled(true);
 					editLayout.removeAllComponents();
 					mainLayout.removeComponent(editLayout);
@@ -178,7 +194,7 @@ public class Readers implements CreateContent {
 			editLayout.addComponent(editForm);
 		
 	}
-
+	//Build the delete, edit and add button with the search field
 	private Component buildButtons() {
 		HorizontalLayout buttons = new HorizontalLayout();
 		//Add Button
@@ -236,32 +252,30 @@ public class Readers implements CreateContent {
 	}
 
 	
-	
+	//The popup window for adding new Reader
 	private void addingWindow() {
 		Window window = new Window();
 		window.setCaption("Add new reader");
-		//VerticalLayout layout = new VerticalLayout();
-		//layout.addComponents(new Label("Title:"),new TextField(), new Button("Add"));
+
 		FormLayout form = new FormLayout();
 		
-		//author
+		//name
 		TextField name = new TextField("Name");
 		name.setIcon(VaadinIcons.PENCIL);
 		name.setRequiredIndicatorVisible(true);
 		form.addComponent(name);
 		
-		//title
+		//address
 		TextField address = new TextField("Address");
 		address.setIcon(VaadinIcons.HOME);
 		address.setRequiredIndicatorVisible(true);
 		
-		//ID
-		//TODO: NumberField jobb lenne
+		//email
 		TextField email = new TextField("Email");
 		email.setIcon(VaadinIcons.AT);
 		email.setRequiredIndicatorVisible(true);
-		//Year
-		//TODO: Select kéne
+		
+		//phone
 		NumberField phone = new NumberField("Phone number");
 		phone.setNegativeAllowed(false);
 		phone.setGroupingUsed(false);
@@ -273,10 +287,12 @@ public class Readers implements CreateContent {
 		add.setClickShortcut(KeyCode.ENTER);
 		add.setIcon(VaadinIcons.PLUS);
 		add.addClickListener(e->{
+			//Adding new reader to database
 			Reader reader = new Reader(name.getValue(), address.getValue(), email.getValue(), Long.parseLong(phone.getValue()));
 			if(controller.add(reader)) {
 				window.close();
 				Notification.show("Book has been added to database");
+				//Refresh grid
 				dataProvider = new ListDataProvider<>(controller.getItems());
 				grid.setDataProvider(dataProvider);
 				

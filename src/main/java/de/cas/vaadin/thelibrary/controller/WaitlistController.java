@@ -6,6 +6,11 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.WaitlistDAO;
 import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 
+/**
+ * @author mate.biro
+ * Controller class for Waitlist database actions
+ *
+ */
 public class WaitlistController implements ControllerInterface<Waitlist> {
 	
 	private final WaitlistDAO dao = new WaitlistDAO();

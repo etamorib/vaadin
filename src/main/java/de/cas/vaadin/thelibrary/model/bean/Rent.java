@@ -1,7 +1,11 @@
 package de.cas.vaadin.thelibrary.model.bean;
 
 import java.time.LocalDate;
-
+/**
+ * @author mate.biro
+ * Bean class for Rent object(s)
+ *
+ */
 public class Rent implements DatabaseBean {
 	
 	private LocalDate rentTime, returnTime;

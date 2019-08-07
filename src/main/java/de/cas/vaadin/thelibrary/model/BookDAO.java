@@ -12,6 +12,13 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 
+/**
+ * @author mate.biro
+ * This class is responsible to make connection with the database
+ * and handle data manipulation in the Book database.
+ *
+ */
+
 public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 	
 	private final String CONN = DaoInterface.connectionString() + Book.DBname;
@@ -29,6 +36,13 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 		}
 	}
 	
+	/**
+	 * Updates a row in the Book database
+	 * @return true is update was succesful <br>
+	 * false if update was unsuccessful
+	 * @param Book object
+	 * 
+	 */
 	@Override
 	public boolean update(Book bean) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -52,7 +66,13 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 			return false;
 		}
 	}
-
+	
+	/** 
+	 * Adds a new book the the Book database.
+	 * @return true if adding was successful <br>
+	 * false it adding was unsuccessful
+	 * @param Book object
+	 */
 	@Override
 	public boolean add(Book bean) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -78,6 +98,12 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 			}
 	}
 
+	/**
+	 * Deletes one or more row from the Book database.
+	 * @return true if deleting was successful <br>
+	 * false if deleting was unsuccessful
+	 * @param A set of Book objects
+	 */
 	@Override
 	public boolean delete(Set<Book> books) {
 		try(Connection conn = DriverManager.getConnection(CONN);
@@ -101,7 +127,10 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 			return false;
 		}
 	}
-
+	/**
+	 * Return every data from the Book database
+	 * @return ArrayList of Book objects
+	 */
 	@Override
 	public ArrayList<Book> getItems() {
 		ArrayList<Book> result = new ArrayList<>();
@@ -120,7 +149,11 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 			return null;
 		}
 	}
-
+	/**
+	 * Finds a book data of the given id
+	 * @return The Book object with the given id
+	 * @param The id of the book
+	 */
 	@Override
 	public Book findById(Integer id) {
 		Book b = null;

@@ -6,6 +6,11 @@ import java.util.Set;
 import de.cas.vaadin.thelibrary.model.BookDAO;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 
+/**
+ * @author mate.biro
+ * Controller class for Book database actions
+ *
+ */
 public class BookController implements ControllerInterface<Book>, ExtraControllerInterface<Book>  {
 	
 	private BookDAO bookDAO = new BookDAO();
