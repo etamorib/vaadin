@@ -54,6 +54,7 @@ public class BooksView implements CreateContent{
 	@Override
 	public Component buildContent() {
 		mainLayout = new HorizontalLayout();
+		mainLayout.removeStyleName("no-background");
 		mainLayout.setSizeFull();
 		left = new VerticalLayout();
 		Label title = new Label("Books in the database");
@@ -71,6 +72,7 @@ public class BooksView implements CreateContent{
 		grid.setStyleName("grid-overall");
 		grid.setDataProvider(dataProvider);
 		NativeSelect<BookState> state = new NativeSelect<>();
+		state.setStyleName("dropdown-select");
 		state.setItems(BookState.Available, BookState.Borrowed, BookState.Deleted);
 		state.addSelectionListener(e->{
 			if(e.getValue()!=null) {
@@ -276,7 +278,7 @@ public class BooksView implements CreateContent{
 		//VerticalLayout layout = new VerticalLayout();
 		//layout.addComponents(new Label("Title:"),new TextField(), new Button("Add"));
 		FormLayout form = new FormLayout();
-		
+		form.setStyleName("black-text");
 		//author
 		TextField author = new TextField("Author");
 		author.setIcon(VaadinIcons.PENCIL);
@@ -290,19 +292,21 @@ public class BooksView implements CreateContent{
 		
 		//ID
 		NumberField id = new NumberField("Id");
+		id.setStyleName("dropdown-select");
 		id.setIcon(VaadinIcons.EXCLAMATION);
 		id.setRequiredIndicatorVisible(true);
 		id.setNegativeAllowed(false);
 		id.setGroupingUsed(false);
 		//Year
 		NumberField year = new NumberField("Year");
+		year.addStyleName("dropdown-select");
 		year.setIcon(VaadinIcons.CALENDAR);
 		year.setRequiredIndicatorVisible(true);
 		year.setNegativeAllowed(false);
 		year.setGroupingUsed(false);
 		
 		Button add = new Button("Add");
-		add.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		add.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		add.setClickShortcut(KeyCode.ENTER);
 		add.setIcon(VaadinIcons.PLUS);
 		add.addClickListener(e->{

@@ -83,6 +83,7 @@ public class NewRental implements CreateContent {
 		books.addComponent(booksLayout());
 		tab.addTab(books).setIcon(VaadinIcons.BOOK);
 		
+		
 		//Reader tab
 		readers = new VerticalLayout();
 		readers.addComponent(readersLayout());
@@ -142,6 +143,8 @@ public class NewRental implements CreateContent {
 		deadline.setSizeFull();
 		Grid<Book> availableGrid = new Grid<>(Book.class);
 		Grid<Book> borrowedGrid = new Grid<>(Book.class);
+		availableGrid.setStyleName("grid-overall");
+		borrowedGrid.setStyleName("grid-overall");
 		
 		//Labels for grid titles:
 		Label ava = new Label("Currently available books - rent");
@@ -343,6 +346,7 @@ public class NewRental implements CreateContent {
 			if(currentlySelected > 0) {
 				//Adding selected items to the ListSelect
 				list = new ListSelect<>();
+				list.addStyleName("white-text");
 				list.setItems(bookGrid.getSelectedItems());
 				list.setSizeFull();
 	
@@ -392,7 +396,6 @@ public class NewRental implements CreateContent {
 	private Component readersLayout() {
 		//Returned main layout
 		VerticalLayout readers = new VerticalLayout();
-		System.out.println(bookGrid.getSelectedItems());
 		
 		//Check is list is null
 		//It should never be null, but safety first :)

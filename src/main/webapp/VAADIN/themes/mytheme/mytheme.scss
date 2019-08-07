@@ -41,40 +41,154 @@
 
     .grid-overall {
         border: none;
+        background-color: rgba(0,0,0,0);
     }
 
     .add-window {
         padding: 50px 30px 30px 30px;
+        background-color: rgba(30,30,30,0.95);
     }
 
-    
-    .select-book-button:hover{
-    	background-image: none;
-    	background-color: #464646;
-    	content: "Add books!";
-    	color: #fafafa;
-    	border: none; 	   	
+
+    .select-book-button:hover {
+        background-image: none;
+        background-color: #464646;
+        content: "Add books!";
+        color: #fafafa;
+        border: none;
     }
-    
+
     .login-background {
-    	background-image : url("../../images/login-background.png");
-    	background-position: center;
-    	background-repeat: no-repeat;
-    	background-attachment: fixed;
-    }
-    
-    .v-caption-text-color-white {
-    	color : white;
-    }
-    
-    .text-color-white {
-    	color: white;
-    }
-    
-    .gradient-background {
-    	background-image:none;
-    	 background-image: linear-gradient(to bottom right, #fafafa,  #464646);
+        background-image: url("../../images/login-background.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
 
-    
+    .v-caption-text-color-white {
+        color: white;
+    }
+
+    .text-color-white {
+        color: white;
+    }
+
+    .gradient-background {
+        background-image: none;
+        background-image: linear-gradient(to bottom right, #fafafa, #464646);
+    }
+
+    &.v-app {
+        background-image: url("../../images/login-background.png");
+    }
+
+    .v-layout.v-horizontal.v-widget valo-menu-title {
+        background-color: #197de1;
+        background-image: -webkit-linear-gradient(top, #1b87e3 2%, #166ed5 98%);
+        background-image: linear-gradient(to bottom,#1b87e3 2%, #166ed5 98%);
+    }
+
+    .v-spacing {
+        width: auto;
+    }
+
+    .v-label-h1 {
+        color: ghostwhite;
+    }
+
+
+    .v-label-undef-w {
+        color: white;
+    }
+
+    .v-captiontext {
+        color: white;
+    }
+
+
+
+    .valo-menu {
+        background-image: none;
+        background-color: rgba(0,0,0,0.65);
+        color: white;
+    }
+
+    .v-Notification.closable {
+        background-color: rgba(0,0,0,0.25);
+        color: white;
+    }
+
+    .v-grid-header .v-grid-cell {
+        background-image: none;
+        background-color: rgba(20,20,20,0.6);
+        color: white;
+    }
+
+    input[type="checkbox"] {
+        width: 13px;
+        height: 13px;
+        border-radius: none;
+        background-image: none;
+        background-color: white;
+        color: #197de1;
+    }
+
+    .v-select select {
+        border-radius: 0px;
+        border: none;
+        background: none;
+  
+    }
+
+    .white-text{
+        color:white;
+    }
+
+    .v-grid-cell v-select select {
+        background:white;
+        color:black;
+    } 
+
+    .v-grid-row > td {
+        color: white;
+        background-image: none;
+        background-color: rgba(200,200,200,0.5);
+    }
+
+    .v-formlayout-captioncell .v-caption {
+        color: white;
+    }
+
+    .no-background {
+        background-image: none;
+    }
+
+    .black-text {
+        color: black;
+    }
+
+    .v-window-maximizebox-disabled + .v-window-closebox {
+        background: red;
+    }
+
+    .v-app input[type="text"] {
+        border-radius: 0px;
+    }
+
+
+
+    .v-tabsheet-tabitemcell .v-caption.v-caption {
+        color: white;
+        font-size: 45px;
+    }
+
+    .v-button {
+        border-radius: none;
+    }
+
+    .dropdown-select {
+        color:black !important;
+        background: white;
+        border: 1px solid black;
+    }
 }
