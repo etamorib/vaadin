@@ -266,6 +266,7 @@ public class BooksView implements CreateContent{
 		//Add Button
 		add = new Button();
 		add.setIcon(VaadinIcons.PLUS);
+		add.setStyleName("header-button");
 		add.setDescription("Add new book to database");
 		add.addClickListener(e->{
 			addingWindow();
@@ -274,6 +275,7 @@ public class BooksView implements CreateContent{
 		//Del button
 		del = new Button();
 		del.setIcon(VaadinIcons.TRASH);
+		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
 			if(grid.getSelectedItems().size()>0) {
@@ -291,6 +293,7 @@ public class BooksView implements CreateContent{
 		//Edit button
 		edit = new Button();
 		edit.setIcon(VaadinIcons.PENCIL);
+		edit.setStyleName("header-button");
 		edit.setDescription("Edit selected items");
 		edit.addClickListener(e->{
 			if(grid.getSelectedItems().size()>0) {

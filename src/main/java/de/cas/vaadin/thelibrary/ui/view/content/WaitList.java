@@ -43,7 +43,9 @@ public class WaitList implements CreateContent {
 		Label title = new Label("Waitlist");
 		title.setStyleName(ValoTheme.LABEL_H1);
 		
-		Button rent = new Button("Delete");
+		Button rent = new Button();
+		rent.setIcon(VaadinIcons.TRASH);
+		rent.setStyleName("header-button");
 		rent.addClickListener(e->{
 			if(grid.getSelectedItems().size()>0) {
 				Book b = bookController.findById(grid.getSelectedItems().iterator().next().getBookId());

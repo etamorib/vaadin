@@ -200,6 +200,7 @@ public class Readers implements CreateContent {
 		//Add Button
 		add = new Button();
 		add.setIcon(VaadinIcons.PLUS);
+		add.setStyleName("header-button");
 		add.setDescription("Add new reader to database");
 		add.addClickListener(e->{
 			addingWindow();
@@ -208,6 +209,7 @@ public class Readers implements CreateContent {
 		//Del button
 		del = new Button();
 		del.setIcon(VaadinIcons.TRASH);
+		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
 			controller.delete(grid.getSelectedItems());
@@ -219,6 +221,7 @@ public class Readers implements CreateContent {
 		//Edit button
 		edit = new Button();
 		edit.setIcon(VaadinIcons.PENCIL);
+		edit.setStyleName("header-button");
 		edit.setDescription("Edit selected items");
 		edit.addClickListener(e->{
 			if(grid.getSelectedItems().size()>0) {
@@ -283,7 +286,7 @@ public class Readers implements CreateContent {
 		phone.setRequiredIndicatorVisible(true);
 		
 		Button add = new Button("Add");
-		add.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		add.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		add.setClickShortcut(KeyCode.ENTER);
 		add.setIcon(VaadinIcons.PLUS);
 		add.addClickListener(e->{

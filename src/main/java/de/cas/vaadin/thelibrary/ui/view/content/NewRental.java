@@ -189,6 +189,7 @@ public class NewRental implements CreateContent {
 		if(availableList.size()>0) {
 			
 			Button rent = new Button("Borrow");
+			rent.addStyleName("header-button");
 			rent.setSizeFull();
 			rent.addClickListener(e->{
 				//Adds rent to database and removes components from layout
@@ -225,6 +226,7 @@ public class NewRental implements CreateContent {
 		//If there was any borrowed books selected
 		if(borrowedList.size()>0) {
 			Button wl = new Button("Add to waitlist");
+			wl.setStyleName("header-button");
 			wl.setSizeFull();
 			wl.addClickListener(e->{
 				//Creates a popup window
@@ -336,7 +338,7 @@ public class NewRental implements CreateContent {
 		
 		//Button for adding
 		Button add = new Button("Select books");
-		add.setStyleName("select-book-button");
+		add.setStyleName("header-button");
 		add.setSizeFull();
 		add.setEnabled(false);
 		
@@ -446,7 +448,7 @@ public class NewRental implements CreateContent {
 		//Add reader button
 		Button add = new Button("Select reader");
 		add.setSizeFull();
-		add.setStyleName("select-book-button");
+		add.setStyleName("header-button");
 		add.setEnabled(false);
 		
 		//Reader grid

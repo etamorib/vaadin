@@ -10,11 +10,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.Slider.ValueOutOfBoundsException;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -74,6 +71,7 @@ public class Rentals implements CreateContent {
 		//Del button
 		Button del = new Button();
 		del.setIcon(VaadinIcons.TRASH);
+		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
 			

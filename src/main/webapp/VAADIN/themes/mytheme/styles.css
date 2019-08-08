@@ -15560,6 +15560,19 @@ div.v-layout.v-horizontal.v-widget {
 	color: white !important;
 }
 
+.mytheme .header-button {
+	background: none;
+	color: white;
+}
+
+.mytheme .header-button:hover {
+	background: grey;
+}
+
+.mytheme .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part {
+	background-color: rgba(0, 0, 0, 0.65);
+}
+
 .mytheme .v-tabsheet-tabitemcell {
 	width: 100%;
 	border-left: 1px solid #dfdfdf;
