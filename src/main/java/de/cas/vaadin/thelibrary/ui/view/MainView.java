@@ -47,8 +47,9 @@ public class MainView extends HorizontalLayout {
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
 		removeAllComponents();
-		//New menu always needed to refresh the views
-		//in sidemenubuilder constructor
+		/*New menu always needed to refresh the views
+		in sidemenubuilder constructor, so new SideMenuBuilder is created
+		every time*/
 		menu = new SideMenuBuilder();
 		addComponent(menu.getSideMenu());
 		c = new Content(event.getContainer());

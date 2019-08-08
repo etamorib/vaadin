@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -34,6 +35,7 @@ public class CASTheLibraryApplication extends UI {
 	
 	@Override
 	protected void init(VaadinRequest request) {
+		Page.getCurrent().setTitle("CAS The Library Application");
 		addStyleName(ValoTheme.UI_WITH_MENU);
 		Responsive.makeResponsive(this);
 		AppEventBus.register(this);
@@ -45,9 +47,9 @@ public class CASTheLibraryApplication extends UI {
 	
 	
 	/**
-	 * This method checks sets the content to the LoginView or 
+	 * This method sets the content to the LoginView or 
 	 * the MainView depending on the session.
-	 * If there an Admin attribute set to the session, updateContent
+	 * If there was an Admin attribute set to the session, updateContent
 	 * navigates to the MainView, else it navigates to LoginView
 	 */
 	private void updateContent() {
@@ -61,10 +63,11 @@ public class CASTheLibraryApplication extends UI {
 			
 	}
 	  /**
+	 * 
+	 * A loginRequest fires, then a LoginRequestEvent e occurs
+	 * The method authenticates the requested login event.
+	 * If successful, it sets the session attribute and updates the content
 	 * @param LoginRequestEvent e
-	 * loginRequest fires, then a LoginRequestEvent e occurs
-	 * The method authenticates the requested login.
-	 * If sucessful, it sets the session attribute and updates the content
 	 */
 	@Subscribe
 	  public void loginRequest(final LoginRequestEvent e) {

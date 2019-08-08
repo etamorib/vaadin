@@ -41,6 +41,7 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 /**
  * @author mate.biro
  * This is the GUI of the BooksView
+ * TODO: It could be simplified with better design
  */
 public class BooksView implements CreateContent{
 	private HorizontalLayout mainLayout;

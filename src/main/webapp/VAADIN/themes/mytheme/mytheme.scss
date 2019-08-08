@@ -190,6 +190,10 @@
         background: white;
         border: 1px solid black;
     }
+    
+    .dropdown-select  .v-select-select option {
+    	color:black !important;
+    }
 
     .v-select-select option {
         color: white;

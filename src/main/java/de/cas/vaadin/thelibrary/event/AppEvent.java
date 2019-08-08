@@ -46,12 +46,13 @@ public abstract class AppEvent {
 		}
 		
 	}
-	/*Handles logout requests. There is nothing needed to be done*/
+	/*Handles logout requests. There is nothing needed to be done
+	 * We just need to know when it is posted*/
 	public static final class LogoutRequestEvent{
 		
 	}
 	/*Handles the event when notification is sent to the admin.
-	 * Right now, it only can happen when deleting rents*/
+	 * Right now, it only  happens when deleting rents*/
 	public static final class NotificationEvent{
 		private String notificationMessage;
 		public NotificationEvent(String notificationMessage) {

@@ -15552,6 +15552,10 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid black;
 }
 
+.mytheme .dropdown-select .v-select-select option {
+	color: black !important;
+}
+
 .mytheme .v-select-select option {
 	color: white;
 }

@@ -159,6 +159,7 @@ public class Rentals implements CreateContent {
 				}
 			}
 		}
+		controller.delete(set);
 	}
 	
 	private Component buildButtons() {
@@ -177,8 +178,6 @@ public class Rentals implements CreateContent {
 			deleteSelectedItems(grid.getSelectedItems());
 			deleteSelectedItems(late.getSelectedItems());
 			
-			controller.delete(late.getSelectedItems());
-			controller.delete(grid.getSelectedItems());
 			updateLists();
 			lateDataProvider = new ListDataProvider<>(lateList);
 			dataProvider = new ListDataProvider<>(ongoingList);
