@@ -68,10 +68,14 @@ public class Rentals implements CreateContent {
 		layout = new VerticalLayout();
 		Label title = new Label("Current rents");
 		title.setStyleName(ValoTheme.LABEL_H1);
-		layout.addComponents(title, buildButtons(), buildGrid(), lateGrid());
+		updateLists();
+		layout.addComponents(title, buildButtons(), buildGrid(), 
+				lateList.size()>0?lateGrid(): new Label("There are no outdated rents"));
 		return layout;
 	}
 	
+	//Outdated and ongoing rents are stored in different lists
+	//This method updates them from the database
 	private void updateLists() {
 		ongoingList.clear();
 		lateList.clear();
@@ -86,6 +90,7 @@ public class Rentals implements CreateContent {
 	
 	}
 	
+	//Building the ongoing rents grid
 	private Component buildGrid() {
 		grid.setCaption("Ongoing rents");
 		updateLists();
@@ -99,20 +104,14 @@ public class Rentals implements CreateContent {
 		return grid;
 	}
 	
-	private Component lateGrid() {
-		VerticalLayout layout = new VerticalLayout();
-		late.setCaption("Rents went late");
-		updateLists();
-		lateDataProvider = new ListDataProvider<Rent>(lateList);
-		late.setColumns("readerId", "bookId", "rentTime", "returnTime");
-		late.setSelectionMode(SelectionMode.MULTI);
-		late.setSizeFull();
-		late.setStyleName("grid-overall");
-		late.setDataProvider(lateDataProvider);
+	//Build a button to send email
+	private Button emailSender() {
 		Button sendEmail = new Button("Send email to notify late readers");
-		sendEmail.setSizeFull();
+		sendEmail.setIcon(VaadinIcons.MAILBOX);
+		sendEmail.setStyleName(ValoTheme.BUTTON_DANGER);
 		sendEmail.addClickListener(e->{
-			//TODO
+			//For every reader that is in the latelist
+			updateLists();
 			for(Rent r: lateList) {
 				Reader reader = readerController.findById(r.getReaderId());
 				EmailSender sender = new EmailSender(reader);
@@ -125,10 +124,29 @@ public class Rentals implements CreateContent {
 				}
 			}
 		});
-		layout.addComponents(late, sendEmail);
+		return sendEmail;
+	}
+	
+	//Build the grid for outdated rents
+	private Component lateGrid() {
+		VerticalLayout layout = new VerticalLayout();
+
+		updateLists();
+		lateDataProvider = new ListDataProvider<Rent>(lateList);
+		late.setColumns("readerId", "bookId", "rentTime", "returnTime");
+		late.setSelectionMode(SelectionMode.MULTI);
+		late.setSizeFull();
+		late.setStyleName("grid-overall");
+		late.setDataProvider(lateDataProvider);
+		
+		Label title = new Label("Outdated rents");
+		title.setStyleName(ValoTheme.LABEL_H3);
+		layout.addComponents(title, emailSender(),late);
 		return layout;
 	}
 	
+	//Deletes items based on a set
+	//So deleting from both grid is easy, based on the parameter
 	private void deleteSelectedItems(Set<Rent> set) {
 		for(Rent r : set) {
 			Book b = bookController.findById(r.getBookId());
