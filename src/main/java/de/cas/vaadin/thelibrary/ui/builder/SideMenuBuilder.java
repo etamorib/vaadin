@@ -5,20 +5,11 @@ import java.util.ArrayList;
 
 import org.vaadin.teemusa.sidemenu.SideMenu;
 
-import com.google.common.eventbus.Subscribe;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
-import de.cas.vaadin.thelibrary.event.AppEvent.NotificationEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
@@ -37,9 +28,8 @@ public class SideMenuBuilder extends CustomComponent {
 	
 	private ArrayList<CreateContent> menuItems ;
 	private final String title = "CAS Library";
-	private Window notificationWindow;
-	private HorizontalLayout notificationLayout = new HorizontalLayout();
-	
+	//So the notification can be carried over view changes
+	private final static NotificationWindowBuilder notificationWindowBuilder = new NotificationWindowBuilder();
 
 	private SideMenu menu = new SideMenu();
 	
@@ -48,12 +38,9 @@ public class SideMenuBuilder extends CustomComponent {
 		menuItems.clear();
 		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList());
 		addItemsToMenu(menuItems);
-		AppEventBus.register(this);
 		styleMenu();
 		setAdmin();
-
-		
-	}
+		}
 	
 	//This method is for adding styles to the sidemenu
 	private void styleMenu() {
@@ -70,44 +57,12 @@ public class SideMenuBuilder extends CustomComponent {
 			AppEventBus.post(new LogoutRequestEvent());
 		});
 		menu.addUserMenuItem("Notifications", ()->{
-			openNotifications();
+			//Notifications will not be stored after the app terminates
+			//For that, i would need to store in database (maybe todo?)
+			notificationWindowBuilder.openNotifications();
 		});
 	}
-	
-	/*This method waits for NotificationEvent
-	*If a notification event occurs, it sets the
-	*message of the event to a label, and adds to a layout
-	 */
-	@Subscribe
-	public void addNotification(final NotificationEvent e) {
-		
-		Label msg = new Label(e.getNotificationMessage());
-		Button remove = new Button();
-		remove.setIcon(VaadinIcons.CLOSE);
-		remove.addClickListener(event->{
-			notificationLayout.removeComponent(msg);
-			notificationLayout.removeComponent(remove);
-		});
-		notificationLayout.addComponents(msg, remove);
-	}
-	
-	/*This makes a pop-up window. The window contains nothing, if there
-	 * is no notification.
-	 * If there was a notification, it contains the message of that.
-	 * */
-	private void openNotifications() {
-		notificationWindow = new Window();
-		notificationWindow.setModal(true);
-		if(notificationLayout.getComponentCount()==0) {
-			Notification.show("You have no notifications");
-		}else {
-			notificationWindow.setContent(notificationLayout);
-			UI.getCurrent().addWindow(notificationWindow);
-		}
-		
-		
 
-	}
 	/*Sets the menu items, and sets the action of the items.
 	 * If a menu item is clicked it posts a ChangeViewEvent,
 	 * which will change the "view"
@@ -116,10 +71,8 @@ public class SideMenuBuilder extends CustomComponent {
 		for(CreateContent c : contents) {
 			menu.addMenuItem(c.getName(), c.menuIcon(),()->{
 				AppEventBus.post(new ChangeViewEvent(c));
-			});		
-			
+			});				
 		}
-		
 	}
 	/*Basically fills the menuItem array with contents
 	 * in the parameter

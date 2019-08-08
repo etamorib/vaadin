@@ -34,7 +34,7 @@ public abstract class AppEvent {
 	/*Handles events to change the view of the app. It needs a 
 	 * CreateContent object as contructor parameter*/
 	public static final class ChangeViewEvent{
-		private CreateContent container;
+		private CreateContent container ;
 		public ChangeViewEvent(CreateContent container) {
 			this.container = container;
 		}

@@ -15556,6 +15556,10 @@ div.v-layout.v-horizontal.v-widget {
 	color: white;
 }
 
+.mytheme .v-tabsheet-tabitemcell .v-caption.v-disabled {
+	color: white !important;
+}
+
 .mytheme .v-tabsheet-tabitemcell {
 	width: 100%;
 	border-left: 1px solid #dfdfdf;
