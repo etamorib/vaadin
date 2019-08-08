@@ -62,7 +62,7 @@ public class CASTheLibraryApplication extends UI {
 	}
 	  /**
 	 * @param LoginRequestEvent e
-	 * loginRequest fires then a LoginRequestEvent e occurs
+	 * loginRequest fires, then a LoginRequestEvent e occurs
 	 * The method authenticates the requested login.
 	 * If sucessful, it sets the session attribute and updates the content
 	 */

@@ -16,9 +16,11 @@ C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thel
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\Content.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\event\AppEvent.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\event\AppEventBus.java
+C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\builder\NotificationWindowBuilder.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\BookDAO.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\handler\AuthenticationHandler.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\model\DaoInterface.java
+C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\utils\EmailSender.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\controller\WaitlistController.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\builder\SideMenuBuilder.java
 C:\Users\mate.biro\eclipse-workspace\thelibrary\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\WaitList.java

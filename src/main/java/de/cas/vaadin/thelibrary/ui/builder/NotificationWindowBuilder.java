@@ -28,7 +28,6 @@ public class NotificationWindowBuilder {
 	 */
 	@Subscribe
 	public void addNotification(final NotificationEvent e) {
-		System.out.println("CAUGHT");
 		Notification.show("You have new notification", Type.TRAY_NOTIFICATION);
 		Label msg = new Label(e.getNotificationMessage());
 		Button remove = new Button();

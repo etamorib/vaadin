@@ -354,6 +354,7 @@ public class NewRental implements CreateContent {
 		//Filter
 		bookDataProvider.setFilter(book->book.getState() == BookState.Available || book.getState()==BookState.Borrowed);
 		NativeSelect<BookState> state = new NativeSelect<>();
+		state.setStyleName("dropdown-select");
 		state.setItems(BookState.Available, BookState.Borrowed);
 		//Filter for state
 		state.addSelectionListener(e->{
