@@ -27,6 +27,7 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 	private final String DEL = "UPDATE BOOK SET STATE = ? WHERE ID=?";
 	private final String LIST = "SELECT * FROM BOOK";
 	private final String FIND = "SELECT * FROM BOOK WHERE ID=?";
+	private final String DEL_BOOK = "UPDATE BOOK SET STATE =? WHERE ID=?";
 
 	public BookDAO() {
 		try {
@@ -123,6 +124,28 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 				return true;
 		} catch (SQLException e) {
 			
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean delete(Book book) {
+		try(Connection conn = DriverManager.getConnection(CONN);
+			PreparedStatement pst = conn.prepareStatement(DEL_BOOK)
+		){
+
+			pst.setString(1, BookState.Deleted.toString());
+			pst.setInt(2, book.getId());
+
+
+			int affected = pst.executeUpdate();
+			if(affected!=1) {
+				return false;
+			}
+
+			return true;
+		} catch (SQLException e) {
+
 			e.printStackTrace();
 			return false;
 		}

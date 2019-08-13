@@ -40,4 +40,8 @@ public class BookController implements ControllerInterface<Book>, ExtraControlle
 		return bookDAO.findById(id);
 	}
 
+	public boolean delete(Book b){
+		return bookDAO.delete(b);
+	}
+
 }

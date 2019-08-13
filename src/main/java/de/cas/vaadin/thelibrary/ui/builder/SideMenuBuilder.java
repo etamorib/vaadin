@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.ui.builder;
 
 import java.util.ArrayList;
 
+import de.cas.vaadin.thelibrary.ui.view.content.*;
 import org.vaadin.teemusa.sidemenu.SideMenu;
 
 import com.vaadin.icons.VaadinIcons;
@@ -12,11 +13,7 @@ import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
-import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
-import de.cas.vaadin.thelibrary.ui.view.content.NewRental;
-import de.cas.vaadin.thelibrary.ui.view.content.Readers;
-import de.cas.vaadin.thelibrary.ui.view.content.Rentals;
-import de.cas.vaadin.thelibrary.ui.view.content.WaitList;;
+;
 
 /**
  * @author mate.biro
@@ -36,7 +33,7 @@ public class SideMenuBuilder extends CustomComponent {
 	public SideMenuBuilder() {
 		menuItems =  new ArrayList<>();
 		menuItems.clear();
-		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList());
+		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList(), new NewBookView());
 		addItemsToMenu(menuItems);
 		styleMenu();
 		setAdmin();

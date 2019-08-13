@@ -5,6 +5,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 public class TabBuilder {
 
@@ -18,6 +19,7 @@ public class TabBuilder {
         tab = new TabSheet();
         tab.setSizeFull();
         tab.setResponsive(true);
+
 
         //Book tab
         books = new BookTab();

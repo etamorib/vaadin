@@ -3,6 +3,8 @@ package de.cas.vaadin.thelibrary.ui.view.content;
 import java.time.Year;
 import java.util.ArrayList;
 
+import de.cas.vaadin.thelibrary.controller.MasterController;
+import de.cas.vaadin.thelibrary.model.bean.Rent;
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
 import org.vaadin.ui.NumberField;
 
@@ -279,11 +281,26 @@ public class BooksView implements CreateContent{
 		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
 		del.addClickListener(e->{
+			boolean flag = false;
 			if(grid.getSelectedItems().size()>0) {
 				//Delete selected items, and update grid
-				controller.delete(grid.getSelectedItems());
-				dataProvider = new ListDataProvider<>(controller.getItems());
-				grid.setDataProvider(dataProvider);
+				for(Book b: grid.getSelectedItems()) {
+					for(Rent r : MasterController.getRentController().getItems()){
+						if(r.getBookId().intValue() == b.getId().intValue()){
+							flag=true;
+						}
+					}
+					if(flag){
+						Notification.show("Book cannot be deleted while it is rented");
+					}else{
+						System.out.println("TRUE");
+						controller.delete(b);
+						dataProvider = new ListDataProvider<>(controller.getItems());
+						grid.setDataProvider(dataProvider);
+					}
+					flag=false;
+
+				}
 			}
 			else {
 				Notification.show("There is nothing to be deleted!");
