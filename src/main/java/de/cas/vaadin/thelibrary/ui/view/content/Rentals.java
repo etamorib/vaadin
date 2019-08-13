@@ -155,6 +155,7 @@ public class Rentals implements CreateContent {
 			
 			for(Waitlist w : waitlistController.getItems()) {
 				if(w.getBookId().intValue()==b.getId().intValue()) {
+					System.out.println("NOTIFICATION");
 					AppEventBus.post(new NotificationEvent(b.getTitle() +" by "+b.getAuthor() +" is now available for waitlisters"));
 				}
 			}
