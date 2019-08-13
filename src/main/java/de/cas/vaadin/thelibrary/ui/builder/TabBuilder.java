@@ -8,7 +8,6 @@ import com.vaadin.ui.VerticalLayout;
 
 public class TabBuilder {
 
-
     private static TabSheet tab;
     //TABS:
     private VerticalLayout books, readers;
@@ -51,11 +50,8 @@ public class TabBuilder {
         deadline.addComponent(new DeadlineTab());
     }
 
-
     public static TabSheet getTabSheet() {
         return tab;
     }
-
-
 
 }
