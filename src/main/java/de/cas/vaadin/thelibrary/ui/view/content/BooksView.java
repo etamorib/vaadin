@@ -48,15 +48,16 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
  */
 public class BooksView implements CreateContent{
 	private HorizontalLayout mainLayout;
-	private VerticalLayout left;
 	private FancyCssLayout editLayout = new FancyCssLayout();
 	private final String name ="Books";
 	private Grid<Book> grid =  new Grid<>(Book.class);
 	private BookController controller = new BookController();
 	private Button add, del, edit;
 	private ListDataProvider<Book> dataProvider ;
-	
-	
+	private NativeSelect<BookState> state;
+	private  FormLayout editForm;
+
+
 	/**
 	 * Builds the content of the view
 	 * @return The complete layout of this view
@@ -69,7 +70,7 @@ public class BooksView implements CreateContent{
 		mainLayout.setSizeFull();
 		
 		//Sub layout(it will be on the left side)
-		left = new VerticalLayout();
+		VerticalLayout left = new VerticalLayout();
 		
 		Label title = new Label("Books in the database");
 		title.setStyleName(ValoTheme.LABEL_H1);
@@ -79,6 +80,7 @@ public class BooksView implements CreateContent{
 		mainLayout.addComponent(left);
 		return mainLayout;
 	}
+
 	//This method builds the grid of this view, containing Books
 	private Component buildGrid() {
 		//Dataprovider which gets the data from the database
@@ -91,94 +93,44 @@ public class BooksView implements CreateContent{
 		grid.setDataProvider(dataProvider);
 		
 		//Selector for filtering by state
-		NativeSelect<BookState> state = new NativeSelect<>();
+		state = new NativeSelect<>();
 		state.setStyleName("dropdown-select");
 		state.setItems(BookState.Available, BookState.Borrowed, BookState.Deleted);
+		addStateFilter();
+		//Adding the selector
+		grid.addHeaderRowAt(1);
+		grid.getHeaderRow(1).getCell("state").setComponent(state);
+		grid.setSizeFull();
+		return grid;
+	}
+
+	private void addStateFilter() {
 		state.addSelectionListener(e->{
 			//If there is something selected
 			if(e.getValue()!=null) {
-				dataProvider.setFilter(book -> book.getState() ==e.getValue());	
+				dataProvider.setFilter(book -> book.getState() ==e.getValue());
 			}
 			//Else just show everything
 			else {
 				dataProvider.clearFilters();
-			}	
-		});
-		//Adding the selector
-		grid.addHeaderRowAt(1);
-		grid.getHeaderRow(1).getCell("state").setComponent(state);
-		
-		//Drag grid
-		GridDragSource<Book> source = new GridDragSource<Book>(grid);
-		source.setEffectAllowed(EffectAllowed.MOVE);	
-		
-		//Drop elements to the delete or edit button
-		DropTargetExtension<Button> dropDeleteTarget = new DropTargetExtension<>(del);
-		DropTargetExtension<Button> dropEditTarget = new DropTargetExtension<Button>(edit);
-		dropDeleteTarget.setDropEffect(DropEffect.MOVE);
-		dropEditTarget.setDropEffect(DropEffect.MOVE);
-		dropDeleteTarget.addDropListener(e->{
-			//If deleting is successful
-			if(controller.delete(grid.getSelectedItems())) {
-				new Notification("",
-					    "Book(s) have been deleted!",
-					    Notification.Type.WARNING_MESSAGE, true)
-					    .show(Page.getCurrent());
-				//Refresh the grid
-				dataProvider = new ListDataProvider<>(controller.getItems());
-				grid.setDataProvider(dataProvider);
-				grid.deselectAll();
 			}
 		});
-		//Drop to the edit button
-		dropEditTarget.addDropListener(e->{
-			//If there is at least 1 item selected
-			if(grid.getSelectedItems().size()>0) {
-				grid.setEnabled(false);
-				//For every book, a new layout is added
-				for(Book b: grid.getSelectedItems()) {
-					buildEditLayout(editLayout,  b);
-				}
-				mainLayout.addComponent(editLayout);
-			}
-			//Else just show a message
-			else {
-				Notification.show("There is nothing to be edited!");
-			}
-		});
-		grid.setSizeFull();
-		return grid;
 	}
+
 	//Building the editing layout on the right side
-	private void buildEditLayout(final FancyCssLayout editLayout, Book b) {
+	private void buildEditLayout(Book b) {
 		
-			final FormLayout editForm = new FormLayout();
+			editForm = new FormLayout();
 			
 			//Buttons
 			//Save
 			Button save = new Button("Save");
 			save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+
 			//Cancel
 			Button cancel = new Button("Cancel");
 			cancel.setStyleName(ValoTheme.BUTTON_PRIMARY);
-			cancel.addClickListener(e->{
-				//If there are components on the layout, lets just remove
-				if(editLayout.getComponentCount()>1) {
-					editLayout.fancyRemoveComponent(editForm);
-
-				}
-				//If there are no more components, remove the whole layout
-				else {
-					editLayout.removeAllComponents();
-					grid.setEnabled(true);
-					mainLayout.removeComponent(editLayout);
-					//Reset grid and its size
-					grid.deselectAll();
-					grid.setSizeFull();
-				}
-				
-			});
-			
+			addCancelClicklistener(cancel);
 			
 			//Form
 			Binder<Book> binder = new Binder<>();
@@ -192,6 +144,7 @@ public class BooksView implements CreateContent{
 			state.setCaption("State");
 			state.setValue(b.getState());
 			state.setStyleName("dropdown-select");
+			state.setEmptySelectionAllowed(false);
 			
 			//Select the year
 			NativeSelect<Integer> selectYear = new NativeSelect<Integer>();
@@ -205,11 +158,7 @@ public class BooksView implements CreateContent{
 			}
 			//Setting the values of the selector
 			state.setItems(BookState.Available, BookState.Deleted);
-			ArrayList<Integer> years = new ArrayList<Integer>();
-			for(int i=1700; i<=Year.now().getValue(); i++) {
-				years.add(i);
-			}
-			selectYear.setItems(years);
+			selectYear.setItems(setYearsIntervall(1600));
 
 			//If a book can have more category i'll need to change this
 			NativeSelect<Category> category = new NativeSelect<>();
@@ -224,57 +173,87 @@ public class BooksView implements CreateContent{
 			NumberField id = new NumberField("id");
 			id.setEnabled(false);
 			id.setValue(b.getId().toString());
-			binder.bind(title, Book::getTitle, Book::setTitle);
-			binder.bind(author, Book::getAuthor, Book::setAuthor);
-			binder.bind(selectYear, Book::getYear, Book::setYear);
-			binder.bind(state, Book::getState, Book::setState);
-			binder.bind(category, Book::getCategory, Book::setCategory);
-			
-			//Save button
+
+
+			//Save button clicklistener
 			save.addClickListener(e->{
-				//Create new title based on values of fields
 				Book book = new Book(title.getValue(), author.getValue(),
-										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue(),
-										category.getValue(), Integer.parseInt(number.getValue()));
-				//Check if there are components left on the layout
-				if(editLayout.getComponentCount()>1) {
-					//Update book in database
-					if(controller.update(book)) {
-						Notification.show("Update successful");
-						//Reset grid
-						dataProvider = new ListDataProvider<>(controller.getItems());
-						grid.setDataProvider(dataProvider);
-						editLayout.fancyRemoveComponent(editForm);
-						
-					}
-					else {
-						Notification.show("Something went wrong!");
-						editLayout.fancyRemoveComponent(editForm);
-					}
-				}
-				//If there are no more components, remove this layout and reset grid 
-				else {
-					if(controller.update(book)) {
-						Notification.show("Update successful");
-					}else {
-						Notification.show("Something went wrong");
-					}
-					grid.setEnabled(true);
-					editLayout.removeAllComponents();
-					mainLayout.removeComponent(editLayout);
-					grid.setSizeFull();
-					grid.deselectAll();
-					dataProvider = new ListDataProvider<>(controller.getItems());
-					grid.setDataProvider(dataProvider);
-				}
-				
+						Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue(),
+						category.getValue(), Integer.parseInt(number.getValue()));
+				addSaveClickListener(save, book);
 			});
+
 			
 			editForm.setSizeFull();
 			editForm.addComponents(title, author, category,state, selectYear, number,id, save, cancel);
 			editLayout.addComponent(editForm);
 		
 	}
+
+	private void addSaveClickListener(Button save, Book book) {
+		//Create new title based on values of fields
+		//Check if there are components left on the layout
+		if(editLayout.getComponentCount()>1) {
+			//Update book in database
+			if(controller.update(book)) {
+				Notification.show("Update successful");
+				//Reset grid
+				dataProvider = new ListDataProvider<>(controller.getItems());
+				grid.setDataProvider(dataProvider);
+				editLayout.fancyRemoveComponent(editForm);
+			}
+			else {
+				Notification.show("Something went wrong!");
+				editLayout.fancyRemoveComponent(editForm);
+			}
+		}
+		//If there are no more components, remove this layout and reset grid
+		else {
+			if(controller.update(book)) {
+				Notification.show("Update successful");
+			}else {
+				Notification.show("Something went wrong");
+			}
+			grid.setEnabled(true);
+			editLayout.removeAllComponents();
+			mainLayout.removeComponent(editLayout);
+			grid.setSizeFull();
+			grid.deselectAll();
+			dataProvider = new ListDataProvider<>(controller.getItems());
+			grid.setDataProvider(dataProvider);
+		}
+
+	}
+
+	private ArrayList<Integer> setYearsIntervall(int startYear) {
+		ArrayList<Integer> years = new ArrayList<Integer>();
+		for(int i=startYear; i<=Year.now().getValue(); i++) {
+			years.add(i);
+		}
+		return years;
+	}
+
+	private void addCancelClicklistener(Button cancel) {
+		cancel.addClickListener(e->{
+			//If there are components on the layout, lets just remove
+			if(editLayout.getComponentCount()>1) {
+				editLayout.fancyRemoveComponent(editForm);
+
+			}
+			//If there are no more components, remove the whole layout
+			else {
+				editLayout.removeAllComponents();
+				grid.setEnabled(true);
+				mainLayout.removeComponent(editLayout);
+				//Reset grid and its size
+				grid.deselectAll();
+				grid.setSizeFull();
+			}
+
+		});
+
+	}
+
 	//Making the add, delete, update buttons and a search field
 	private Component buildButtons() {
 		HorizontalLayout buttons = new HorizontalLayout();
@@ -283,62 +262,21 @@ public class BooksView implements CreateContent{
 		add.setIcon(VaadinIcons.PLUS);
 		add.setStyleName("header-button");
 		add.setDescription("Add new book to database");
-		add.addClickListener(e->{
-			addingWindow();
-		});
+		setAddClicklistener();
 		
 		//Del button
 		del = new Button();
 		del.setIcon(VaadinIcons.TRASH);
 		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
-		del.addClickListener(e->{
-			boolean flag = false;
-			if(grid.getSelectedItems().size()>0) {
-				//Delete selected items, and update grid
-				for(Book b: grid.getSelectedItems()) {
-					for(Rent r : MasterController.getRentController().getItems()){
-						if(r.getBookId().intValue() == b.getId().intValue()){
-							flag=true;
-						}
-					}
-					if(flag){
-						Notification.show("Book cannot be deleted while it is rented");
-					}else{
-						System.out.println("TRUE");
-						controller.delete(b);
-						dataProvider = new ListDataProvider<>(controller.getItems());
-						grid.setDataProvider(dataProvider);
-					}
-					flag=false;
-
-				}
-			}
-			else {
-				Notification.show("There is nothing to be deleted!");
-			}
-
-		});
+		setDelClickListener();
 		
 		//Edit button
 		edit = new Button();
 		edit.setIcon(VaadinIcons.PENCIL);
 		edit.setStyleName("header-button");
 		edit.setDescription("Edit selected items");
-		edit.addClickListener(e->{
-			if(grid.getSelectedItems().size()>0) {
-				grid.setEnabled(false);
-				//For every book make a new layout
-				for(Book b: grid.getSelectedItems()) {
-					buildEditLayout(editLayout,  b);
-				}
-				mainLayout.addComponent(editLayout);
-			}
-			else {
-				Notification.show("There is nothing to be edited!");
-			}
-			
-		});
+		setEditClickListener();
 		
 		//Search field to filter
 		TextField search  = new TextField();
@@ -347,15 +285,75 @@ public class BooksView implements CreateContent{
 
 		search.setPlaceholder("Search...");
 		search.setValueChangeMode(ValueChangeMode.EAGER);
+		setSearchFilter(search);
+		buttons.addComponents(add, del, edit, search);
+		return buttons;
+	}
+
+	private void setSearchFilter(TextField search) {
 		search.addValueChangeListener(e->{
 			//Filter for both title and author
 			dataProvider.setFilter(book -> book.getAuthor().toLowerCase().contains(e.getValue().toLowerCase())||
 					book.getTitle().toLowerCase().contains(e.getValue().toLowerCase()));
-			
-			
+
+
 		});
-		buttons.addComponents(add, del, edit, search);
-		return buttons;
+	}
+
+	private void setEditClickListener() {
+		edit.addClickListener(e->{
+			if(grid.getSelectedItems().size()>0) {
+				grid.setEnabled(false);
+				//For every book make a new layout
+				for(Book b: grid.getSelectedItems()) {
+					buildEditLayout(b);
+				}
+				mainLayout.addComponent(editLayout);
+			}
+			else {
+				Notification.show("There is nothing to be edited!");
+			}
+
+		});
+	}
+
+	private void setDelClickListener() {
+		del.addClickListener(e->{
+			boolean flag = false;
+			if(grid.getSelectedItems().size()>0) {
+				//Delete selected items, and update grid
+				for(Book b: grid.getSelectedItems()) {
+					flag = isBookBorrowed(b);
+					if(flag){
+						Notification.show("Book cannot be deleted while it is rented");
+					}else{
+						System.out.println("TRUE");
+						controller.delete(b);
+						dataProvider = new ListDataProvider<>(controller.getItems());
+						grid.setDataProvider(dataProvider);
+					}
+				}
+			}
+			else {
+				Notification.show("There is nothing to be deleted!");
+			}
+
+		});
+	}
+
+	private boolean isBookBorrowed(Book b) {
+		for(Rent r : MasterController.getRentController().getItems()){
+			if(r.getBookId().intValue() == b.getId().intValue()){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void setAddClicklistener() {
+		add.addClickListener(e->{
+			addingWindow();
+		});
 	}
 
 	//Popup window for adding new Book to the database
