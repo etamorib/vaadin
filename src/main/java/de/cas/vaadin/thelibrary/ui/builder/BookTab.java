@@ -19,6 +19,10 @@ public class BookTab extends VerticalLayout {
     private int maxSelect = 5;
     public static ListSelect<Book> list = null;
     public static Set<Book> selectedBooks = null;
+    private NativeSelect<BookState> state;
+    private Button add;
+    private TextField search;
+
 
 
     public BookTab(){
@@ -37,7 +41,7 @@ public class BookTab extends VerticalLayout {
         Label counter = new Label();
 
         //Button for adding
-        Button add = new Button("Select books");
+        add = new Button("Select books");
         add.setStyleName("header-button");
         add.setSizeFull();
         add.setEnabled(false);
@@ -46,26 +50,19 @@ public class BookTab extends VerticalLayout {
         bookGrid = new Grid<>(Book.class);
         bookDataProvider = new ListDataProvider<>(bookController.getItems());
         //To make sure column order
-        bookGrid.setColumns("author","title", "id", "year", "state");
+        bookGrid.setColumns("id", "author","title", "category", "year", "state", "number");
         bookGrid.setSelectionMode(Grid.SelectionMode.MULTI);
         bookGrid.setStyleName("grid-overall");
         bookGrid.setDataProvider(bookDataProvider);
         bookGrid.setSizeFull();
-        //Filter
-        bookDataProvider.setFilter(book->book.getState() == BookState.Available || book.getState()==BookState.Borrowed);
-        NativeSelect<BookState> state = new NativeSelect<>();
+        //Initially only show the borrowed / available books
+        initialFilter();
+        state = new NativeSelect<>();
         state.setStyleName("dropdown-select");
         state.setItems(BookState.Available, BookState.Borrowed);
-        //Filter for state
-        state.addSelectionListener(e->{
-            if(e.getValue()!=null) {
-                bookDataProvider.setFilter(book -> book.getState() ==e.getValue());
-            }else {
-                bookDataProvider.setFilter(book->book.getState() == BookState.Available || book.getState()==BookState.Borrowed);
-
-            }
-
-        });
+        state.setEmptySelectionAllowed(false);
+        //Set selection listener filter on state
+        filterForState();
 
         //Grid selection listener, to prevent more than 5 selects
         bookGrid.addSelectionListener(e->{
@@ -74,42 +71,72 @@ public class BookTab extends VerticalLayout {
 
             updateCounter(counter, currentlySelected);
             //If there are more than 5 selections, it deselects the first, then second ...
-            if(currentlySelected> maxSelect) {
-                bookGrid.deselect(bookGrid.getSelectedItems().iterator().next());
-            }
-            if(currentlySelected > 0) {
-                //Adding selected items to the ListSelect to show on next tab
-                list = new ListSelect<>();
-                list.addStyleName("white-text");
-                list.setItems(bookGrid.getSelectedItems());
-                list.setSizeFull();
+            assertMaxSelect(currentlySelected);
+            controlSelection(currentlySelected);
 
-                //Go to next tab
-                add.setEnabled(true);
-                add.addClickListener(event->{
-                    TabBuilder.getTabSheet().getTab(1).setEnabled(true);
-                    TabBuilder.getTabSheet().setSelectedTab(1);
-
-                });
-            }
-            //If books are deselected further tabs are disabled
-            else {
-                TabBuilder.getTabSheet().getTab(1).setEnabled(false);
-                add.setEnabled(false);
-            }
         });
-
 
         bookGrid.addHeaderRowAt(1);
         bookGrid.getHeaderRow(1).getCell("state").setComponent(state);
 
         //Search field
-        TextField search  = new TextField();
+        search  = new TextField();
         search.setIcon(VaadinIcons.SEARCH);
         search.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
         search.setPlaceholder("Search...");
         search.setValueChangeMode(ValueChangeMode.EAGER);
+        addSearchFieldFilter();
+
+
+        addComponents(title, search, bookGrid, counter, add);
+    }
+
+    //Set initial filter
+    private void initialFilter(){
+        //Filter
+        bookDataProvider.setFilter(book->book.getState() == BookState.Available || book.getState()==BookState.Borrowed);
+    }
+
+    private void filterForState(){
+        //Filter for state
+        state.addSelectionListener(e->{
+            if(e.getValue()!=null) {
+                bookDataProvider.setFilter(book -> book.getState() ==e.getValue());
+            }
+        });
+    }
+
+    private void assertMaxSelect(int currentlySelected){
+        if(currentlySelected> maxSelect) {
+            bookGrid.deselect(bookGrid.getSelectedItems().iterator().next());
+        }
+    }
+
+    private void controlSelection(int currentlySelected){
+        if(currentlySelected > 0) {
+            //Adding selected items to the ListSelect to show on next tab
+            list = new ListSelect<>();
+            list.addStyleName("white-text");
+            list.setItems(bookGrid.getSelectedItems());
+            list.setSizeFull();
+
+            //Go to next tab
+            add.setEnabled(true);
+            add.addClickListener(event->{
+                TabBuilder.getTabSheet().getTab(1).setEnabled(true);
+                TabBuilder.getTabSheet().setSelectedTab(1);
+
+            });
+        }
+        //If books are deselected further tabs are disabled
+        else {
+            TabBuilder.getTabSheet().getTab(1).setEnabled(false);
+            add.setEnabled(false);
+        }
+    }
+
+    private void addSearchFieldFilter(){
         search.addValueChangeListener(e->{
             //Filter for both title and author
             bookDataProvider.setFilter(book -> (book.getAuthor().toLowerCase().contains(e.getValue().toLowerCase())||
@@ -117,8 +144,6 @@ public class BookTab extends VerticalLayout {
                     book.getState()!=BookState.Deleted);
 
         });
-
-        addComponents(title, search, bookGrid, counter, add);
     }
 
     public static Grid<Book> getBookGrid() {

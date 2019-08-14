@@ -150,7 +150,12 @@ public class Rentals implements CreateContent {
 	private void deleteSelectedItems(Set<Rent> set) {
 		for(Rent r : set) {
 			Book b = bookController.findById(r.getBookId());
-			b.setState(BookState.Available);
+			if(b.getNumber()<1) {
+				b.setState(BookState.Available);
+				b.setNumber(b.getNumber()+1);
+			}else{
+				b.setNumber(b.getNumber()+1);
+			}
 			bookController.update(b);
 			
 			for(Waitlist w : waitlistController.getItems()) {

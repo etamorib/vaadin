@@ -4,6 +4,7 @@ import java.time.Year;
 import java.util.ArrayList;
 
 import de.cas.vaadin.thelibrary.controller.MasterController;
+import de.cas.vaadin.thelibrary.model.bean.Category;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
 import org.vaadin.ui.NumberField;
@@ -84,7 +85,7 @@ public class BooksView implements CreateContent{
 		dataProvider = new ListDataProvider<>(controller.getItems());
 		
 		//To make sure column order
-		grid.setColumns("author","title", "id", "year", "state");
+		grid.setColumns("id","author","title", "category","year", "state", "number");
 		grid.setSelectionMode(SelectionMode.MULTI);
 		grid.setStyleName("grid-overall");
 		grid.setDataProvider(dataProvider);
@@ -164,10 +165,10 @@ public class BooksView implements CreateContent{
 				//If there are components on the layout, lets just remove
 				if(editLayout.getComponentCount()>1) {
 					editLayout.fancyRemoveComponent(editForm);
-							
+
 				}
 				//If there are no more components, remove the whole layout
-				else {	
+				else {
 					editLayout.removeAllComponents();
 					grid.setEnabled(true);
 					mainLayout.removeComponent(editLayout);
@@ -209,7 +210,16 @@ public class BooksView implements CreateContent{
 				years.add(i);
 			}
 			selectYear.setItems(years);
-			
+
+			//If a book can have more category i'll need to change this
+			NativeSelect<Category> category = new NativeSelect<>();
+			category.setCaption("Category");
+			category.setStyleName("dropdown-select");
+			category.setValue(b.getCategory());
+			category.setItems(Category.class.getEnumConstants());
+
+			NumberField number = new NumberField("Available: ");
+			number.setValue(b.getNumber().toString());
 			
 			NumberField id = new NumberField("id");
 			id.setEnabled(false);
@@ -218,12 +228,14 @@ public class BooksView implements CreateContent{
 			binder.bind(author, Book::getAuthor, Book::setAuthor);
 			binder.bind(selectYear, Book::getYear, Book::setYear);
 			binder.bind(state, Book::getState, Book::setState);
+			binder.bind(category, Book::getCategory, Book::setCategory);
 			
 			//Save button
 			save.addClickListener(e->{
 				//Create new title based on values of fields
 				Book book = new Book(title.getValue(), author.getValue(),
-										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue());
+										Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue(),
+										category.getValue(), Integer.parseInt(number.getValue()));
 				//Check if there are components left on the layout
 				if(editLayout.getComponentCount()>1) {
 					//Update book in database
@@ -259,7 +271,7 @@ public class BooksView implements CreateContent{
 			});
 			
 			editForm.setSizeFull();
-			editForm.addComponents(title, author, state, selectYear, id, save, cancel);
+			editForm.addComponents(title, author, category,state, selectYear, number,id, save, cancel);
 			editLayout.addComponent(editForm);
 		
 	}
@@ -377,6 +389,14 @@ public class BooksView implements CreateContent{
 		year.setRequiredIndicatorVisible(true);
 		year.setNegativeAllowed(false);
 		year.setGroupingUsed(false);
+
+		NativeSelect<Category> category = new NativeSelect<>("Category");
+		category.setItems(Category.class.getEnumConstants());
+		category.setStyleName("dropdown-select");
+
+		NumberField number = new NumberField("Available ");
+
+
 		
 		//Add button
 		Button add = new Button("Add");
@@ -385,7 +405,7 @@ public class BooksView implements CreateContent{
 		add.setIcon(VaadinIcons.PLUS);
 		add.addClickListener(e->{
 			Book b = new Book(title.getValue(), author.getValue(), Integer.parseInt(id.getValue()), 
-								Integer.parseInt(year.getValue()), BookState.Available);
+								Integer.parseInt(year.getValue()), BookState.Available, category.getValue(), Integer.parseInt(number.getValue()));
 			if(controller.add(b)) {
 				window.close();
 				Notification.show("Book has been added to database");
@@ -395,7 +415,7 @@ public class BooksView implements CreateContent{
 			}
 		});
 		
-		form.addComponents(author, title, id, year, add);
+		form.addComponents(id,author, title, category, year, number,add);
 		form.setSizeUndefined();
 		
 		window.setContent(form);

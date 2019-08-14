@@ -9,19 +9,22 @@ public class Book implements DatabaseBean{
 	
 	//Author maybe new class? For proper name? idk
 	private String title, author;
-	private Integer Id;
-	private Integer year;
+	private Integer Id, year, number;
 	private BookState state;
+	private Category category;
 	public static final String DBname = "book.db";
-	
-	public Book(String title, String author, Integer Id, Integer year, BookState state ) {
+
+
+	public Book(String title, String author, Integer id, Integer year, BookState state, Category category, Integer number) {
 		this.title = title;
 		this.author = author;
-		this.Id=Id;
+		Id = id;
 		this.year = year;
+		this.number = number;
 		this.state = state;
+		this.category = category;
 	}
-	
+
 	public Book() {
 	}
 
@@ -64,7 +67,23 @@ public class Book implements DatabaseBean{
 	public void setState(BookState state) {
 		this.state = state;
 	}
-	
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	@Override
 	public String toString() {
 		return "ID: "+Id +" - "+ title +" by "+ author +" ("+state+")";

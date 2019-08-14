@@ -17,6 +17,11 @@ import java.util.ArrayList;
 public class DeadlineTab extends HorizontalLayout {
     private FancyCssLayout left ;
     private ListDataProvider<Book> borrowedBookProvider;
+    private ArrayList<Book> availableList;
+    private  ArrayList<Book> borrowedList;
+    private Grid<Book> availableGrid, borrowedGrid;
+    private Label ava, borr;
+
 
 
     public DeadlineTab(){
@@ -28,27 +33,17 @@ public class DeadlineTab extends HorizontalLayout {
         left = new FancyCssLayout();
         left.setSizeFull();
         setSizeFull();
-        Grid<Book> availableGrid = new Grid<>(Book.class);
-        Grid<Book> borrowedGrid = new Grid<>(Book.class);
+        availableGrid = new Grid<>(Book.class);
+        borrowedGrid = new Grid<>(Book.class);
         availableGrid.setStyleName("grid-overall");
         borrowedGrid.setStyleName("grid-overall");
 
         //Labels for grid titles:
-        Label ava = new Label("Currently available books - rent");
-        Label borr = new Label("Currently borrowed books - to waitlist");
+        ava = new Label("Currently available books - rent");
+        borr = new Label("Currently borrowed books - to waitlist");
 
-        //Containers for available books and borrowed books
-        ArrayList<Book> availableList = new ArrayList<Book>();
-        ArrayList<Book> borrowedList = new ArrayList<Book>();
-        for(Book b: BookTab.getBookGrid().getSelectedItems()) {
-            if(b.getState() == BookState.Available) {
-                availableList.add(b);
-            }
-            if(b.getState() == BookState.Borrowed) {
-                borrowedList.add(b);
-            }
-        }
-
+        //Set containers for available books and borrowed books
+        fillLists();
         //Grid for available books
         availableGrid.setItems(availableList);
         availableGrid.setSizeFull();
@@ -59,52 +54,11 @@ public class DeadlineTab extends HorizontalLayout {
         borrowedGrid.setSizeFull();
 
         if(availableList.size()>0) {
-
-            Button rent = new Button("Borrow");
-            rent.addStyleName("header-button");
-            rent.setSizeFull();
-            rent.addClickListener(e->{
-                //Adds rent to database and removes components from layout
-                boolean error = false;
-                left.fancyRemoveComponent(ava);
-                left.fancyRemoveComponent(availableGrid);
-                left.fancyRemoveComponent(rent);
-                for(Book b: availableList) {
-                    //Checks if there is error while adding to rent database
-                    if(!MasterController.getRentController().add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), ReaderTab.selectedReader.getId()))) {
-                        error = true;
-                    }
-                    //If there was no error it updates the database (sets book to borrowed)
-                    else {
-                        b.setState(BookState.Borrowed);
-                        MasterController.getBookController().update(b);
-                        //bookGrid.deselect(b);
-                    }
-
-                }
-                if(error) {
-                    Notification.show("ERROR");
-                }
-                else {
-                    Notification.show("SUCCESS");
-                }
-                //If no more components left, it sends back to the beginning of the view
-                if(left.getComponentCount()==3) {
-                    AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
-                }
-            });
-            left.addComponents(ava, availableGrid, rent);
+            buildAvailableForm();
         }
         //If there was any borrowed books selected
         if(borrowedList.size()>0) {
-            Button wl = new Button("Add to waitlist");
-            wl.setStyleName("header-button");
-            wl.setSizeFull();
-            wl.addClickListener(e->{
-                //Creates a popup window
-                waitlistWindow(borrowedList, borr, borrowedGrid, wl);
-            });
-            left.addComponents(borr, borrowedGrid, wl);
+            buildBorrowedForm();
         }
         //Calls the current reader form and with the right boolean parameter
         //to show deadline date
@@ -140,8 +94,6 @@ public class DeadlineTab extends HorizontalLayout {
     private void waitlistWindow(ArrayList<Book> borrowedBooks, Label borr, Grid<Book> borrowedGrid, Button wl) {
         Window window = new Window();
         window.setCaption("Set date");
-
-
         HorizontalLayout layout = new HorizontalLayout();
 
         for(Book b: borrowedBooks) {
@@ -217,5 +169,78 @@ public class DeadlineTab extends HorizontalLayout {
         //Show the window
         UI.getCurrent().addWindow(window);
 
+    }
+
+    private void fillLists(){
+        availableList = new ArrayList<Book>();
+        borrowedList = new ArrayList<Book>();
+        for(Book b: BookTab.getBookGrid().getSelectedItems()) {
+            if(b.getState() == BookState.Available) {
+                availableList.add(b);
+            }
+            if(b.getState() == BookState.Borrowed) {
+                borrowedList.add(b);
+            }
+        }
+
+    }
+
+    private void buildAvailableForm(){
+        Button rent = new Button("Borrow");
+        rent.addStyleName("header-button");
+        rent.setSizeFull();
+        rent.addClickListener(e->{
+            //Adds rent to database and removes components from layout
+            boolean error = false;
+            left.fancyRemoveComponent(ava);
+            left.fancyRemoveComponent(availableGrid);
+            left.fancyRemoveComponent(rent);
+            for(Book b: availableList) {
+                //Checks if there is error while adding to rent database
+                if(!MasterController.getRentController().add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), ReaderTab.selectedReader.getId()))) {
+                    error = true;
+                }
+                //If there was no error it updates the database (sets book to borrowed)
+                else {
+                    if(b.getNumber()>1)
+                        b.setNumber(b.getNumber()-1);
+                    else {
+                        b.setNumber(0);
+                        b.setState(BookState.Borrowed);
+                    }
+                    MasterController.getBookController().update(b);
+                    //bookGrid.deselect(b);
+                }
+
+            }
+            showError(error);
+            //If no more components left, it sends back to the beginning of the view
+            changeByComponentCount(3);
+        });
+        left.addComponents(ava, availableGrid, rent);
+    }
+    private void showError(boolean error){
+        if(error) {
+            Notification.show("ERROR");
+        }
+        else {
+            Notification.show("SUCCESS");
+        }
+    }
+    private void changeByComponentCount(int n){
+        if(left.getComponentCount()==n) {
+            AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
+        }
+    }
+
+    private void buildBorrowedForm(){
+        Button wl = new Button("Add to waitlist");
+        wl.setStyleName("header-button");
+        wl.setSizeFull();
+        wl.addClickListener(e->{
+            //Creates a popup window
+            waitlistWindow(borrowedList, borr, borrowedGrid, wl);
+        });
+        left.addComponents(borr, borrowedGrid, wl);
     }
 }

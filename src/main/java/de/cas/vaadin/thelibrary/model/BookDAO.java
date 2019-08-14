@@ -11,6 +11,7 @@ import java.util.Set;
 
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
+import de.cas.vaadin.thelibrary.model.bean.Category;
 
 /**
  * @author mate.biro
@@ -21,13 +22,13 @@ import de.cas.vaadin.thelibrary.model.bean.BookState;
 
 public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 	
-	private final String CONN = DaoInterface.connectionString() + Book.DBname;
-	private final String UPDATE = "UPDATE BOOK SET TITLE=?, AUTHOR=?, YEAR=?, STATE=? WHERE ID=?";
-	private final String ADD = "INSERT INTO BOOK(ID,TITLE, AUTHOR, YEAR, STATE) VALUES(?,?,?,?,?)";
-	private final String DEL = "UPDATE BOOK SET STATE = ? WHERE ID=?";
-	private final String LIST = "SELECT * FROM BOOK";
-	private final String FIND = "SELECT * FROM BOOK WHERE ID=?";
-	private final String DEL_BOOK = "UPDATE BOOK SET STATE =? WHERE ID=?";
+	private static final String CONN = DaoInterface.connectionString() + Book.DBname;
+	private static final String UPDATE = "UPDATE BOOK SET TITLE=?, AUTHOR=?, YEAR=?, STATE=?, CATEGORY=?, AVAILABLE=? WHERE ID=?";
+	private static final String ADD = "INSERT INTO BOOK(ID,TITLE, AUTHOR, YEAR, STATE, CATEGORY, AVAILABLE) VALUES(?,?,?,?,?,?,?)";
+	private static final String DEL = "UPDATE BOOK SET STATE = ? WHERE ID=?";
+	private static final String LIST = "SELECT * FROM BOOK";
+	private static final String FIND = "SELECT * FROM BOOK WHERE ID=?";
+	private static final String DEL_BOOK = "UPDATE BOOK SET STATE =? WHERE ID=?";
 
 	public BookDAO() {
 		try {
@@ -53,7 +54,9 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 			pst.setString(2, bean.getAuthor());
 			pst.setInt(3, bean.getYear());
 			pst.setString(4, bean.getState().toString());
-			pst.setInt(5, bean.getId());
+			pst.setString(5,bean.getCategory().toString());
+			pst.setInt(6, bean.getNumber());
+			pst.setInt(7, bean.getId());
 			
 			int affected = pst.executeUpdate();
 			if(affected!=1) {
@@ -84,7 +87,8 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 				pst.setString(3, bean.getAuthor());
 				pst.setInt(4, bean.getYear());
 				pst.setString(5, bean.getState().toString());
-				
+				pst.setString(6,bean.getCategory().toString());
+				pst.setInt(7, bean.getNumber());
 				
 				int affected = pst.executeUpdate();
 				if(affected!=1) {
@@ -111,7 +115,7 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 				PreparedStatement pst = conn.prepareStatement(DEL)
 				){
 				for(Book bean : books) {
-					System.out.println(bean);
+//					System.out.println(bean);
 					pst.setString(1, BookState.Deleted.toString());
 					pst.setInt(2, bean.getId());
 					
@@ -162,7 +166,8 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 				){
 			ResultSet rs = st.executeQuery(LIST);
 			while(rs.next()) {
-				Book b = new Book(rs.getString(2), rs.getString(3), rs.getInt(1), rs.getInt(4), BookState.valueOf(rs.getString(5)));
+				Book b = new Book(rs.getString(2), rs.getString(3), rs.getInt(1),
+						rs.getInt(4), BookState.valueOf(rs.getString(5)), Category.valueOf(rs.getString(7)), rs.getInt(6));
 				result.add(b);
 			}
 			return result;
@@ -186,7 +191,9 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
 			while(rs.next()) {
-				b = new Book(rs.getString(2), rs.getString(3), rs.getInt(1), rs.getInt(4), BookState.valueOf(rs.getString(5)));
+				b = new Book(rs.getString(2), rs.getString(3), rs.getInt(1),
+						rs.getInt(4), BookState.valueOf(rs.getString(5)),
+						Category.valueOf(rs.getString(7)), rs.getInt(6));
 			}
 			
 		} catch (SQLException e) {

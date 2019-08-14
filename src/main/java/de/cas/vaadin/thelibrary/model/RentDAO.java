@@ -15,10 +15,10 @@ import de.cas.vaadin.thelibrary.model.bean.Rent;
 public class RentDAO implements DaoInterface<Rent> {
 	
 	private final String CONN = DaoInterface.connectionString() + Rent.DBname;
-	private final String ADD = "INSERT INTO RENT (BOOKID, READERID, RENTDATE, RETURNDATE) VALUES(?,?,?,?)";
-	private final String DEL = "DELETE FROM RENT WHERE BOOKID =? AND READERID=?";
-	private final String LIST = "SELECT * FROM RENT";
-	private final String RENT_BY_BOOKID = "SELECT * FROM RENT WHERE BOOKID=?";
+	private static final String ADD = "INSERT INTO RENT (BOOKID, READERID, RENTDATE, RETURNDATE) VALUES(?,?,?,?)";
+	private static final String DEL = "DELETE FROM RENT WHERE BOOKID =? AND READERID=?";
+	private static final String LIST = "SELECT * FROM RENT";
+	private static final String RENT_BY_BOOKID = "SELECT * FROM RENT WHERE BOOKID=?";
 	
 	public RentDAO() {
 		try {

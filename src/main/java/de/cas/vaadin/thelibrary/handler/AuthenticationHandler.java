@@ -14,8 +14,7 @@ import de.cas.vaadin.thelibrary.model.bean.Admin;
 public class AuthenticationHandler {
 
 	private String username, password;
-	private final String INVALID = "Invalide username or password";
-	private final String MISSING = "Missing username or password";
+	private static final String INVALID = "Invalide username or password";
 	public AuthenticationHandler(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -32,9 +31,6 @@ public class AuthenticationHandler {
 		error.setDelayMsec(1500);
 		if(username.equals("admin") && password.equals("admin")) {
 			return null;
-		}else if(username.equals("") || password.equals("")) {
-			error.setCaption(MISSING);
-			return error;
 		}else {
 			error.setCaption(INVALID);
 			return error;
