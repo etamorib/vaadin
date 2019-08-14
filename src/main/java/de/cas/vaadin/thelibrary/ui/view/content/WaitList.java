@@ -46,28 +46,31 @@ public class WaitList implements CreateContent {
 		Button rent = new Button();
 		rent.setIcon(VaadinIcons.TRASH);
 		rent.setStyleName("header-button");
+		addRentClickListener(rent);
+		
+		layout.addComponents(title, rent, buildGrid());
+		return layout;
+	}
+
+	private void addRentClickListener(Button rent) {
 		rent.addClickListener(e->{
 			if(grid.getSelectedItems().size()>0) {
 				Book b = bookController.findById(grid.getSelectedItems().iterator().next().getBookId());
 				if(b.getState() == BookState.Available) {
 					controller.delete(grid.getSelectedItems());
-					rentController.add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), 
-										grid.getSelectedItems().iterator().next().getReaderId()));
+					rentController.add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(),
+							grid.getSelectedItems().iterator().next().getReaderId()));
 					b.setState(BookState.Borrowed);
 					bookController.update(b);
-				}else {	
-
+				}else {
 					controller.delete(grid.getSelectedItems());
 				}
 				dataProvider = new ListDataProvider<>(controller.getItems());
 				grid.setDataProvider(dataProvider);
 			}
 		});
-		
-		layout.addComponents(title, rent, buildGrid());
-		return layout;
 	}
-	
+
 	private Component buildGrid() {
 		dataProvider = new ListDataProvider<>(controller.getItems());
 		grid.setSelectionMode(SelectionMode.SINGLE);

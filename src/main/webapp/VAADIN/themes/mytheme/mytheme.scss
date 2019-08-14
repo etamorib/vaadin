@@ -43,7 +43,7 @@
         border: none;
         background-color: rgba(0,0,0,0);
     }
-
+    /*
     .add-window {
         padding: 50px 30px 30px 30px;
         background-color: rgba(30,30,30,0.95);
@@ -106,13 +106,13 @@
     }
 
 
-
+*/
     .valo-menu {
         background-image: none;
-        background-color: rgba(0,0,0,0.65);
+        background-color: rgba(30,30,30,1);
         color: white;
     }
-
+/*
     .v-Notification.closable {
         background-color: rgba(0,0,0,0.25);
         color: white;
@@ -213,5 +213,6 @@
     }
     .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part {
     	 background-color: rgba(0,0,0,0.65);
-    }
+    }*/
+
 }
