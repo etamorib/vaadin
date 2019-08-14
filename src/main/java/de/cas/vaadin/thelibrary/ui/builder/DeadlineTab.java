@@ -14,7 +14,7 @@ import org.vaadin.alump.fancylayouts.FancyCssLayout;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class DeadlineTab extends HorizontalLayout {
+class DeadlineTab extends HorizontalLayout {
     private FancyCssLayout left ;
     private ListDataProvider<Book> borrowedBookProvider;
     private ArrayList<Book> availableList;
@@ -24,7 +24,7 @@ public class DeadlineTab extends HorizontalLayout {
 
 
 
-    public DeadlineTab(){
+    DeadlineTab(){
         buildTabLayout();
     }
 
@@ -48,10 +48,12 @@ public class DeadlineTab extends HorizontalLayout {
         availableGrid.setItems(availableList);
         availableGrid.setSizeFull();
 
+
         //Grid for borrowed books
         borrowedBookProvider = new ListDataProvider<>(borrowedList);
         borrowedGrid.setDataProvider(borrowedBookProvider);
         borrowedGrid.setSizeFull();
+
 
         if(availableList.size()>0) {
             buildAvailableForm();

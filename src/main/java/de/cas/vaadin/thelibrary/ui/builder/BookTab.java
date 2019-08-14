@@ -12,20 +12,20 @@ import de.cas.vaadin.thelibrary.model.bean.BookState;
 
 import java.util.Set;
 
-public class BookTab extends VerticalLayout {
+class BookTab extends VerticalLayout {
     private BookController bookController = new BookController();
     private static Grid<Book> bookGrid;
     private ListDataProvider<Book> bookDataProvider;
     private int maxSelect = 5;
-    public static ListSelect<Book> list = null;
-    public static Set<Book> selectedBooks = null;
+    static ListSelect<Book> list = null;
+    static Set<Book> selectedBooks = null;
     private NativeSelect<BookState> state;
     private Button add;
     private TextField search;
 
 
 
-    public BookTab(){
+    BookTab(){
        buildTabLayout();
     }
 
@@ -55,6 +55,7 @@ public class BookTab extends VerticalLayout {
         bookGrid.setStyleName("grid-overall");
         bookGrid.setDataProvider(bookDataProvider);
         bookGrid.setSizeFull();
+
         //Initially only show the borrowed / available books
         initialFilter();
         state = new NativeSelect<>();
@@ -146,7 +147,7 @@ public class BookTab extends VerticalLayout {
         });
     }
 
-    public static Grid<Book> getBookGrid() {
+    static Grid<Book> getBookGrid() {
         return bookGrid;
     }
 }
