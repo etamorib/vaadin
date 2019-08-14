@@ -55,7 +55,6 @@ public class BooksView implements CreateContent{
 	private Button add, del, edit;
 	private ListDataProvider<Book> dataProvider ;
 	private NativeSelect<BookState> state;
-	private  FormLayout editForm;
 
 
 	/**
@@ -120,7 +119,7 @@ public class BooksView implements CreateContent{
 	//Building the editing layout on the right side
 	private void buildEditLayout(Book b) {
 		
-			editForm = new FormLayout();
+			final FormLayout editForm = new FormLayout();
 			
 			//Buttons
 			//Save
@@ -130,7 +129,7 @@ public class BooksView implements CreateContent{
 			//Cancel
 			Button cancel = new Button("Cancel");
 			cancel.setStyleName(ValoTheme.BUTTON_PRIMARY);
-			addCancelClicklistener(cancel);
+			addCancelClicklistener(cancel, editForm);
 			
 			//Form
 			Binder<Book> binder = new Binder<>();
@@ -180,7 +179,7 @@ public class BooksView implements CreateContent{
 				Book book = new Book(title.getValue(), author.getValue(),
 						Integer.parseInt(id.getValue()), selectYear.getValue(), state.getValue(),
 						category.getValue(), Integer.parseInt(number.getValue()));
-				addSaveClickListener(save, book);
+				addSaveClickListener(book, editForm);
 			});
 
 			
@@ -190,9 +189,7 @@ public class BooksView implements CreateContent{
 		
 	}
 
-	private void addSaveClickListener(Button save, Book book) {
-		//Create new title based on values of fields
-		//Check if there are components left on the layout
+	private void addSaveClickListener(Book book, FormLayout editForm) {
 		if(editLayout.getComponentCount()>1) {
 			//Update book in database
 			if(controller.update(book)) {
@@ -222,8 +219,8 @@ public class BooksView implements CreateContent{
 			dataProvider = new ListDataProvider<>(controller.getItems());
 			grid.setDataProvider(dataProvider);
 		}
-
 	}
+
 
 	private ArrayList<Integer> setYearsIntervall(int startYear) {
 		ArrayList<Integer> years = new ArrayList<Integer>();
@@ -233,7 +230,7 @@ public class BooksView implements CreateContent{
 		return years;
 	}
 
-	private void addCancelClicklistener(Button cancel) {
+	private void addCancelClicklistener(Button cancel, FormLayout editForm) {
 		cancel.addClickListener(e->{
 			//If there are components on the layout, lets just remove
 			if(editLayout.getComponentCount()>1) {

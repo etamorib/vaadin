@@ -158,16 +158,20 @@ public class Rentals implements CreateContent {
 			}
 			bookController.update(b);
 			
-			for(Waitlist w : waitlistController.getItems()) {
-				if(w.getBookId().intValue()==b.getId().intValue()) {
-					System.out.println("NOTIFICATION");
-					AppEventBus.post(new NotificationEvent(b.getTitle() +" by "+b.getAuthor() +" is now available for waitlisters"));
-				}
-			}
+			sendNotification(b);
 		}
 		controller.delete(set);
 	}
-	
+
+	private void sendNotification(Book b) {
+		for(Waitlist w : waitlistController.getItems()) {
+			if(w.getBookId().intValue()==b.getId().intValue()) {
+				System.out.println("NOTIFICATION");
+				AppEventBus.post(new NotificationEvent(b.getTitle() +" by "+b.getAuthor() +" is now available for waitlisters"));
+			}
+		}
+	}
+
 	private Component buildButtons() {
 		HorizontalLayout buttons = new HorizontalLayout();
 		
@@ -176,21 +180,7 @@ public class Rentals implements CreateContent {
 		del.setIcon(VaadinIcons.TRASH);
 		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
-		del.addClickListener(e->{
-			
-			
-			//If a book is deleted, which is on the waitlist, it automatically goes to rent
-			//else it is just deleted
-			deleteSelectedItems(grid.getSelectedItems());
-			deleteSelectedItems(late.getSelectedItems());
-			
-			updateLists();
-			lateDataProvider = new ListDataProvider<>(lateList);
-			dataProvider = new ListDataProvider<>(ongoingList);
-			grid.setDataProvider(dataProvider);
-			late.setDataProvider(lateDataProvider);
-
-		});
+		setDelClickListener(del);
 		//Search for id
 		NumberField search  = new NumberField();
 		search.setDecimalAllowed(false);
@@ -200,21 +190,42 @@ public class Rentals implements CreateContent {
 	    search.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
 		search.setValueChangeMode(ValueChangeMode.EAGER);
-		search.addValueChangeListener(e->{
-			//To prevent NumberFormatException
-			if(!e.getValue().equals("")) {
-				dataProvider.setFilter(rent->rent.getBookId()==Integer.parseInt(e.getValue())||
-											rent.getReaderId()==Integer.parseInt(e.getValue()));
-			}else {
-				dataProvider.clearFilters();
-			}
-			
-		});
+		setSearchFilter(search);
 			
 		buttons.addComponents(del, search);
 		return buttons;
 	}
-	
+
+	private void setSearchFilter(NumberField search) {
+		search.addValueChangeListener(e->{
+			//To prevent NumberFormatException
+			if(!e.getValue().equals("")) {
+				dataProvider.setFilter(rent->rent.getBookId()==Integer.parseInt(e.getValue())||
+						rent.getReaderId()==Integer.parseInt(e.getValue()));
+			}else {
+				dataProvider.clearFilters();
+			}
+
+		});
+	}
+
+	private void setDelClickListener(Button del) {
+		del.addClickListener(e->{
+
+			//If a book is deleted, which is on the waitlist, it automatically goes to rent
+			//else it is just deleted
+			deleteSelectedItems(grid.getSelectedItems());
+			deleteSelectedItems(late.getSelectedItems());
+
+			updateLists();
+			lateDataProvider = new ListDataProvider<>(lateList);
+			dataProvider = new ListDataProvider<>(ongoingList);
+			grid.setDataProvider(dataProvider);
+			late.setDataProvider(lateDataProvider);
+
+		});
+	}
+
 	@Override
 	public String getName() {
 		return this.name;

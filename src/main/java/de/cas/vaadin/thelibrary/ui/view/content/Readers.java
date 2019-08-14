@@ -47,7 +47,6 @@ public class Readers implements CreateContent {
 	private ReaderController controller = new ReaderController();
 	private Button add, del, edit;
 	private ListDataProvider<Reader> dataProvider ;
-	private FormLayout editForm;
 
 
 	@Override
@@ -76,14 +75,14 @@ public class Readers implements CreateContent {
 	//Building the layout for right side editing
 	private void buildEditLayout(Reader b) {
 		
-			editForm = new FormLayout();
+			final FormLayout editForm = new FormLayout();
 			
 			//Buttons
 			Button save = new Button("Save");
 			save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 			Button cancel = new Button("Cancel");
 			cancel.setStyleName(ValoTheme.BUTTON_PRIMARY);
-			setCancelClickListener(cancel);
+			setCancelClickListener(cancel, editForm);
 			
 			//Form
 			TextField id = new TextField("id");
@@ -106,7 +105,7 @@ public class Readers implements CreateContent {
 				//New reader object based on the values of the fields
 				Reader reader = new Reader(name.getValue(), address.getValue(), email.getValue(), 
 											Integer.parseInt(id.getValue()), Long.parseLong(phone.getValue()));
-				setSaveClickListener(save, reader);
+				setSaveClickListener(save, reader, editForm);
 
 
 			});
@@ -117,7 +116,7 @@ public class Readers implements CreateContent {
 		
 	}
 
-	private void setSaveClickListener(Button save, Reader reader) {
+	private void setSaveClickListener(Button save, Reader reader, FormLayout editForm) {
 		if(editLayout.getComponentCount()>1) {
 			if(controller.update(reader)) {
 				Notification.show("Update successful");
@@ -151,7 +150,7 @@ public class Readers implements CreateContent {
 		}
 	}
 
-	private void setCancelClickListener(Button cancel) {
+	private void setCancelClickListener(Button cancel, FormLayout editForm) {
 		cancel.addClickListener(e->{
 			if(editLayout.getComponentCount()>1) {
 				editLayout.fancyRemoveComponent(editForm);
