@@ -15,9 +15,9 @@ import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 public class WaitlistDAO implements DaoInterface<Waitlist> {
 	
 	private final String CONN = DaoInterface.connectionString() + Waitlist.DBname;
-	private final String ADD = "INSERT INTO WAITLIST (BOOKID, READERID, REQUESTDATE, WAITDATE) VALUES(?,?,?,?)";
-	private final String DEL = "DELETE FROM WAITLIST WHERE BOOKID =? AND READERID =?";
-	private final String LIST = "SELECT * FROM WAITLIST";
+	private static final String ADD = "INSERT INTO WAITLIST (BOOKID, READERID, REQUESTDATE, WAITDATE) VALUES(?,?,?,?)";
+	private static final String DEL = "DELETE FROM WAITLIST WHERE BOOKID =? AND READERID =?";
+	private static final String LIST = "SELECT * FROM WAITLIST";
 	
 	public WaitlistDAO() {
 		try {

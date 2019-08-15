@@ -14,12 +14,12 @@ import de.cas.vaadin.thelibrary.model.bean.Reader;
 public class ReaderDAO implements DaoInterface<Reader>, ExtraDaoInterface<Reader> {
 	
 	
-	private final String CONN = DaoInterface.connectionString() + Reader.DBname;
-	private final String UPDATE = "UPDATE READER SET NAME=?, ADDRESS=?, EMAIL=?, PHONE=? WHERE ID=?";
-	private final String ADD = "INSERT INTO READER(NAME, ADDRESS, EMAIL, PHONE) VALUES(?,?,?,?)";
-	private final String DEL = "DELETE FROM READER WHERE ID=?";
-	private final String LIST = "SELECT * FROM READER";
-	private final String FIND = "SELECT * FROM READER WHERE ID=?";
+	private static final String CONN = DaoInterface.connectionString() + Reader.DBname;
+	private static final String UPDATE = "UPDATE READER SET NAME=?, ADDRESS=?, EMAIL=?, PHONE=? WHERE ID=?";
+	private static final String ADD = "INSERT INTO READER(NAME, ADDRESS, EMAIL, PHONE) VALUES(?,?,?,?)";
+	private static final String DEL = "DELETE FROM READER WHERE ID=?";
+	private static final String LIST = "SELECT * FROM READER";
+	private static final String FIND = "SELECT * FROM READER WHERE ID=?";
 
 	
 	public ReaderDAO() {

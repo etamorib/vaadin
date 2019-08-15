@@ -5,7 +5,7 @@ import com.vaadin.server.VaadinService;
 
 import java.io.File;
 
-public class ImageResource extends FileResource {
+class ImageResource extends FileResource {
 
     private static final String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath()
             +"/WEB-INF/Images/";
@@ -17,7 +17,7 @@ public class ImageResource extends FileResource {
      * @param name of the file that should be served.
      */
 
-    public ImageResource(String filename){
+    ImageResource(String filename){
         super(new File(basepath+filename));
     }
 
