@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.view;
 
+import com.google.inject.Inject;
 import com.vaadin.ui.Component;
 
 /**
@@ -7,15 +8,16 @@ import com.vaadin.ui.Component;
  * Controls the content building method of the
  * different classes.
  */
-public class Content {
+class Content {
 
 	private CreateContent content;
-	
-	public Content(CreateContent content) {
+
+	@Inject
+	Content(CreateContent content) {
 		this.content = content;
 	}
 	
-	public Component createContent() {
+	Component createContent() {
 		return this.content.buildContent();
 	}
 		

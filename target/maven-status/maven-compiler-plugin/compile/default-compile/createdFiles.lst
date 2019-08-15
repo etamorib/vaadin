@@ -1,7 +1,10 @@
 de\cas\vaadin\thelibrary\model\bean\Category.class
 de\cas\vaadin\thelibrary\ui\builder\BookTab.class
+de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.class
+de\cas\vaadin\thelibrary\ui\customcomponents\namecard\DropdownButton.class
 de\cas\vaadin\thelibrary\ui\builder\ReaderTab.class
 de\cas\vaadin\thelibrary\ui\builder\TabBuilder.class
 de\cas\vaadin\thelibrary\ui\builder\DeadlineTab.class
 de\cas\vaadin\thelibrary\controller\MasterController.class
+de\cas\vaadin\thelibrary\ui\customcomponents\namecard\NameCard.class
 de\cas\vaadin\thelibrary\ui\view\content\NewBookView.class

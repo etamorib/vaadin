@@ -28,7 +28,7 @@ import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
  */
 @SuppressWarnings("serial")
 public class LoginView extends VerticalLayout {
-	
+
 	public LoginView() {
 	 	setSizeFull();
         setMargin(false);
@@ -39,20 +39,7 @@ public class LoginView extends VerticalLayout {
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 
-        /*Notification to show at the bottom
-         * It's just a little helper
-        */
-        Notification notification = new Notification(
-                "Welcome to the library app");
-        notification
-                .setDescription("<span>This is just a trial project. <br> <strong>Username: admin</strong><br>"
-                		+ " <strong>Password: admin<br></strong> "
-                		+ "</span> <span><b>Sign In</b> button to continue.</span>");
-        notification.setHtmlContentAllowed(true);
-        notification.setStyleName("closable");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(-1);
-        notification.show(Page.getCurrent());
+
 	}
 	
 	/**

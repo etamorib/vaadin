@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.event;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 /**
@@ -35,6 +36,7 @@ public abstract class AppEvent {
 	 * CreateContent object as contructor parameter*/
 	public static final class ChangeViewEvent{
 		private CreateContent container ;
+		@Inject
 		public ChangeViewEvent(CreateContent container) {
 			this.container = container;
 		}

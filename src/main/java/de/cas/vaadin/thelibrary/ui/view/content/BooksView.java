@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.cas.vaadin.thelibrary.controller.MasterController;
 import de.cas.vaadin.thelibrary.model.bean.Category;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
+import de.cas.vaadin.thelibrary.ui.customcomponents.namecard.NameCard;
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
 import org.vaadin.ui.NumberField;
 
@@ -44,7 +45,6 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 /**
  * @author mate.biro
  * This is the GUI of the BooksView
- * TODO: It could be simplified with better design
  */
 public class BooksView implements CreateContent{
 	private HorizontalLayout mainLayout;
@@ -55,7 +55,6 @@ public class BooksView implements CreateContent{
 	private Button add, del, edit;
 	private ListDataProvider<Book> dataProvider ;
 	private NativeSelect<BookState> state;
-
 
 	/**
 	 * Builds the content of the view
@@ -75,7 +74,11 @@ public class BooksView implements CreateContent{
 		title.setStyleName(ValoTheme.LABEL_H1);
 		
 		//Adding components to the "left" side
-		left.addComponents(title,buildButtons(), buildGrid());
+		//TODO: Delete next line
+		NameCard test = new NameCard("Test", "tesadasta");
+		test.setImage("book-icon.png");
+		test.setDropdown(true);
+		left.addComponents(title,buildButtons(), buildGrid(), test);
 		mainLayout.addComponent(left);
 		return mainLayout;
 	}

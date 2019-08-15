@@ -7,6 +7,7 @@ C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\LoginView.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\builder\TabBuilder.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\builder\SideMenuBuilder.java
+C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\customcomponents\namecard\DropdownButton.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\event\AppEventBus.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\DaoInterface.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\builder\NotificationWindowBuilder.java
@@ -27,6 +28,7 @@ C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\Content.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\CreateContent.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\MainView.java
+C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\Readers.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\controller\WaitlistController.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\Reader.java
@@ -36,6 +38,7 @@ C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\BookState.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\content\NewRental.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\BookDAO.java
+C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\customcomponents\namecard\NameCard.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\controller\ExtraControllerInterface.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\builder\ReaderTab.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\controller\ControllerInterface.java

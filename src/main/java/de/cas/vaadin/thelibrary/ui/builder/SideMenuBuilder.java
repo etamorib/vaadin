@@ -2,6 +2,7 @@ package de.cas.vaadin.thelibrary.ui.builder;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.cas.vaadin.thelibrary.ui.view.content.*;
 import org.vaadin.teemusa.sidemenu.SideMenu;
@@ -33,7 +34,7 @@ public class SideMenuBuilder extends CustomComponent {
 	public SideMenuBuilder() {
 		menuItems =  new ArrayList<>();
 		menuItems.clear();
-		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList(), new NewBookView());
+		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList());
 		addItemsToMenu(menuItems);
 		styleMenu();
 		setAdmin();
@@ -53,11 +54,9 @@ public class SideMenuBuilder extends CustomComponent {
 		menu.addUserMenuItem("Sign out", VaadinIcons.SIGN_OUT,()->{
 			AppEventBus.post(new LogoutRequestEvent());
 		});
-		menu.addUserMenuItem("Notifications", ()->{
-			//Notifications will not be stored after the app terminates
-			//For that, i would need to store in database (maybe todo?)
-			notificationWindowBuilder.openNotifications();
-		});
+		//Notifications will not be stored after the app terminates
+		//For that, i would need to store in database (maybe todo?)
+		menu.addUserMenuItem("Notifications", notificationWindowBuilder::openNotifications);
 	}
 
 	/*Sets the menu items, and sets the action of the items.
@@ -75,9 +74,7 @@ public class SideMenuBuilder extends CustomComponent {
 	 * in the parameter
 	*/
 	private void fillArray(CreateContent ...contents) {
-		for(CreateContent c : contents) {
-			menuItems.add(c);
-		}
+		Collections.addAll(menuItems, contents);
 	}
 	/**
 	 * Adds a new menu item to the sidebar

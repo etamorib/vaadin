@@ -59,8 +59,6 @@ public class MainView extends HorizontalLayout {
 		menu.getSideMenu().setContent(c.createContent());
 	}
 
-	
-	
-	
+
 	
 }
