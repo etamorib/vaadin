@@ -14,6 +14,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 
 /**This class is responsible for configuring the properties
@@ -28,7 +29,8 @@ public class EmailSender {
 	//Dummy username and password from Mailtrap.io
 	private static final String username = "014a73006ce6f4";
 	private static final String password = "2f95a385eabd43";
-	
+
+	@Inject
 	public EmailSender(Reader r) {
 		this.r = r;
 	}
