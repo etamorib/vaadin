@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
+import com.google.inject.Inject;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
@@ -39,6 +40,11 @@ public class Rentals implements CreateContent {
 	private ListDataProvider<Rent> dataProvider ;
 	private ListDataProvider<Rent> lateDataProvider ;
 
+	private MasterController masterController;
+	@Inject
+	public Rentals(MasterController masterController){
+		this.masterController = masterController;
+	}
 	
 	
 	@Override
@@ -58,7 +64,7 @@ public class Rentals implements CreateContent {
 	private void updateLists() {
 		ongoingList.clear();
 		lateList.clear();
-		MasterController.getRentController().getItems().forEach(e->{
+		masterController.getRentController().getItems().forEach(e->{
 			if(e.getReturnTime().isBefore(LocalDate.now()) || e.getReturnTime().isEqual(LocalDate.now())) {
 				lateList.add(e);
 			}
@@ -92,7 +98,7 @@ public class Rentals implements CreateContent {
 			//For every reader that is in the latelist
 			updateLists();
 			for(Rent r: lateList) {
-				Reader reader = MasterController.getReaderController().findById(r.getReaderId());
+				Reader reader = masterController.getReaderController().findById(r.getReaderId());
 				//MailTrapSender sender = new MailTrapSender(reader);
 				try {
 					CASTheLibraryApplication.getSendMail().sendMail(reader);
@@ -128,22 +134,22 @@ public class Rentals implements CreateContent {
 	//So deleting from both grid is easy, based on the parameter
 	private void deleteSelectedItems(Set<Rent> set) {
 		for(Rent r : set) {
-			Book b = MasterController.getBookController().findById(r.getBookId());
+			Book b = masterController.getBookController().findById(r.getBookId());
 			if(b.getNumber()<1) {
 				b.setState(BookState.Available);
 				b.setNumber(b.getNumber()+1);
 			}else{
 				b.setNumber(b.getNumber()+1);
 			}
-			MasterController.getBookController().update(b);
+			masterController.getBookController().update(b);
 			
 			sendNotification(b);
 		}
-		MasterController.getRentController().delete(set);
+		masterController.getRentController().delete(set);
 	}
 
 	private void sendNotification(Book b) {
-		for(Waitlist w : MasterController.getWaitlistController().getItems()) {
+		for(Waitlist w : masterController.getWaitlistController().getItems()) {
 			if(w.getBookId().intValue()==b.getId().intValue()) {
 				System.out.println("NOTIFICATION");
 				AppEventBus.post(new NotificationEvent(b.getTitle() +" by "+b.getAuthor() +" is now available for waitlisters"));

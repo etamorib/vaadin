@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
+import com.google.inject.Inject;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -21,11 +22,12 @@ class BookTab extends VerticalLayout {
     private NativeSelect<BookState> state;
     private Button add;
     private TextField search;
+    private MasterController masterController;
 
-
-
-    BookTab(){
-       buildTabLayout();
+    @Inject
+    public BookTab(MasterController masterController){
+        this.masterController = masterController;
+        buildTabLayout();
     }
 
     private void updateCounter(Label l, int i) {
@@ -47,7 +49,7 @@ class BookTab extends VerticalLayout {
 
         //Grid
         bookGrid = new Grid<>(Book.class);
-        bookDataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
+        bookDataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
         //To make sure column order
         bookGrid.setColumns("id", "author","title", "category", "year", "state", "number");
         bookGrid.setSelectionMode(Grid.SelectionMode.MULTI);

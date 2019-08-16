@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.controller.MasterController;
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
 import org.vaadin.ui.NumberField;
@@ -48,6 +49,12 @@ public class Readers implements CreateContent {
 	private Button add, del, edit;
 	private ListDataProvider<Reader> dataProvider ;
 
+	private MasterController masterController;
+	@Inject
+	public Readers(MasterController masterController){
+		this.masterController = masterController;
+	}
+
 	@Override
 	public Component buildContent() {
 		mainLayout = new HorizontalLayout();
@@ -61,7 +68,7 @@ public class Readers implements CreateContent {
 	}
 	
 	private Component buildGrid() {
-		dataProvider = new ListDataProvider<>(MasterController.getReaderController().getItems());
+		dataProvider = new ListDataProvider<>(masterController.getReaderController().getItems());
 		grid.setSelectionMode(SelectionMode.MULTI);
 		grid.setStyleName("grid-overall");
 		grid.setDataProvider(dataProvider);
@@ -115,10 +122,10 @@ public class Readers implements CreateContent {
 
 	private void setSaveClickListener(Button save, Reader reader, FormLayout editForm) {
 		if(editLayout.getComponentCount()>1) {
-			if(MasterController.getReaderController().update(reader)) {
+			if(masterController.getReaderController().update(reader)) {
 				Notification.show("Update successful");
 				//Reset the grid
-				dataProvider = new ListDataProvider<>(MasterController.getReaderController().getItems());
+				dataProvider = new ListDataProvider<>(masterController.getReaderController().getItems());
 				grid.setDataProvider(dataProvider);
 				editLayout.fancyRemoveComponent(editForm);
 
@@ -130,7 +137,7 @@ public class Readers implements CreateContent {
 			}
 		}
 		else {
-			if(MasterController.getReaderController().update(reader)) {
+			if(masterController.getReaderController().update(reader)) {
 				Notification.show("Update successful");
 			}
 			else {
@@ -142,7 +149,7 @@ public class Readers implements CreateContent {
 			mainLayout.removeComponent(editLayout);
 			grid.setSizeFull();
 			grid.deselectAll();
-			dataProvider = new ListDataProvider<>(MasterController.getReaderController().getItems());
+			dataProvider = new ListDataProvider<>(masterController.getReaderController().getItems());
 			grid.setDataProvider(dataProvider);
 		}
 	}
@@ -229,8 +236,8 @@ public class Readers implements CreateContent {
 
 	private void setDelClickListener() {
 		del.addClickListener(e->{
-			MasterController.getReaderController().delete(grid.getSelectedItems());
-			dataProvider = new ListDataProvider<>(MasterController.getReaderController().getItems());
+			masterController.getReaderController().delete(grid.getSelectedItems());
+			dataProvider = new ListDataProvider<>(masterController.getReaderController().getItems());
 			grid.setDataProvider(dataProvider);
 
 		});
@@ -280,11 +287,11 @@ public class Readers implements CreateContent {
 		add.addClickListener(e->{
 			//Adding new reader to database
 			Reader reader = new Reader(name.getValue(), address.getValue(), email.getValue(), Long.parseLong(phone.getValue()));
-			if(MasterController.getReaderController().add(reader)) {
+			if(masterController.getReaderController().add(reader)) {
 				window.close();
 				Notification.show("Book has been added to database");
 				//Refresh grid
-				dataProvider = new ListDataProvider<>(MasterController.getReaderController().getItems());
+				dataProvider = new ListDataProvider<>(masterController.getReaderController().getItems());
 				grid.setDataProvider(dataProvider);
 				
 			}

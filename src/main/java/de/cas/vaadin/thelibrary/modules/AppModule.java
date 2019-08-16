@@ -5,6 +5,7 @@ import com.google.inject.multibindings.Multibinder;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.NativeButton;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
+import de.cas.vaadin.thelibrary.ui.view.ViewModule;
 import de.cas.vaadin.thelibrary.ui.view.content.*;
 import de.cas.vaadin.thelibrary.utils.EmailSender;
 import de.cas.vaadin.thelibrary.utils.MailTrapSender;
@@ -12,6 +13,7 @@ import de.cas.vaadin.thelibrary.utils.MailTrapSender;
 public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
+        install(new ViewModule());
         bind(EmailSender.class).to(MailTrapSender.class);
         //Views
         Multibinder<CreateContent> contentBinder = Multibinder.newSetBinder(binder(), CreateContent.class);

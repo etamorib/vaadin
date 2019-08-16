@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * This is the GUI of the BooksView
  */
 public class BooksView implements CreateContent{
-
+	private MasterController masterController;
 	private final Provider<Button> buttonProvider;
 	private HorizontalLayout mainLayout;
 	private FancyCssLayout editLayout = new FancyCssLayout();
@@ -42,8 +42,9 @@ public class BooksView implements CreateContent{
 	private NativeSelect<BookState> state;
 
 	@Inject
-	public BooksView(Provider<Button> buttonProvider) {
+	public BooksView(Provider<Button> buttonProvider, MasterController masterController) {
 		this.buttonProvider = buttonProvider;
+		this.masterController = masterController;
 	}
 
 	/**
@@ -79,7 +80,7 @@ public class BooksView implements CreateContent{
 	//This method builds the grid of this view, containing Books
 	private Component buildGrid() {
 		//Dataprovider which gets the data from the database
-		dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
+		dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
 		
 		//To make sure column order
 		grid.setColumns("id","author","title", "category","year", "state", "number");
@@ -188,10 +189,10 @@ public class BooksView implements CreateContent{
 	private void addSaveClickListener(Book book, FormLayout editForm) {
 		if(editLayout.getComponentCount()>1) {
 			//Update book in database
-			if(MasterController.getBookController().update(book)) {
+			if(masterController.getBookController().update(book)) {
 				Notification.show("Update successful");
 				//Reset grid
-				dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
+				dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
 				grid.setDataProvider(dataProvider);
 				editLayout.fancyRemoveComponent(editForm);
 			}
@@ -202,7 +203,7 @@ public class BooksView implements CreateContent{
 		}
 		//If there are no more components, remove this layout and reset grid
 		else {
-			if(MasterController.getBookController().update(book)) {
+			if(masterController.getBookController().update(book)) {
 				Notification.show("Update successful");
 			}else {
 				Notification.show("Something went wrong");
@@ -212,7 +213,7 @@ public class BooksView implements CreateContent{
 			mainLayout.removeComponent(editLayout);
 			grid.setSizeFull();
 			grid.deselectAll();
-			dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
+			dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
 			grid.setDataProvider(dataProvider);
 		}
 	}
@@ -321,8 +322,8 @@ public class BooksView implements CreateContent{
 						Notification.show("Book cannot be deleted while it is rented");
 					}else{
 						System.out.println("TRUE");
-						MasterController.getBookController().delete(b);
-						dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
+						masterController.getBookController().delete(b);
+						dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
 						grid.setDataProvider(dataProvider);
 					}
 				}
@@ -335,7 +336,7 @@ public class BooksView implements CreateContent{
 	}
 
 	private boolean isBookBorrowed(Book b) {
-		for(Rent r : MasterController.getRentController().getItems()){
+		for(Rent r : masterController.getRentController().getItems()){
 			if(r.getBookId().intValue() == b.getId().intValue()){
 				return true;
 			}
@@ -397,10 +398,10 @@ public class BooksView implements CreateContent{
 		add.addClickListener(e->{
 			Book b = new Book(title.getValue(), author.getValue(), Integer.parseInt(id.getValue()), 
 								Integer.parseInt(year.getValue()), BookState.Available, category.getValue(), Integer.parseInt(number.getValue()));
-			if(MasterController.getBookController().add(b)) {
+			if(masterController.getBookController().add(b)) {
 				window.close();
 				Notification.show("Book has been added to database");
-				dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
+				dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
 				grid.setDataProvider(dataProvider);
 				
 			}

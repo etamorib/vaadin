@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
+import com.google.inject.Inject;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
@@ -26,6 +27,12 @@ public class WaitList implements CreateContent {
 	private VerticalLayout layout;
 	private ListDataProvider<Waitlist> dataProvider ;
 
+	private MasterController masterController;
+	@Inject
+	public WaitList(MasterController masterController){
+		this.masterController = masterController;
+	}
+
 	@Override
 	public Component buildContent() {
 		layout = new VerticalLayout();
@@ -44,24 +51,24 @@ public class WaitList implements CreateContent {
 	private void addRentClickListener(Button rent) {
 		rent.addClickListener(e->{
 			if(grid.getSelectedItems().size()>0) {
-				Book b = MasterController.getBookController().findById(grid.getSelectedItems().iterator().next().getBookId());
+				Book b = masterController.getBookController().findById(grid.getSelectedItems().iterator().next().getBookId());
 				if(b.getState() == BookState.Available) {
-					MasterController.getWaitlistController().delete(grid.getSelectedItems());
-					MasterController.getRentController().add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(),
+					masterController.getWaitlistController().delete(grid.getSelectedItems());
+					masterController.getRentController().add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(),
 							grid.getSelectedItems().iterator().next().getReaderId()));
 					b.setState(BookState.Borrowed);
-					MasterController.getBookController().update(b);
+					masterController.getBookController().update(b);
 				}else {
-					MasterController.getWaitlistController().delete(grid.getSelectedItems());
+					masterController.getWaitlistController().delete(grid.getSelectedItems());
 				}
-				dataProvider = new ListDataProvider<>(MasterController.getWaitlistController().getItems());
+				dataProvider = new ListDataProvider<>(masterController.getWaitlistController().getItems());
 				grid.setDataProvider(dataProvider);
 			}
 		});
 	}
 
 	private Component buildGrid() {
-		dataProvider = new ListDataProvider<>(MasterController.getWaitlistController().getItems());
+		dataProvider = new ListDataProvider<>(masterController.getWaitlistController().getItems());
 		grid.setSelectionMode(SelectionMode.SINGLE);
 		grid.setSizeFull();
 		grid.setStyleName("grid-overall");

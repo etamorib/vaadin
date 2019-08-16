@@ -3,7 +3,9 @@ package de.cas.vaadin.thelibrary.ui.view.content;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
+import de.cas.vaadin.thelibrary.controller.*;
 import de.cas.vaadin.thelibrary.ui.builder.TabBuilder;
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
 
@@ -30,10 +32,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.cas.vaadin.thelibrary.controller.BookController;
-import de.cas.vaadin.thelibrary.controller.ReaderController;
-import de.cas.vaadin.thelibrary.controller.RentController;
-import de.cas.vaadin.thelibrary.controller.WaitlistController;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.model.bean.Book;
@@ -51,9 +49,10 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 public class NewRental implements CreateContent {
 
 	private final String name = "New Rentals";
-
-	public NewRental() {
-
+	private TabBuilder tabBuilder;
+	@Inject
+	public NewRental(TabBuilder tabBuilder) {
+		this.tabBuilder = tabBuilder;
 	}
 
 	@Override
@@ -64,8 +63,7 @@ public class NewRental implements CreateContent {
 		//The main layout
 		VerticalLayout mainLayout = new VerticalLayout(title);
 
-		TabBuilder tb = new TabBuilder();
-		mainLayout.addComponents(TabBuilder.getTabSheet());
+		mainLayout.addComponents(tabBuilder.getTabSheet());
 
 		return mainLayout;
 	}
