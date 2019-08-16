@@ -3,6 +3,8 @@ package de.cas.vaadin.thelibrary;
 import javax.servlet.annotation.WebServlet;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.Page;
@@ -18,8 +20,10 @@ import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.model.bean.Admin;
+import de.cas.vaadin.thelibrary.modules.AppModule;
 import de.cas.vaadin.thelibrary.ui.view.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
+import de.cas.vaadin.thelibrary.utils.SendMail;
 
 /**
  * @author mate.biro
@@ -85,7 +89,13 @@ public class CASTheLibraryApplication extends UI {
 		getUI().getPage().setLocation("/");
 		
 	}
-	  
+
+	//Injector
+	private static Injector injector = Guice.createInjector(new AppModule());
+	private static SendMail sendMail = injector.getInstance(SendMail.class);
+	public static SendMail getSendMail(){
+		return sendMail;
+	}
 	
 	  /**
 	 * @return the AppEventBus of the application

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.mail.MessagingException;
 
+import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
 import org.vaadin.ui.NumberField;
 
 import com.vaadin.data.provider.ListDataProvider;
@@ -34,7 +35,7 @@ import de.cas.vaadin.thelibrary.model.bean.Reader;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
 import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
-import de.cas.vaadin.thelibrary.utils.EmailSender;
+import de.cas.vaadin.thelibrary.utils.MailTrapSender;
 
 
 /**This class is the view of the rentals
@@ -114,9 +115,9 @@ public class Rentals implements CreateContent {
 			updateLists();
 			for(Rent r: lateList) {
 				Reader reader = readerController.findById(r.getReaderId());
-				EmailSender sender = new EmailSender(reader);
+				//MailTrapSender sender = new MailTrapSender(reader);
 				try {
-					sender.send();
+					CASTheLibraryApplication.getSendMail().sendMail(reader);
 					Notification.show("Emails have been sent");
 				}catch (MessagingException ex) {
 					Notification.show("Sending was unsuccesful!");
