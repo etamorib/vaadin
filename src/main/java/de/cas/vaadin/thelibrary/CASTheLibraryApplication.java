@@ -2,6 +2,7 @@ package de.cas.vaadin.thelibrary;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -36,7 +37,7 @@ import de.cas.vaadin.thelibrary.utils.SendMail;
 @SuppressWarnings("serial")
 public class CASTheLibraryApplication extends UI {
 	
-	private AppEventBus eventBus = new AppEventBus();
+	private AppEventBus eventBus = new AppEventBus(injector.getInstance(EventBus.class));
 	
 	@Override
 	protected void init(VaadinRequest request) {

@@ -1,22 +1,16 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Set;
-
 import com.google.inject.Inject;
-import de.cas.vaadin.thelibrary.ui.view.content.*;
 import org.vaadin.teemusa.sidemenu.SideMenu;
-
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.CustomComponent;
-
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
-;
+
 
 /**
  * @author mate.biro
@@ -27,14 +21,15 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 public class SideMenuBuilder extends CustomComponent {
 	
 	private final String title = "CAS Library";
-	//So the notification can be carried over view changes
-	private final static NotificationWindowBuilder notificationWindowBuilder = new NotificationWindowBuilder();
+	private final  NotificationWindowBuilder notificationWindowBuilder;
 	private final Set<CreateContent> contentItems;
-	private SideMenu menu = new SideMenu();
+	private SideMenu menu ;
 
 	@Inject
-	public SideMenuBuilder(Set<CreateContent> contentItems) {
+	public SideMenuBuilder(SideMenu menu ,Set<CreateContent> contentItems, NotificationWindowBuilder n) {
 		this.contentItems = contentItems;
+		this.menu = menu;
+		notificationWindowBuilder = n;
 		addItemsToMenu(contentItems);
 		styleMenu();
 		setAdmin();
@@ -75,7 +70,6 @@ public class SideMenuBuilder extends CustomComponent {
 	public SideMenu getSideMenu() {
 		return this.menu;
 	}
-	
 
 	
 }

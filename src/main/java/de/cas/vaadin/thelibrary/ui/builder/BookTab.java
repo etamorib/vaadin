@@ -13,7 +13,6 @@ import de.cas.vaadin.thelibrary.model.bean.BookState;
 import java.util.Set;
 
 class BookTab extends VerticalLayout {
-    private BookController bookController = new BookController();
     private static Grid<Book> bookGrid;
     private ListDataProvider<Book> bookDataProvider;
     private int maxSelect = 5;
@@ -48,7 +47,7 @@ class BookTab extends VerticalLayout {
 
         //Grid
         bookGrid = new Grid<>(Book.class);
-        bookDataProvider = new ListDataProvider<>(bookController.getItems());
+        bookDataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
         //To make sure column order
         bookGrid.setColumns("id", "author","title", "category", "year", "state", "number");
         bookGrid.setSelectionMode(Grid.SelectionMode.MULTI);

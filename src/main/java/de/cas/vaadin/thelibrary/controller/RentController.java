@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.controller;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.model.RentDAO;
 import de.cas.vaadin.thelibrary.model.bean.Rent;
 
@@ -12,7 +13,11 @@ import de.cas.vaadin.thelibrary.model.bean.Rent;
  *
  */
 public class RentController implements ControllerInterface<Rent> {
-	private RentDAO dao = new RentDAO();
+	private RentDAO dao;
+	@Inject
+	public RentController(RentDAO dao){
+		this.dao = dao;
+	}
 
 	@Override
 	public boolean add(Rent bean) {

@@ -1,41 +1,24 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Set;
-
-import javax.mail.MessagingException;
-
-import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
-import org.vaadin.ui.NumberField;
-
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-
-import de.cas.vaadin.thelibrary.controller.BookController;
-import de.cas.vaadin.thelibrary.controller.ReaderController;
-import de.cas.vaadin.thelibrary.controller.RentController;
-import de.cas.vaadin.thelibrary.controller.WaitlistController;
+import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
+import de.cas.vaadin.thelibrary.controller.MasterController;
 import de.cas.vaadin.thelibrary.event.AppEvent.NotificationEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
-import de.cas.vaadin.thelibrary.model.bean.Book;
-import de.cas.vaadin.thelibrary.model.bean.BookState;
-import de.cas.vaadin.thelibrary.model.bean.Reader;
-import de.cas.vaadin.thelibrary.model.bean.Rent;
-import de.cas.vaadin.thelibrary.model.bean.Waitlist;
+import de.cas.vaadin.thelibrary.model.bean.*;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
-import de.cas.vaadin.thelibrary.utils.MailTrapSender;
+import org.vaadin.ui.NumberField;
+
+import javax.mail.MessagingException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Set;
 
 
 /**This class is the view of the rentals
@@ -44,11 +27,6 @@ import de.cas.vaadin.thelibrary.utils.MailTrapSender;
  */
 public class Rentals implements CreateContent {
 
-	private RentController controller = new RentController();
-	private BookController bookController = new BookController();
-	private WaitlistController waitlistController = new WaitlistController();
-	private ReaderController readerController = new ReaderController();
-	
 	private final String name = "Rents";
 	private Grid<Rent> grid = new Grid<>(Rent.class);
 	private Grid<Rent> late = new Grid<>(Rent.class);
@@ -80,7 +58,7 @@ public class Rentals implements CreateContent {
 	private void updateLists() {
 		ongoingList.clear();
 		lateList.clear();
-		controller.getItems().forEach(e->{
+		MasterController.getRentController().getItems().forEach(e->{
 			if(e.getReturnTime().isBefore(LocalDate.now()) || e.getReturnTime().isEqual(LocalDate.now())) {
 				lateList.add(e);
 			}
@@ -114,7 +92,7 @@ public class Rentals implements CreateContent {
 			//For every reader that is in the latelist
 			updateLists();
 			for(Rent r: lateList) {
-				Reader reader = readerController.findById(r.getReaderId());
+				Reader reader = MasterController.getReaderController().findById(r.getReaderId());
 				//MailTrapSender sender = new MailTrapSender(reader);
 				try {
 					CASTheLibraryApplication.getSendMail().sendMail(reader);
@@ -150,22 +128,22 @@ public class Rentals implements CreateContent {
 	//So deleting from both grid is easy, based on the parameter
 	private void deleteSelectedItems(Set<Rent> set) {
 		for(Rent r : set) {
-			Book b = bookController.findById(r.getBookId());
+			Book b = MasterController.getBookController().findById(r.getBookId());
 			if(b.getNumber()<1) {
 				b.setState(BookState.Available);
 				b.setNumber(b.getNumber()+1);
 			}else{
 				b.setNumber(b.getNumber()+1);
 			}
-			bookController.update(b);
+			MasterController.getBookController().update(b);
 			
 			sendNotification(b);
 		}
-		controller.delete(set);
+		MasterController.getRentController().delete(set);
 	}
 
 	private void sendNotification(Book b) {
-		for(Waitlist w : waitlistController.getItems()) {
+		for(Waitlist w : MasterController.getWaitlistController().getItems()) {
 			if(w.getBookId().intValue()==b.getId().intValue()) {
 				System.out.println("NOTIFICATION");
 				AppEventBus.post(new NotificationEvent(b.getTitle() +" by "+b.getAuthor() +" is now available for waitlisters"));

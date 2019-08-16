@@ -1,45 +1,29 @@
 package de.cas.vaadin.thelibrary.ui.view.content;
 
-import java.time.Year;
-import java.util.ArrayList;
-
-import de.cas.vaadin.thelibrary.controller.MasterController;
-import de.cas.vaadin.thelibrary.model.bean.Category;
-import de.cas.vaadin.thelibrary.model.bean.Rent;
-import de.cas.vaadin.thelibrary.ui.customcomponents.namecard.NameCard;
-import org.vaadin.alump.fancylayouts.FancyCssLayout;
-import org.vaadin.ui.NumberField;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.shared.ui.dnd.DropEffect;
-import com.vaadin.shared.ui.dnd.EffectAllowed;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Grid;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.components.grid.GridDragSource;
-import com.vaadin.ui.dnd.DropTargetExtension;
 import com.vaadin.ui.themes.ValoTheme;
-
 import de.cas.vaadin.thelibrary.controller.BookController;
+import de.cas.vaadin.thelibrary.controller.MasterController;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
+import de.cas.vaadin.thelibrary.model.bean.Category;
+import de.cas.vaadin.thelibrary.model.bean.Rent;
+import de.cas.vaadin.thelibrary.ui.customcomponents.namecard.NameCard;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
+import org.vaadin.alump.fancylayouts.FancyCssLayout;
+import org.vaadin.ui.NumberField;
+
+import java.time.Year;
+import java.util.ArrayList;
 
 
 /**
@@ -47,14 +31,20 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
  * This is the GUI of the BooksView
  */
 public class BooksView implements CreateContent{
+
+	private final Provider<Button> buttonProvider;
 	private HorizontalLayout mainLayout;
 	private FancyCssLayout editLayout = new FancyCssLayout();
 	private final String name ="Books";
 	private Grid<Book> grid;
-	private BookController controller = new BookController();
 	private Button add, del, edit;
 	private ListDataProvider<Book> dataProvider ;
 	private NativeSelect<BookState> state;
+
+	@Inject
+	public BooksView(Provider<Button> buttonProvider) {
+		this.buttonProvider = buttonProvider;
+	}
 
 	/**
 	 * Builds the content of the view
@@ -89,7 +79,7 @@ public class BooksView implements CreateContent{
 	//This method builds the grid of this view, containing Books
 	private Component buildGrid() {
 		//Dataprovider which gets the data from the database
-		dataProvider = new ListDataProvider<>(controller.getItems());
+		dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
 		
 		//To make sure column order
 		grid.setColumns("id","author","title", "category","year", "state", "number");
@@ -198,10 +188,10 @@ public class BooksView implements CreateContent{
 	private void addSaveClickListener(Book book, FormLayout editForm) {
 		if(editLayout.getComponentCount()>1) {
 			//Update book in database
-			if(controller.update(book)) {
+			if(MasterController.getBookController().update(book)) {
 				Notification.show("Update successful");
 				//Reset grid
-				dataProvider = new ListDataProvider<>(controller.getItems());
+				dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
 				grid.setDataProvider(dataProvider);
 				editLayout.fancyRemoveComponent(editForm);
 			}
@@ -212,7 +202,7 @@ public class BooksView implements CreateContent{
 		}
 		//If there are no more components, remove this layout and reset grid
 		else {
-			if(controller.update(book)) {
+			if(MasterController.getBookController().update(book)) {
 				Notification.show("Update successful");
 			}else {
 				Notification.show("Something went wrong");
@@ -222,7 +212,7 @@ public class BooksView implements CreateContent{
 			mainLayout.removeComponent(editLayout);
 			grid.setSizeFull();
 			grid.deselectAll();
-			dataProvider = new ListDataProvider<>(controller.getItems());
+			dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
 			grid.setDataProvider(dataProvider);
 		}
 	}
@@ -261,21 +251,21 @@ public class BooksView implements CreateContent{
 	private Component buildButtons() {
 		HorizontalLayout buttons = new HorizontalLayout();
 		//Add Button
-		add = new Button();
+		add = buttonProvider.get();
 		add.setIcon(VaadinIcons.PLUS);
 		add.setStyleName("header-button");
 		add.setDescription("Add new book to database");
 		setAddClicklistener();
 		
 		//Del button
-		del = new Button();
+		del = buttonProvider.get();
 		del.setIcon(VaadinIcons.TRASH);
 		del.setStyleName("header-button");
 		del.setDescription("Delete selected items");
 		setDelClickListener();
 		
 		//Edit button
-		edit = new Button();
+		edit = buttonProvider.get();
 		edit.setIcon(VaadinIcons.PENCIL);
 		edit.setStyleName("header-button");
 		edit.setDescription("Edit selected items");
@@ -331,8 +321,8 @@ public class BooksView implements CreateContent{
 						Notification.show("Book cannot be deleted while it is rented");
 					}else{
 						System.out.println("TRUE");
-						controller.delete(b);
-						dataProvider = new ListDataProvider<>(controller.getItems());
+						MasterController.getBookController().delete(b);
+						dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
 						grid.setDataProvider(dataProvider);
 					}
 				}
@@ -407,10 +397,10 @@ public class BooksView implements CreateContent{
 		add.addClickListener(e->{
 			Book b = new Book(title.getValue(), author.getValue(), Integer.parseInt(id.getValue()), 
 								Integer.parseInt(year.getValue()), BookState.Available, category.getValue(), Integer.parseInt(number.getValue()));
-			if(controller.add(b)) {
+			if(MasterController.getBookController().add(b)) {
 				window.close();
 				Notification.show("Book has been added to database");
-				dataProvider = new ListDataProvider<>(controller.getItems());
+				dataProvider = new ListDataProvider<>(MasterController.getBookController().getItems());
 				grid.setDataProvider(dataProvider);
 				
 			}

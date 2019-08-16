@@ -1,24 +1,23 @@
 package de.cas.vaadin.thelibrary.controller;
 
+import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
+
 public class MasterController {
-    private static final BookController bookController = new BookController();
-    private static final ReaderController readerController = new ReaderController();
-    private static final RentController rentController = new RentController();
-    private static final WaitlistController waitlistController = new WaitlistController();
+
 
     public static BookController getBookController() {
-        return bookController;
+        return CASTheLibraryApplication.getInjector().getInstance(BookController.class);
     }
 
     public static ReaderController getReaderController() {
-        return readerController;
+        return CASTheLibraryApplication.getInjector().getInstance(ReaderController.class);
     }
 
     public static RentController getRentController() {
-        return rentController;
+        return CASTheLibraryApplication.getInjector().getInstance(RentController.class);
     }
 
     public static WaitlistController getWaitlistController() {
-        return waitlistController;
+        return CASTheLibraryApplication.getInjector().getInstance(WaitlistController.class);
     }
 }

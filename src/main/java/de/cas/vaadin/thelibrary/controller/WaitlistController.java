@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.controller;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.model.WaitlistDAO;
 import de.cas.vaadin.thelibrary.model.bean.Waitlist;
 
@@ -13,7 +14,11 @@ import de.cas.vaadin.thelibrary.model.bean.Waitlist;
  */
 public class WaitlistController implements ControllerInterface<Waitlist> {
 	
-	private final WaitlistDAO dao = new WaitlistDAO();
+	private WaitlistDAO dao;
+	@Inject
+	public WaitlistController(WaitlistDAO dao){
+		this.dao = dao;
+	}
 
 	@Override
 	public boolean add(Waitlist bean) {

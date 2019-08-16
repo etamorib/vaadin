@@ -24,8 +24,7 @@ import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
 public class MainView extends HorizontalLayout {
 
 	private SideMenuBuilder menu;
-	private Content c;
-	private BooksView startView = new BooksView();
+
 	public MainView() {
 		setSizeFull();
 		AppEventBus.register(this);
@@ -36,6 +35,7 @@ public class MainView extends HorizontalLayout {
 		 * BooksView.
 		 * Anything else could be shown too, like a welcome text
 		 * */
+		BooksView startView = CASTheLibraryApplication.getInjector().getInstance(BooksView.class);
 		menu.getSideMenu().setContent(startView.buildContent());
 	}
 	
@@ -49,12 +49,8 @@ public class MainView extends HorizontalLayout {
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
 		removeAllComponents();
-		/*New menu always needed to refresh the views
-		in sidemenubuilder constructor, so new SideMenuBuilder is created
-		every time*/
-		//menu = new SideMenuBuilder();
 		addComponent(menu.getSideMenu());
-		c = new Content(event.getContainer());
+		Content c = new Content(event.getContainer());
 		/*Set the content to the Content's createContent method
 		 * It call the right buildContent method
 		*/

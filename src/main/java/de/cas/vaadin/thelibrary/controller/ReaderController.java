@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.controller;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.model.ReaderDAO;
 import de.cas.vaadin.thelibrary.model.bean.Reader;
 
@@ -12,8 +13,11 @@ import de.cas.vaadin.thelibrary.model.bean.Reader;
  *
  */
 public class ReaderController implements ControllerInterface<Reader>, ExtraControllerInterface<Reader> {
-
-	private ReaderDAO dao = new ReaderDAO();
+	private ReaderDAO dao;
+	@Inject
+	public ReaderController(ReaderDAO dao){
+		this.dao = dao;
+	}
 	
 	@Override
 	public boolean update(Reader bean) {

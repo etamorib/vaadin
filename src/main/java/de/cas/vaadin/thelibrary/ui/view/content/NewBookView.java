@@ -12,11 +12,9 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
  */
 public class NewBookView implements CreateContent {
 
-    private HorizontalLayout mainLayout;
-
     @Override
     public Component buildContent() {
-        mainLayout = new HorizontalLayout();
+        HorizontalLayout mainLayout = new HorizontalLayout();
 
         mainLayout.addComponents(buildBody());
         return mainLayout;

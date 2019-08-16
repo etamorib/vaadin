@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.controller;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.model.BookDAO;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 
@@ -14,6 +15,10 @@ import de.cas.vaadin.thelibrary.model.bean.Book;
 public class BookController implements ControllerInterface<Book>, ExtraControllerInterface<Book>  {
 	
 	private BookDAO bookDAO = new BookDAO();
+	@Inject
+	public BookController(BookDAO bookDAO){
+		this.bookDAO = bookDAO;
+	}
 
 	@Override
 	public boolean update(Book bean) {

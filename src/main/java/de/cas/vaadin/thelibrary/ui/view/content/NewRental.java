@@ -51,7 +51,6 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 public class NewRental implements CreateContent {
 
 	private final String name = "New Rentals";
-	private VerticalLayout mainLayout;
 
 	public NewRental() {
 
@@ -63,7 +62,7 @@ public class NewRental implements CreateContent {
 		title.setStyleName(ValoTheme.LABEL_H1);
 		
 		//The main layout
-		mainLayout = new VerticalLayout(title);
+		VerticalLayout mainLayout = new VerticalLayout(title);
 
 		TabBuilder tb = new TabBuilder();
 		mainLayout.addComponents(TabBuilder.getTabSheet());

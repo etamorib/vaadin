@@ -1,5 +1,6 @@
 de\cas\vaadin\thelibrary\model\bean\Category.class
 de\cas\vaadin\thelibrary\ui\builder\BookTab.class
+de\cas\vaadin\thelibrary\ui\view\ViewModule.class
 de\cas\vaadin\thelibrary\utils\MailTrapSender.class
 de\cas\vaadin\thelibrary\utils\SendMail.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.class
