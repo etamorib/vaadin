@@ -153,6 +153,7 @@ class DeadlineTab extends HorizontalLayout {
                     Notification.show("Books have been added to waitlist");
 
                     if(left.getComponentCount()==3) {
+                        System.out.println("BACK TO NEW RENTAL");
                         AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
                     }
                 }

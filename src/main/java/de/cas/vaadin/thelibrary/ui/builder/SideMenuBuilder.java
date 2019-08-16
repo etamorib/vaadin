@@ -3,7 +3,9 @@ package de.cas.vaadin.thelibrary.ui.builder;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.ui.view.content.*;
 import org.vaadin.teemusa.sidemenu.SideMenu;
 
@@ -24,21 +26,20 @@ import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 @SuppressWarnings("serial")
 public class SideMenuBuilder extends CustomComponent {
 	
-	private ArrayList<CreateContent> menuItems ;
 	private final String title = "CAS Library";
 	//So the notification can be carried over view changes
 	private final static NotificationWindowBuilder notificationWindowBuilder = new NotificationWindowBuilder();
-
+	private final Set<CreateContent> contentItems;
 	private SideMenu menu = new SideMenu();
-	
-	public SideMenuBuilder() {
-		menuItems =  new ArrayList<>();
-		menuItems.clear();
-		fillArray(new BooksView(), new Readers(), new NewRental(), new Rentals(), new WaitList());
-		addItemsToMenu(menuItems);
+
+	@Inject
+	public SideMenuBuilder(Set<CreateContent> contentItems) {
+		this.contentItems = contentItems;
+		addItemsToMenu(contentItems);
 		styleMenu();
 		setAdmin();
-		}
+
+	}
 	
 	//This method is for adding styles to the sidemenu
 	private void styleMenu() {
@@ -63,42 +64,12 @@ public class SideMenuBuilder extends CustomComponent {
 	 * If a menu item is clicked it posts a ChangeViewEvent,
 	 * which will change the "view"
 	 */
-	private void addItemsToMenu(ArrayList<CreateContent> contents) {
-		for(CreateContent c : contents) {
+	private void addItemsToMenu(Set<CreateContent> contentItems) {
+		for(CreateContent c : contentItems) {
 			menu.addMenuItem(c.getName(), c.menuIcon(),()->{
 				AppEventBus.post(new ChangeViewEvent(c));
-			});				
+			});
 		}
-	}
-	/*Basically fills the menuItem array with contents
-	 * in the parameter
-	*/
-	private void fillArray(CreateContent ...contents) {
-		Collections.addAll(menuItems, contents);
-	}
-	/**
-	 * Adds a new menu item to the sidebar
-	 * @param A CreateContent object
-	 */
-	public void addNewItem(CreateContent c) {
-		menuItems.add(c);
-	}
-	/**
-	 * Adds a new menu item to the sidebar
-	 * @param A CreateContent object
-	 * @param index where it will be put
-	 */
-	public void addNewItemWithPosition(CreateContent c, int index) {
-		menuItems.add(index, c);
-	}
-	
-	
-	public ArrayList<CreateContent> getMenuItems() {
-		return menuItems;
-	}
-
-	public void setMenuItems(ArrayList<CreateContent> menuItems) {
-		this.menuItems = menuItems;
 	}
 
 	public SideMenu getSideMenu() {

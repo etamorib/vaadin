@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.ui.view.content;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
 import de.cas.vaadin.thelibrary.ui.builder.TabBuilder;
 import org.vaadin.alump.fancylayouts.FancyCssLayout;
 
@@ -53,7 +54,7 @@ public class NewRental implements CreateContent {
 	private VerticalLayout mainLayout;
 
 	public NewRental() {
-		AppEventBus.register(this);
+
 	}
 
 	@Override

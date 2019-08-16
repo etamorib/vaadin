@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -45,11 +46,8 @@ public class CASTheLibraryApplication extends UI {
 		AppEventBus.register(this);
 		
 		updateContent();
-		
-		
 	}
-	
-	
+
 	/**
 	 * This method sets the content to the LoginView or 
 	 * the MainView depending on the session.
@@ -96,6 +94,9 @@ public class CASTheLibraryApplication extends UI {
 	public static SendMail getSendMail(){
 		return sendMail;
 	}
+	public static Injector getInjector(){
+	    return injector;
+    }
 	
 	  /**
 	 * @return the AppEventBus of the application

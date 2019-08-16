@@ -21,9 +21,11 @@ C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\Admin.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\Category.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\builder\BookTab.java
+C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\utils\MailTrapSender.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\controller\RentController.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\Book.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\Rent.java
+C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\modules\AppModule.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\model\bean\DatabaseBean.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\Content.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\view\CreateContent.java
@@ -43,3 +45,4 @@ C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\ui\builder\ReaderTab.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\controller\ControllerInterface.java
 C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\controller\MasterController.java
+C:\Users\mate.biro\eclipse-workspace\CASTheLibraryBiroMate\src\main\java\de\cas\vaadin\thelibrary\utils\SendMail.java

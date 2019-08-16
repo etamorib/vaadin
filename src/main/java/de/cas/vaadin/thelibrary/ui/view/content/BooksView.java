@@ -50,7 +50,7 @@ public class BooksView implements CreateContent{
 	private HorizontalLayout mainLayout;
 	private FancyCssLayout editLayout = new FancyCssLayout();
 	private final String name ="Books";
-	private Grid<Book> grid =  new Grid<>(Book.class);
+	private Grid<Book> grid;
 	private BookController controller = new BookController();
 	private Button add, del, edit;
 	private ListDataProvider<Book> dataProvider ;
@@ -66,6 +66,9 @@ public class BooksView implements CreateContent{
 		mainLayout = new HorizontalLayout();
 		mainLayout.removeStyleName("no-background");
 		mainLayout.setSizeFull();
+
+		//init grid:
+		grid =  new Grid<>(Book.class);
 		
 		//Sub layout(it will be on the left side)
 		VerticalLayout left = new VerticalLayout();

@@ -18,7 +18,7 @@ public class NotificationWindowBuilder {
 	private static HorizontalLayout notificationLayout = new HorizontalLayout();
 	private static Window window = new Window();
 	//private static NotificationWindowBuilder instance = new NotificationWindowBuilder();
-	public NotificationWindowBuilder() {
+	NotificationWindowBuilder() {
 		AppEventBus.register(this);
 		
 	}
@@ -43,7 +43,7 @@ public class NotificationWindowBuilder {
 	 * is no notification.
 	 * If there was a notification, it contains the message of that.
 	 * */
-	public void openNotifications() {
+	void openNotifications() {
 		
 		window.addStyleName("add-window");
 		window.setModal(true);
@@ -56,10 +56,4 @@ public class NotificationWindowBuilder {
 		
 	}
 	
-	/*public static NotificationWindowBuilder getInstance() {
-		if(instance==null) {
-			instance = new NotificationWindowBuilder();
-		}
-		return instance;
-	}*/
 }
