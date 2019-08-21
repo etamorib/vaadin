@@ -1,12 +1,15 @@
 package de.cas.vaadin.thelibrary.ui.view;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.vaadin.ui.HorizontalLayout;
 
 import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
+import de.cas.vaadin.thelibrary.modules.AppModule;
 import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
 
@@ -48,6 +51,8 @@ public class MainView extends HorizontalLayout {
 	 */
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
+		Injector injector = Guice.createInjector(new AppModule());
+		menu = injector.getInstance(SideMenuBuilder.class);
 		removeAllComponents();
 		addComponent(menu.getSideMenu());
 		Content c = new Content(event.getContainer());
