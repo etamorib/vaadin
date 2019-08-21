@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.vaadin.ui.HorizontalLayout;
 
 import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
@@ -29,17 +30,19 @@ public class MainView extends HorizontalLayout {
 
 	private SideMenuBuilder menu;
 	private BooksView booksView;
+	private Provider<SideMenuBuilder> provider;
 
 	@Inject
-	public MainView(SideMenuBuilder menu, BooksView booksView) {
+	public MainView(SideMenuBuilder menu, BooksView booksView, Provider<SideMenuBuilder> provider) {
+		this.provider = provider;
 		this.menu = menu;
 		this.booksView = booksView;
 		setSizeFull();
 		AppEventBus.register(this);
-		addComponent(menu.getSideMenu());
+		addComponent(menu);
 
 
-		menu.getSideMenu().setContent(booksView.buildContent());
+		menu.setContent(booksView.buildContent());
 	}
 	
 	
@@ -51,15 +54,14 @@ public class MainView extends HorizontalLayout {
 	 */
 	@Subscribe
 	private void changeContentEvent(final ChangeViewEvent event) {
-		Injector injector = Guice.createInjector(new AppModule());
-		menu = injector.getInstance(SideMenuBuilder.class);
+		System.out.println("EVENT: "+event.getContainer());
 		removeAllComponents();
-		addComponent(menu.getSideMenu());
+		addComponent(menu);
 		Content c = new Content(event.getContainer());
 		/*Set the content to the Content's createContent method
 		 * It call the right buildContent method
 		*/
-		menu.getSideMenu().setContent(c.createContent());
+		menu.setContent(c.createContent());
 	}
 
 

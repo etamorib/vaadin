@@ -1,9 +1,11 @@
 package de.cas.vaadin.thelibrary.event;
 
-import com.google.inject.Inject;
+import com.google.inject.*;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.handler.AuthenticationInterface;
 import de.cas.vaadin.thelibrary.model.bean.DatabaseBean;
+import de.cas.vaadin.thelibrary.modules.AppModule;
+import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 /**
@@ -48,9 +50,11 @@ public abstract class AppEvent {
 	 * CreateContent object as contructor parameter*/
 	public static final class ChangeViewEvent{
 		private CreateContent container ;
+
 		@Inject
 		public ChangeViewEvent(CreateContent container) {
 			this.container = container;
+
 		}
 		public CreateContent getContainer() {
 			return container;
@@ -102,6 +106,8 @@ public abstract class AppEvent {
 			this.str = str;
 		}
 	}
+
+
 	
 	
 

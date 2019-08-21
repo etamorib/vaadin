@@ -26,6 +26,7 @@ import de.cas.vaadin.thelibrary.handler.AuthenticationFactory;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.model.bean.Admin;
 import de.cas.vaadin.thelibrary.modules.AppModule;
+import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 import de.cas.vaadin.thelibrary.ui.view.loginview.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
 import de.cas.vaadin.thelibrary.utils.SendMail;
@@ -104,6 +105,9 @@ public class CASTheLibraryApplication extends UI {
 			window.close();
 		}
 	}
+
+
+
 
 	  /**
 	 * @return the AppEventBus of the application

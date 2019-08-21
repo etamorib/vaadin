@@ -44,8 +44,6 @@ public class BookTab extends VerticalLayout {
         setCaption("Books");
         listDataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
         addComponents(searchField(),buildGrid(), selectedCounter());
-        System.out.println("CREATED BOOK TAB");
-
     }
 
     private Component buildGrid(){
@@ -114,11 +112,6 @@ public class BookTab extends VerticalLayout {
         return search;
     }
 
-    @Subscribe
-    private void refreshGrid(final AppEvent.EditObjectEvent e){
-        listDataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
-        bookGrid.setDataProvider(listDataProvider);
-    }
 
 
 
