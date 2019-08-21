@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
+import com.google.inject.Inject;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -14,7 +15,8 @@ public class TabBuilder {
     private VerticalLayout books, readers;
     private HorizontalLayout deadline;
 
-    public TabBuilder(){
+    @Inject
+    public TabBuilder(BookTab books, ReaderTab readers, DeadlineTab deadline){
         //Tab for different stages
         tab = new TabSheet();
         tab.setSizeFull();
@@ -22,21 +24,21 @@ public class TabBuilder {
 
 
         //Book tab
-        books = new BookTab();
-        tab.addTab(books).setIcon(VaadinIcons.BOOK);
+        this.books = books;
+        tab.addTab(this.books).setIcon(VaadinIcons.BOOK);
 
 
         //Reader tab
-        readers = new VerticalLayout();
-        readers.addComponent(new ReaderTab());
-        tab.addTab(readers).setIcon(VaadinIcons.USERS);
-        tab.getTab(readers).setEnabled(false);
+        this.readers = readers;
+        this.readers.addComponent(readers);
+        tab.addTab(this.readers).setIcon(VaadinIcons.USERS);
+        tab.getTab(this.readers).setEnabled(false);
 
         //Deadline tab
-        deadline = new HorizontalLayout();
-        deadline.addComponent(new DeadlineTab());
-        tab.addTab(deadline).setIcon(VaadinIcons.CALENDAR_CLOCK);
-        tab.getTab(deadline).setEnabled(false);
+        this.deadline = deadline;
+        this.deadline.addComponent(deadline);
+        tab.addTab(this.deadline).setIcon(VaadinIcons.CALENDAR_CLOCK);
+        tab.getTab(this.deadline).setEnabled(false);
 
         tab.addSelectedTabChangeListener(e->{
             updateLayouts();
@@ -46,10 +48,10 @@ public class TabBuilder {
 
     private void updateLayouts() {
         readers.removeAllComponents();
-        readers.addComponent(new ReaderTab());
+        readers.addComponent(readers);
 
         deadline.removeAllComponents();
-        deadline.addComponent(new DeadlineTab());
+        deadline.addComponent(deadline);
     }
 
     public static TabSheet getTabSheet() {

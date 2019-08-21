@@ -1,6 +1,9 @@
 package de.cas.vaadin.thelibrary.event;
 
 import com.google.inject.Inject;
+import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
+import de.cas.vaadin.thelibrary.handler.AuthenticationInterface;
+import de.cas.vaadin.thelibrary.model.bean.DatabaseBean;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
 /**
@@ -12,14 +15,22 @@ public abstract class AppEvent {
 	/*Handles a login request and sets the username-password pair*/
 	public static final class LoginRequestEvent{
 		private String username, password;
-		public LoginRequestEvent(String username, String password) {
+		private AuthenticationInterface authenticationHandler;
+
+		@Inject
+		public LoginRequestEvent(String username, String password, AuthenticationInterface authenticationHandler) {
+			this.authenticationHandler = authenticationHandler;
 			this.username = username;
 			this.password = password;
 		}
 		public String getUsername() {
 			return username;
 		}
-		
+
+		public AuthenticationInterface getAuthenticationHandler() {
+			return authenticationHandler;
+		}
+
 		public String getPassword() {
 			return password;
 		}
@@ -30,7 +41,8 @@ public abstract class AppEvent {
 		public void setUsername(String username) {
 			this.username = username;
 		}
-		
+
+
 	}
 	/*Handles events to change the view of the app. It needs a 
 	 * CreateContent object as contructor parameter*/
@@ -67,6 +79,28 @@ public abstract class AppEvent {
 			this.notificationMessage = notificationMessage;
 		}
 		
+	}
+
+	public static final class CloseOpenedWindowsEvent{
+
+	}
+
+	public static final class EditObjectEvent{
+
+	}
+	public static final class SearchFilterEvent{
+		private String str;
+		public SearchFilterEvent(String str){
+			this.str = str;
+		}
+
+		public String getValue() {
+			return str;
+		}
+
+		public void setValue(String str) {
+			this.str = str;
+		}
 	}
 	
 	

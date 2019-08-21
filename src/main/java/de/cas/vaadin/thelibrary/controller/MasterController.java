@@ -1,24 +1,37 @@
 package de.cas.vaadin.thelibrary.controller;
 
+import com.google.inject.Inject;
+import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
+
 public class MasterController {
-    private static final BookController bookController = new BookController();
-    private static final ReaderController readerController = new ReaderController();
-    private static final RentController rentController = new RentController();
-    private static final WaitlistController waitlistController = new WaitlistController();
 
-    public static BookController getBookController() {
-        return bookController;
+    private BookController bookController;
+    private RentController rentController;
+    private ReaderController readerController;
+    private WaitlistController waitlistController;
+
+    @Inject
+    public MasterController(BookController bookController, RentController rentController, ReaderController readerController,
+                            WaitlistController waitlistController){
+        this.bookController = bookController;
+        this.readerController = readerController;
+        this.rentController = rentController;
+        this.waitlistController = waitlistController;
     }
 
-    public static ReaderController getReaderController() {
-        return readerController;
+    public BookController getBookController() {
+        return this.bookController;
     }
 
-    public static RentController getRentController() {
-        return rentController;
+    public  ReaderController getReaderController() {
+        return this.readerController;
     }
 
-    public static WaitlistController getWaitlistController() {
-        return waitlistController;
+    public RentController getRentController() {
+        return this.rentController;
+    }
+
+    public WaitlistController getWaitlistController() {
+        return this.waitlistController;
     }
 }

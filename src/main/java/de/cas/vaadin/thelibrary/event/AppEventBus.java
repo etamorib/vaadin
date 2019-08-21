@@ -2,6 +2,7 @@ package de.cas.vaadin.thelibrary.event;
 
 import com.google.common.eventbus.EventBus;
 
+import com.google.inject.Inject;
 import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
 
 /**
@@ -15,7 +16,7 @@ import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
  *
  */
 public class AppEventBus {
-	
+
 	private final EventBus eventBus = new EventBus();
 	
 	public static void register(final Object object) {

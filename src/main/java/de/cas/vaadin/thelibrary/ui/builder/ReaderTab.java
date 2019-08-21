@@ -1,5 +1,6 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
+import com.google.inject.Inject;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -14,9 +15,11 @@ class ReaderTab extends VerticalLayout {
     static Reader selectedReader = null;
     private Button add;
     private TextField search;
+    private MasterController masterController;
 
-
-    ReaderTab(){
+    @Inject
+    public ReaderTab(MasterController masterController){
+        this.masterController = masterController;
         buildTabLayout();
     }
 
@@ -34,7 +37,7 @@ class ReaderTab extends VerticalLayout {
 
         //Reader grid
         readerGrid = new Grid<>(Reader.class);
-        readerDataProvider = new ListDataProvider<>(MasterController.getReaderController().getItems());
+        readerDataProvider = new ListDataProvider<>(masterController.getReaderController().getItems());
         readerGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
         readerGrid.setStyleName("grid-overall single-select");
         readerGrid.setDataProvider(readerDataProvider);

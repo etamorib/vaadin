@@ -1,5 +1,6 @@
 de\cas\vaadin\thelibrary\model\bean\Category.class
 de\cas\vaadin\thelibrary\ui\builder\BookTab.class
+de\cas\vaadin\thelibrary\ui\view\ViewModule.class
 de\cas\vaadin\thelibrary\utils\MailTrapSender.class
 de\cas\vaadin\thelibrary\utils\SendMail.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.class
@@ -10,5 +11,4 @@ de\cas\vaadin\thelibrary\ui\builder\TabBuilder.class
 de\cas\vaadin\thelibrary\ui\builder\DeadlineTab.class
 de\cas\vaadin\thelibrary\controller\MasterController.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\NameCard.class
-de\cas\vaadin\thelibrary\ui\view\content\NewBookView.class
 de\cas\vaadin\thelibrary\utils\MailTrapSender$1.class

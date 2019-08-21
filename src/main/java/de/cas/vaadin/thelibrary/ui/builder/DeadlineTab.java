@@ -1,9 +1,11 @@
 package de.cas.vaadin.thelibrary.ui.builder;
 
+import com.google.inject.Inject;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
 import de.cas.vaadin.thelibrary.controller.MasterController;
 import de.cas.vaadin.thelibrary.event.AppEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
@@ -21,10 +23,11 @@ class DeadlineTab extends HorizontalLayout {
     private  ArrayList<Book> borrowedList;
     private Grid<Book> availableGrid, borrowedGrid;
     private Label ava, borr;
+    private MasterController masterController;
 
-
-
-    DeadlineTab(){
+    @Inject
+    public DeadlineTab(MasterController masterController){
+        this.masterController = masterController;
         buildTabLayout();
     }
 
@@ -122,15 +125,15 @@ class DeadlineTab extends HorizontalLayout {
             TextField rentedUntil = new TextField("Rented until");
             year.setIcon(VaadinIcons.CALENDAR_USER);
             //Sets the time when the book will be returned
-            rentedUntil.setValue(MasterController.getRentController().getRentByBookId(b.getId()).getReturnTime().toString());
+            rentedUntil.setValue(masterController.getRentController().getRentByBookId(b.getId()).getReturnTime().toString());
             rentedUntil.setEnabled(false);
             DateField dateField = new DateField();
             //DateFields starts from the return date
-            dateField.setValue(MasterController.getRentController().getRentByBookId(b.getId()).getReturnTime());
+            dateField.setValue(masterController.getRentController().getRentByBookId(b.getId()).getReturnTime());
             Button add = new Button("Set date");
             add.addClickListener(e->{
                 //If adding to waitlist database is not successful
-                if(!MasterController.getWaitlistController().add(new Waitlist(b.getId(),
+                if(!masterController.getWaitlistController().add(new Waitlist(b.getId(),
                         ReaderTab.selectedReader.getId(), LocalDate.now(), dateField.getValue()))) {
                     Notification.show("Something went wrong!");
                 }
@@ -153,7 +156,8 @@ class DeadlineTab extends HorizontalLayout {
                     Notification.show("Books have been added to waitlist");
 
                     if(left.getComponentCount()==3) {
-                        AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
+                        System.out.println("BACK TO NEW RENTAL");
+                        //AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
                     }
                 }
 
@@ -199,7 +203,7 @@ class DeadlineTab extends HorizontalLayout {
             left.fancyRemoveComponent(rent);
             for(Book b: availableList) {
                 //Checks if there is error while adding to rent database
-                if(!MasterController.getRentController().add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), ReaderTab.selectedReader.getId()))) {
+                if(!masterController.getRentController().add(new Rent(LocalDate.now(), LocalDate.now().plusMonths(2), b.getId(), ReaderTab.selectedReader.getId()))) {
                     error = true;
                 }
                 //If there was no error it updates the database (sets book to borrowed)
@@ -210,7 +214,7 @@ class DeadlineTab extends HorizontalLayout {
                         b.setNumber(0);
                         b.setState(BookState.Borrowed);
                     }
-                    MasterController.getBookController().update(b);
+                    masterController.getBookController().update(b);
                     //bookGrid.deselect(b);
                 }
 
@@ -231,7 +235,7 @@ class DeadlineTab extends HorizontalLayout {
     }
     private void changeByComponentCount(int n){
         if(left.getComponentCount()==n) {
-            AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
+            //AppEventBus.post(new AppEvent.ChangeViewEvent(CASTheLibraryApplication.getInjector().getInstance(NewRental.class)));
         }
     }
 
