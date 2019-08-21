@@ -14,6 +14,7 @@ import de.cas.vaadin.thelibrary.event.AppEvent.NotificationEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.model.bean.*;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
+import de.cas.vaadin.thelibrary.utils.EmailSender;
 import org.vaadin.ui.NumberField;
 
 import javax.mail.MessagingException;
@@ -41,8 +42,10 @@ public class Rentals implements CreateContent {
 	private ListDataProvider<Rent> lateDataProvider ;
 
 	private MasterController masterController;
+	private EmailSender emailSender;
 	@Inject
-	public Rentals(MasterController masterController){
+	public Rentals(MasterController masterController, EmailSender emailSender){
+		this.emailSender = emailSender;
 		this.masterController = masterController;
 	}
 	
@@ -101,8 +104,7 @@ public class Rentals implements CreateContent {
 				Reader reader = masterController.getReaderController().findById(r.getReaderId());
 				//MailTrapSender sender = new MailTrapSender(reader);
 				try {
-					CASTheLibraryApplication.getSendMail().sendMail(reader);
-					Notification.show("Emails have been sent");
+					emailSender.send(reader);
 				}catch (MessagingException ex) {
 					Notification.show("Sending was unsuccesful!");
 					ex.printStackTrace();

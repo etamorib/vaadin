@@ -109,8 +109,12 @@
 */
     .valo-menu {
         background-image: none;
-        background-color: rgba(30,30,30,1);
+        background-color: #414B56;
         color: white;
+    }
+    .add-window {
+        padding: 50px 30px 30px 30px;
+
     }
 /*
     .v-Notification.closable {
@@ -210,9 +214,9 @@
     .header-button:hover{
     	background: grey;
 
-    }
+    } */
     .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part {
-    	 background-color: rgba(0,0,0,0.65);
-    }*/
+        background-color: #414B56;
+    }
 
 }

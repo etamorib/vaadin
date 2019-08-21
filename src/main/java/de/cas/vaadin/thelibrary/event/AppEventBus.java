@@ -16,13 +16,8 @@ import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
  *
  */
 public class AppEventBus {
-	
-	private final EventBus eventBus;
 
-	@Inject
-	public AppEventBus(EventBus eventBus){
-		this.eventBus = eventBus;
-	}
+	private final EventBus eventBus = new EventBus();
 	
 	public static void register(final Object object) {
 	    CASTheLibraryApplication.getEventBus().eventBus.register(object);

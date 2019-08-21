@@ -1,5 +1,7 @@
 package de.cas.vaadin.thelibrary.model.bean;
 
+import com.google.inject.Inject;
+
 /**
  * @author mate.biro
  * Bean class for Admin object(s)
@@ -7,6 +9,7 @@ package de.cas.vaadin.thelibrary.model.bean;
 public class Admin {
 	
 	private String username, password;
+
 	public Admin(String username, String password) {
 		this.username = username;
 		this.password = password;

@@ -157,7 +157,7 @@ class DeadlineTab extends HorizontalLayout {
 
                     if(left.getComponentCount()==3) {
                         System.out.println("BACK TO NEW RENTAL");
-                        AppEventBus.post(new AppEvent.ChangeViewEvent(CASTheLibraryApplication.getInjector().getInstance(NewRental.class)));
+                        //AppEventBus.post(new AppEvent.ChangeViewEvent(new NewRental()));
                     }
                 }
 
@@ -235,7 +235,7 @@ class DeadlineTab extends HorizontalLayout {
     }
     private void changeByComponentCount(int n){
         if(left.getComponentCount()==n) {
-            AppEventBus.post(new AppEvent.ChangeViewEvent(CASTheLibraryApplication.getInjector().getInstance(NewRental.class)));
+            //AppEventBus.post(new AppEvent.ChangeViewEvent(CASTheLibraryApplication.getInjector().getInstance(NewRental.class)));
         }
     }
 

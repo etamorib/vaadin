@@ -1,5 +1,7 @@
 package de.cas.vaadin.thelibrary.handler;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -11,11 +13,13 @@ import de.cas.vaadin.thelibrary.model.bean.Admin;
  * Simple class for authenticating login requests.
  *
  */
-public class AuthenticationHandler {
+public class AuthenticationHandler implements AuthenticationInterface {
 
 	private String username, password;
 	private static final String INVALID = "Invalide username or password";
-	public AuthenticationHandler(String username, String password) {
+
+	@Inject
+	public AuthenticationHandler(@Assisted("username") String username, @Assisted("password") String password) {
 		this.username = username;
 		this.password = password;
 	}
@@ -25,6 +29,7 @@ public class AuthenticationHandler {
 	 * null if there was no error.
 	 * 
 	 */
+	@Override
 	public Notification check() {
 		Notification error = new Notification("", Type.ERROR_MESSAGE);
 		error.setPosition(Position.TOP_CENTER);
@@ -41,6 +46,7 @@ public class AuthenticationHandler {
 	 * @return an Admin object is username and password
 	 * are correct or null if they're not.
 	 */
+	@Override
 	public Admin authenticate() {
 		if (username.equals("admin") && password.equals("admin")) {
 			return new Admin(username, password);
@@ -48,5 +54,6 @@ public class AuthenticationHandler {
 			return null;
 		}
 	}
-	
+
+
 }

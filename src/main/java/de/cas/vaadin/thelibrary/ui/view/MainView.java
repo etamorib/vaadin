@@ -1,6 +1,7 @@
 package de.cas.vaadin.thelibrary.ui.view;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import com.vaadin.ui.HorizontalLayout;
 
 import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
@@ -24,19 +25,18 @@ import de.cas.vaadin.thelibrary.ui.view.content.BooksView;
 public class MainView extends HorizontalLayout {
 
 	private SideMenuBuilder menu;
+	private BooksView booksView;
 
-	public MainView() {
+	@Inject
+	public MainView(SideMenuBuilder menu, BooksView booksView) {
+		this.menu = menu;
+		this.booksView = booksView;
 		setSizeFull();
 		AppEventBus.register(this);
-		menu = CASTheLibraryApplication.getInjector().getInstance(SideMenuBuilder.class);
 		addComponent(menu.getSideMenu());
 
-		/*At the very beginning, lets show the
-		 * BooksView.
-		 * Anything else could be shown too, like a welcome text
-		 * */
-		BooksView startView = CASTheLibraryApplication.getInjector().getInstance(BooksView.class);
-		menu.getSideMenu().setContent(startView.buildContent());
+
+		menu.getSideMenu().setContent(booksView.buildContent());
 	}
 	
 	

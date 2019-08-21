@@ -24,6 +24,7 @@ import org.vaadin.ui.NumberField;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -68,11 +69,8 @@ public class BooksView implements CreateContent{
 		title.setStyleName(ValoTheme.LABEL_H1);
 		
 		//Adding components to the "left" side
-		//TODO: Delete next line
-		NameCard test = new NameCard("Test", "tesadasta");
-		test.setImage("book-icon.png");
-		test.setDropdown(true);
-		left.addComponents(title,buildButtons(), buildGrid(), test);
+
+		left.addComponents(title,buildButtons(), buildGrid());
 		mainLayout.addComponent(left);
 		return mainLayout;
 	}
@@ -81,7 +79,7 @@ public class BooksView implements CreateContent{
 	private Component buildGrid() {
 		//Dataprovider which gets the data from the database
 		dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
-		
+
 		//To make sure column order
 		grid.setColumns("id","author","title", "category","year", "state", "number");
 		grid.setSelectionMode(SelectionMode.MULTI);
@@ -401,6 +399,7 @@ public class BooksView implements CreateContent{
 			if(masterController.getBookController().add(b)) {
 				window.close();
 				Notification.show("Book has been added to database");
+
 				dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
 				grid.setDataProvider(dataProvider);
 				

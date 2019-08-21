@@ -15,15 +15,18 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.cas.vaadin.thelibrary.event.AppEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LoginRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
+import de.cas.vaadin.thelibrary.handler.AuthenticationFactory;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.model.bean.Admin;
 import de.cas.vaadin.thelibrary.modules.AppModule;
-import de.cas.vaadin.thelibrary.ui.view.LoginView;
+import de.cas.vaadin.thelibrary.ui.view.loginview.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
 import de.cas.vaadin.thelibrary.utils.SendMail;
 
@@ -36,9 +39,16 @@ import de.cas.vaadin.thelibrary.utils.SendMail;
 @Theme("mytheme")
 @SuppressWarnings("serial")
 public class CASTheLibraryApplication extends UI {
-	
-	private AppEventBus eventBus = new AppEventBus(injector.getInstance(EventBus.class));
-	
+
+
+	//Injector
+	private static Injector injector = Guice.createInjector(new AppModule());
+
+
+	private AppEventBus eventBus = new AppEventBus();
+	@Inject AuthenticationFactory authenticationFactory;
+
+
 	@Override
 	protected void init(VaadinRequest request) {
 		Page.getCurrent().setTitle("CAS The Library Application");
@@ -58,10 +68,10 @@ public class CASTheLibraryApplication extends UI {
 	private void updateContent() {
 		Admin admin = (Admin)VaadinSession.getCurrent().getAttribute(Admin.class.getName());
 		if(admin!=null) {
-			setContent(new MainView());
+			setContent(injector.getInstance(MainView.class));
 			
 		}else {
-			setContent(new LoginView());
+			setContent(injector.getInstance(LoginView.class));
 		}
 			
 	}
@@ -74,9 +84,8 @@ public class CASTheLibraryApplication extends UI {
 	 */
 	@Subscribe
 	  public void loginRequest(final LoginRequestEvent e) {
-		  AuthenticationHandler aut = new AuthenticationHandler(e.getUsername(), e.getPassword());
-		  if(aut.authenticate()!=null) {
-			  VaadinSession.getCurrent().setAttribute(Admin.class.getName(), aut.authenticate());
+		  if(e.getAuthenticationHandler().authenticate()!=null) {
+			  VaadinSession.getCurrent().setAttribute(Admin.class.getName(), e.getAuthenticationHandler().authenticate());
 			  updateContent();
 
 		  }
@@ -89,16 +98,13 @@ public class CASTheLibraryApplication extends UI {
 		
 	}
 
-	//Injector
-	private static Injector injector = Guice.createInjector(new AppModule());
-	private static SendMail sendMail = injector.getInstance(SendMail.class);
-	public static SendMail getSendMail(){
-		return sendMail;
+	@Subscribe
+	public void closeOpenedWindows(final AppEvent.CloseOpenedWindowsEvent e){
+		for(Window window : getWindows()){
+			window.close();
+		}
 	}
-	public static Injector getInjector(){
-	    return injector;
-    }
-	
+
 	  /**
 	 * @return the AppEventBus of the application
 	 */
