@@ -21,11 +21,9 @@ de\cas\vaadin\thelibrary\ui\view\content\newrental\DeadlineTab.class
 de\cas\vaadin\thelibrary\ui\view\ViewModule.class
 de\cas\vaadin\thelibrary\handler\AuthenticationInterface.class
 de\cas\vaadin\thelibrary\utils\MailTrapSender.class
-de\cas\vaadin\thelibrary\event\AppEvent$Test.class
 de\cas\vaadin\thelibrary\ui\view\loginview\LoginView.class
 de\cas\vaadin\thelibrary\utils\SendMail.class
 de\cas\vaadin\thelibrary\handler\HandlerModule.class
-de\cas\vaadin\thelibrary\event\AppEvent$RefreshMenuEvent.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\DropdownButton.class
 de\cas\vaadin\thelibrary\modules\AppModule.class

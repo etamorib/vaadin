@@ -38,7 +38,7 @@ public class SideMenuBuilder extends SideMenu {
 		addItemsToMenu(contentItems);
 		styleMenu();
 		setAdmin();
-		System.out.println("SIDEMENUBUILDER");
+		//System.out.println("SIDEMENUBUILDER");
 	}
 	
 	//This method is for adding styles to the sidemenu
