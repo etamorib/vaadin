@@ -50,10 +50,15 @@ public class BookEditWindow extends Window {
 
     void createWindow(){
         setCaption(book.getTitle());
-        center();
+        addStyleName("add-window");
+//        setSizeUndefined();
+        setHeight(65f, Unit.PERCENTAGE);
+        setWidth(20f, Unit.PERCENTAGE);
         setResizable(false);
-        setHeight(50.0f, Unit.PERCENTAGE);
-        setWidth(30.0f, Unit.PERCENTAGE);
+        center();
+        setDraggable(false);
+        setModal(true);
+
 
         final FormLayout editForm = new FormLayout();
 
@@ -129,7 +134,8 @@ public class BookEditWindow extends Window {
         });
 
         editForm.setSizeFull();
-        editForm.addComponents(title, author, category,state, selectYear, number,id, save, cancel);
+        HorizontalLayout bottom = new HorizontalLayout(save, cancel);
+        editForm.addComponents(title, author, category,state, selectYear, number,id, bottom);
         setContent(editForm);
         UI.getCurrent().addWindow(this);
     }

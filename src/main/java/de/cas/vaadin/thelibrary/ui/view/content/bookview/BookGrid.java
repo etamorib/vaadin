@@ -44,7 +44,7 @@ public class BookGrid extends Grid<Book> {
         setSelectionMode(SelectionMode.SINGLE);
         setStyleName("grid-overall");
         setDataProvider(dataProvider);
-
+        setResponsive(true);
         //Selector for filtering by state
         state = bookState.get();
         state.setStyleName("dropdown-select");
@@ -78,6 +78,7 @@ public class BookGrid extends Grid<Book> {
         edit.setIcon(VaadinIcons.PENCIL);
         edit.addClickListener(e-> {
             AppEventBus.post(new AppEvent.CloseOpenedWindowsEvent());
+            AppEventBus.post(new AppEvent.EditObjectEvent());
             bookEditWindow.setBook(book);
             bookEditWindow.createWindow();
         });
@@ -92,6 +93,7 @@ public class BookGrid extends Grid<Book> {
             if(isBookBorrowed(book)){
                 Notification.show("Book cannot be deleted while it is rented");
             }else{
+                AppEventBus.post(new AppEvent.EditObjectEvent());
                 System.out.println("TRUE");
                 masterController.getBookController().delete(book);
                 dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
@@ -110,6 +112,12 @@ public class BookGrid extends Grid<Book> {
         return false;
     }
 
+    @Override
+    public ListDataProvider<Book> getDataProvider() {
+        return dataProvider;
+    }
+
+    //Subscribe to events from other classes, to refresh the grid
     @Subscribe
     private void refreshGrid(final AppEvent.EditObjectEvent e){
         dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
