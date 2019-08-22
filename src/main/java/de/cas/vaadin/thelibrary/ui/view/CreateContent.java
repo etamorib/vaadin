@@ -10,7 +10,7 @@ import com.vaadin.ui.Component;
  */
 public interface CreateContent extends View{
 	
-	Component buildContent();
+	void buildContent();
 	String getName();
 	Resource menuIcon();
 

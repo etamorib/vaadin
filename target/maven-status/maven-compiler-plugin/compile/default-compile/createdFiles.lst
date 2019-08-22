@@ -1,3 +1,5 @@
+de\cas\vaadin\thelibrary\ui\view\content\rentview\RentView.class
+de\cas\vaadin\thelibrary\ui\view\content\rentview\OngoingGrid.class
 de\cas\vaadin\thelibrary\event\AppEvent$SearchFilterEvent.class
 de\cas\vaadin\thelibrary\model\bean\Category.class
 de\cas\vaadin\thelibrary\ui\view\loginview\LabelBuilder.class
@@ -11,6 +13,7 @@ de\cas\vaadin\thelibrary\ui\builder\ReaderTab.class
 de\cas\vaadin\thelibrary\event\AppEvent$CloseOpenedWindowsEvent.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderMenu.class
 de\cas\vaadin\thelibrary\ui\builder\TabBuilder.class
+de\cas\vaadin\thelibrary\ui\view\content\rentview\RentMenu.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookContent.class
 de\cas\vaadin\thelibrary\handler\AuthenticationFactory.class
 de\cas\vaadin\thelibrary\event\AppEvent$SelectedReaderEvent.class
@@ -22,6 +25,7 @@ de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderEditWindow.class
 de\cas\vaadin\thelibrary\utils\MailTrapSender$1.class
 de\cas\vaadin\thelibrary\event\AppEvent$TabChangeEvent.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderView.class
+de\cas\vaadin\thelibrary\ui\view\content\rentview\RentContent.class
 de\cas\vaadin\thelibrary\ui\builder\BookTab.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\DeadlineTab.class
 de\cas\vaadin\thelibrary\ui\view\ViewModule.class
@@ -42,4 +46,5 @@ de\cas\vaadin\thelibrary\ui\view\content\bookview\BookAddWindow.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\BookTab.class
 de\cas\vaadin\thelibrary\event\AppEvent$EditObjectEvent.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookEditWindow.class
+de\cas\vaadin\thelibrary\ui\view\content\rentview\RentGrid.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderGrid.class

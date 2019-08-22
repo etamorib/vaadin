@@ -26,13 +26,12 @@ public class NewRentalView extends VerticalLayout implements CreateContent {
 
     //Messy
     @Override
-    public Component buildContent() {
+    public void buildContent() {
         rentalTab = rentalTabProvider.get();
 
         removeAllComponents();
         addComponent(rentalTab);
 
-        return this;
     }
 
     @Override

@@ -24,12 +24,11 @@ public class BookView extends HorizontalLayout implements CreateContent{
     }
 
     @Override
-    public Component buildContent() {
+    public void buildContent() {
         bookContent = bookContentProvider.get();
         removeAllComponents();
         addComponent(bookContent);
         setSizeFull();
-        return this;
     }
 
     @Override

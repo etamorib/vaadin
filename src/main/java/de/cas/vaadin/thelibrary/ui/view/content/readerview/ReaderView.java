@@ -22,12 +22,11 @@ public class ReaderView extends HorizontalLayout implements CreateContent {
     }
 
     @Override
-    public Component buildContent() {
+    public void buildContent() {
         readerContent = readerContentProvider.get();
         removeAllComponents();
         addComponent(readerContent);
         setSizeFull();
-        return this;
     }
 
     @Override

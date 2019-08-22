@@ -15,6 +15,6 @@ public class ReaderContent extends VerticalLayout {
         this.readerMenu = readerMenu;
         setCaptionAsHtml(true);
         setCaption("<h1>Readers in database</h1>");
-        addComponents(readerMenu, readerGrid);
+        addComponents(this.readerMenu, this.readerGrid);
     }
 }

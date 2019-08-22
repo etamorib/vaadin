@@ -14,6 +14,6 @@ public class BookContent extends VerticalLayout {
         this.bookMenu = bookMenu;
         setCaptionAsHtml(true);
         setCaption("<h1>Books in database</h1>");
-        addComponents(bookMenu, bookGrid);
+        addComponents(this.bookMenu, this.bookGrid);
     }
 }
