@@ -3,6 +3,8 @@ package de.cas.vaadin.thelibrary.ui.view.content.newrental;
 import com.google.inject.Inject;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.themes.ValoTheme;
+import de.cas.vaadin.thelibrary.event.AppEvent;
+import de.cas.vaadin.thelibrary.event.AppEventBus;
 
 public class RentalTab extends TabSheet {
 
@@ -24,5 +26,9 @@ public class RentalTab extends TabSheet {
         addComponent(bookTab);
         addComponent(readerTab);
         addComponent(deadlineTab);
+        addSelectedTabChangeListener(e->{
+           System.out.println("tab change");
+            AppEventBus.post(new AppEvent.TabChangeEvent());
+        });
     }
 }

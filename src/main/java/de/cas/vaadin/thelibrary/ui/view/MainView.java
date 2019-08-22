@@ -5,8 +5,10 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.HorizontalLayout;
 
+import com.vaadin.ui.UI;
 import de.cas.vaadin.thelibrary.CASTheLibraryApplication;
 import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
@@ -30,39 +32,20 @@ public class MainView extends HorizontalLayout {
 
 	private SideMenuBuilder menu;
 	private BooksView booksView;
-	private Provider<SideMenuBuilder> provider;
 
 	@Inject
-	public MainView(SideMenuBuilder menu, BooksView booksView, Provider<SideMenuBuilder> provider) {
-		this.provider = provider;
+	public MainView(SideMenuBuilder menu, BooksView booksView) {
 		this.menu = menu;
 		this.booksView = booksView;
 		setSizeFull();
-		AppEventBus.register(this);
 		addComponent(menu);
-
-
 		menu.setContent(booksView.buildContent());
 	}
-	
-	
-	/**
-	 * This method makes use of the Strategy design pattern, so
-	 * it changes the Content component according to the object
-	 * given to the event parameter
-	 * @param ChangeViewEvent event
-	 */
-	@Subscribe
-	private void changeContentEvent(final ChangeViewEvent event) {
-		System.out.println("EVENT: "+event.getContainer());
-		removeAllComponents();
-		addComponent(menu);
-		Content c = new Content(event.getContainer());
-		/*Set the content to the Content's createContent method
-		 * It call the right buildContent method
-		*/
-		menu.setContent(c.createContent());
+
+	public SideMenuBuilder getMenu(){
+		return this.menu;
 	}
+
 
 
 	

@@ -9,13 +9,19 @@ de\cas\vaadin\thelibrary\utils\UtilsModule.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookMenu.class
 de\cas\vaadin\thelibrary\ui\builder\ReaderTab.class
 de\cas\vaadin\thelibrary\event\AppEvent$CloseOpenedWindowsEvent.class
+de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderMenu.class
 de\cas\vaadin\thelibrary\ui\builder\TabBuilder.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookContent.class
 de\cas\vaadin\thelibrary\handler\AuthenticationFactory.class
+de\cas\vaadin\thelibrary\event\AppEvent$SelectedReaderEvent.class
 de\cas\vaadin\thelibrary\ui\builder\DeadlineTab.class
+de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderContent.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\NameCard.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookView.class
+de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderEditWindow.class
 de\cas\vaadin\thelibrary\utils\MailTrapSender$1.class
+de\cas\vaadin\thelibrary\event\AppEvent$TabChangeEvent.class
+de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderView.class
 de\cas\vaadin\thelibrary\ui\builder\BookTab.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\DeadlineTab.class
 de\cas\vaadin\thelibrary\ui\view\ViewModule.class
@@ -24,6 +30,8 @@ de\cas\vaadin\thelibrary\utils\MailTrapSender.class
 de\cas\vaadin\thelibrary\ui\view\loginview\LoginView.class
 de\cas\vaadin\thelibrary\utils\SendMail.class
 de\cas\vaadin\thelibrary\handler\HandlerModule.class
+de\cas\vaadin\thelibrary\event\AppEvent$SelectedBooksEvent.class
+de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderAddWindow.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\DropdownButton.class
 de\cas\vaadin\thelibrary\modules\AppModule.class
@@ -34,3 +42,4 @@ de\cas\vaadin\thelibrary\ui\view\content\bookview\BookAddWindow.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\BookTab.class
 de\cas\vaadin\thelibrary\event\AppEvent$EditObjectEvent.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookEditWindow.class
+de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderGrid.class

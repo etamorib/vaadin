@@ -3,6 +3,7 @@ package de.cas.vaadin.thelibrary.ui.view.loginview;
 import com.google.inject.Inject;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.View;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
@@ -28,7 +29,7 @@ import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
  * Responsible for showing the view of the Login page.
  */
 @SuppressWarnings("serial")
-public class LoginView extends VerticalLayout {
+public class LoginView extends VerticalLayout implements View {
 
 	private LoginForm loginForm;
 

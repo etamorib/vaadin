@@ -87,5 +87,8 @@ public class Reader implements DatabaseBean {
 		this.phoneNumber = phoneNumber;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "ID: "+ Id +" - "+ name;
+	}
 }

@@ -3,16 +3,11 @@ package de.cas.vaadin.thelibrary.ui.builder;
 
 import java.util.Set;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import de.cas.vaadin.thelibrary.controller.MasterController;
-import de.cas.vaadin.thelibrary.event.AppEvent;
-import de.cas.vaadin.thelibrary.modules.AppModule;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.ui.UI;
 import org.vaadin.teemusa.sidemenu.SideMenu;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.CustomComponent;
-import de.cas.vaadin.thelibrary.event.AppEvent.ChangeViewEvent;
 import de.cas.vaadin.thelibrary.event.AppEvent.LogoutRequestEvent;
 import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
@@ -29,16 +24,22 @@ public class SideMenuBuilder extends SideMenu {
 	private final String title = "CAS Library";
 	private final  NotificationWindowBuilder notificationWindowBuilder;
 	private final Set<CreateContent> contentItems;
+	private Navigator navigator;
 
 	@Inject
 	public SideMenuBuilder(Set<CreateContent> contentItems, NotificationWindowBuilder n) {
 		this.contentItems = contentItems;
 
 		notificationWindowBuilder = n;
+		navigator = new Navigator(UI.getCurrent(), this);
 		addItemsToMenu(contentItems);
 		styleMenu();
 		setAdmin();
 		//System.out.println("SIDEMENUBUILDER");
+
+	}
+	public Navigator getNavigator(){
+		return this.navigator;
 	}
 	
 	//This method is for adding styles to the sidemenu
@@ -46,8 +47,7 @@ public class SideMenuBuilder extends SideMenu {
 		setMenuCaption(title);
 	}
 	
-	//This method sets the UserMenuItem
-	//TODO: if there was more admin, it could be set correspondingly 
+
 	private void setAdmin() {
 		setUserName("Admin");
 		setUserIcon(VaadinIcons.USER_CHECK);
@@ -65,13 +65,12 @@ public class SideMenuBuilder extends SideMenu {
 	 * which will change the "view"
 	 */
 	private void addItemsToMenu(Set<CreateContent> contentItems) {
-		for(CreateContent c : contentItems) {
-			addMenuItem(c.getName(), c.menuIcon(),()->{
-				AppEventBus.post(new ChangeViewEvent(c));
-			});
+
+		for(CreateContent c: contentItems){
+			navigator.addView(c.getName(), c);
+			addNavigation(c.getName(), c.menuIcon(), c.getName());
 		}
 
 	}
-
 
 }

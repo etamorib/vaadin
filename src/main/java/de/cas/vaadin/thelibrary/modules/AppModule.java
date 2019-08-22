@@ -26,27 +26,6 @@ public class AppModule extends AbstractModule {
         install(new HandlerModule());
         install(new UtilsModule());
 
-        //Views
-        Multibinder<CreateContent> contentBinder = Multibinder.newSetBinder(binder(), CreateContent.class);
-        contentBinder.addBinding().to(BookView.class);
-        contentBinder.addBinding().to(NewRentalView.class);
-        contentBinder.addBinding().to(Readers.class);
-        contentBinder.addBinding().to(Rentals.class);
-        contentBinder.addBinding().to(WaitList.class);
-
-        //bind(Button.class).to(NativeButton.class);
-
-    }
-
-    @Provides
-    Grid<Book> provideBookGrid(){
-       return new Grid<>(Book.class);
-    }
-
-    @Provides
-    SideMenuBuilder provideSideMenuBuilder(Set<CreateContent> contents, NotificationWindowBuilder nwb){
-        return new SideMenuBuilder(contents, nwb);
-
     }
 
 

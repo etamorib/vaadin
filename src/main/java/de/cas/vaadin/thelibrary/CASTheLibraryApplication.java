@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
@@ -27,6 +28,9 @@ import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.model.bean.Admin;
 import de.cas.vaadin.thelibrary.modules.AppModule;
 import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
+import de.cas.vaadin.thelibrary.ui.view.content.NewRental;
+import de.cas.vaadin.thelibrary.ui.view.content.bookview.BookView;
+import de.cas.vaadin.thelibrary.ui.view.content.newrental.NewRentalView;
 import de.cas.vaadin.thelibrary.ui.view.loginview.LoginView;
 import de.cas.vaadin.thelibrary.ui.view.MainView;
 import de.cas.vaadin.thelibrary.utils.SendMail;
@@ -56,7 +60,7 @@ public class CASTheLibraryApplication extends UI {
 		addStyleName(ValoTheme.UI_WITH_MENU);
 		Responsive.makeResponsive(this);
 		AppEventBus.register(this);
-		
+		navigation();
 		updateContent();
 	}
 
@@ -76,6 +80,17 @@ public class CASTheLibraryApplication extends UI {
 		}
 			
 	}
+
+	private void navigation(){
+		//SideMenuBuilder menu = injector.getInstance(SideMenuBuilder.class);
+//		injector.getInstance(MainView.class).getMenu().getNavigator();
+		setNavigator(injector.getInstance(MainView.class).getMenu().getNavigator());
+		//menu.getNavigator().addView("", injector.getInstance(BookView.class));
+		injector.getInstance(MainView.class).getMenu().getNavigator().addView("", injector.getInstance(LoginView.class));
+
+	}
+
+
 	  /**
 	 * 
 	 * A loginRequest fires, then a LoginRequestEvent e occurs

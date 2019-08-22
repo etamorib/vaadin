@@ -20,7 +20,7 @@ class DeadlineTab extends HorizontalLayout {
     private FancyCssLayout left ;
     private ListDataProvider<Book> borrowedBookProvider;
     private ArrayList<Book> availableList;
-    private  ArrayList<Book> borrowedList;
+    private ArrayList<Book> borrowedList;
     private Grid<Book> availableGrid, borrowedGrid;
     private Label ava, borr;
     private MasterController masterController;

@@ -6,6 +6,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
@@ -31,7 +32,7 @@ import java.util.Collection;
  * @author mate.biro
  * This is the GUI of the BooksView
  */
-public class BooksView implements CreateContent{
+public class BooksView implements CreateContent, View {
 	private MasterController masterController;
 	private final Provider<Button> buttonProvider;
 	private HorizontalLayout mainLayout;

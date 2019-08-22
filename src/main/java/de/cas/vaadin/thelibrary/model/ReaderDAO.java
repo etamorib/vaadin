@@ -21,6 +21,7 @@ public class ReaderDAO implements DaoInterface<Reader>, ExtraDaoInterface<Reader
 	private static final String LIST = "SELECT * FROM READER";
 	private static final String FIND = "SELECT * FROM READER WHERE ID=?";
 
+
 	
 	public ReaderDAO() {
 		try {
@@ -161,6 +162,26 @@ public class ReaderDAO implements DaoInterface<Reader>, ExtraDaoInterface<Reader
 		}
 		return r;
 		
+	}
+
+	public boolean delete(Reader reader) {
+		try(Connection conn = DriverManager.getConnection(CONN);
+			PreparedStatement pst = conn.prepareStatement(DEL)
+		){
+
+			pst.setInt(1, reader.getId());
+
+			int affected = pst.executeUpdate();
+			if(affected!=1) {
+				return false;
+			}
+
+			return true;
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

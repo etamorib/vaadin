@@ -3,10 +3,14 @@ package de.cas.vaadin.thelibrary.event;
 import com.google.inject.*;
 import de.cas.vaadin.thelibrary.handler.AuthenticationHandler;
 import de.cas.vaadin.thelibrary.handler.AuthenticationInterface;
+import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.DatabaseBean;
+import de.cas.vaadin.thelibrary.model.bean.Reader;
 import de.cas.vaadin.thelibrary.modules.AppModule;
 import de.cas.vaadin.thelibrary.ui.builder.SideMenuBuilder;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
+
+import java.util.Set;
 
 /**
  * @author mate.biro
@@ -104,6 +108,32 @@ public abstract class AppEvent {
 
 		public void setValue(String str) {
 			this.str = str;
+		}
+	}
+
+	public static final class SelectedBooksEvent{
+		private Set<Book> books = null;
+		public SelectedBooksEvent(Set<Book> books){
+			this.books=books;
+		}
+
+		public Set<Book> getBooks() {
+			return books;
+		}
+	}
+
+	public static final class TabChangeEvent{
+
+	}
+
+	public static final class SelectedReaderEvent{
+		private Reader reader = null;
+		public SelectedReaderEvent(Reader reader){
+			this.reader = reader;
+		}
+
+		public Reader getReader() {
+			return reader;
 		}
 	}
 

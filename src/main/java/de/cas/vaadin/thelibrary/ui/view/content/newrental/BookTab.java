@@ -14,6 +14,8 @@ import de.cas.vaadin.thelibrary.event.AppEventBus;
 import de.cas.vaadin.thelibrary.model.bean.Book;
 import de.cas.vaadin.thelibrary.model.bean.BookState;
 
+import java.util.Set;
+
 public class BookTab extends VerticalLayout {
 
     private Grid<Book> bookGrid;
@@ -60,6 +62,7 @@ public class BookTab extends VerticalLayout {
         bookGrid.setStyleName("grid-overall");
         bookGrid.addSelectionListener(e->{
            updateCounter();
+           AppEventBus.post(new AppEvent.SelectedBooksEvent(e.getAllSelectedItems()));
         });
         return bookGrid;
     }
@@ -111,6 +114,9 @@ public class BookTab extends VerticalLayout {
         });
         return search;
     }
+
+
+
 
 
 

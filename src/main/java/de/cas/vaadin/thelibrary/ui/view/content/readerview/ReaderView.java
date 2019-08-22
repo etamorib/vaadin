@@ -1,33 +1,31 @@
-package de.cas.vaadin.thelibrary.ui.view.content.bookview;
+package de.cas.vaadin.thelibrary.ui.view.content.readerview;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import de.cas.vaadin.thelibrary.modules.AppModule;
 import de.cas.vaadin.thelibrary.ui.view.CreateContent;
 
-public class BookView extends HorizontalLayout implements CreateContent{
+public class ReaderView extends HorizontalLayout implements CreateContent {
 
-    private final String name = "Books";
-    private BookContent bookContent;
-    private Provider<BookContent> bookContentProvider;
+    private final String name ="Readers";
+
+    private Provider<ReaderContent> readerContentProvider;
+    private ReaderContent readerContent;
 
     @Inject
-    public BookView(Provider<BookContent> bookContentProvider){
-        this.bookContentProvider = bookContentProvider;
+    public ReaderView(Provider<ReaderContent> readerContentProvider){
+        this.readerContentProvider = readerContentProvider;
     }
 
     @Override
     public Component buildContent() {
-        bookContent = bookContentProvider.get();
+        readerContent = readerContentProvider.get();
         removeAllComponents();
-        addComponent(bookContent);
+        addComponent(readerContent);
         setSizeFull();
         return this;
     }
@@ -45,6 +43,7 @@ public class BookView extends HorizontalLayout implements CreateContent{
 
     @Override
     public Resource menuIcon() {
-        return VaadinIcons.BOOK;
+        return VaadinIcons.USERS;
     }
+
 }
