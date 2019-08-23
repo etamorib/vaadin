@@ -27,7 +27,6 @@ public class RentalTab extends TabSheet {
         addComponent(readerTab);
         addComponent(deadlineTab);
         addSelectedTabChangeListener(e->{
-           System.out.println("tab change");
             AppEventBus.post(new AppEvent.TabChangeEvent());
         });
     }

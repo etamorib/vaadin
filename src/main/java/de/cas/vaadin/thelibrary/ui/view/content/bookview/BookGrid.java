@@ -93,8 +93,11 @@ public class BookGrid extends Grid<Book> {
             if(isBookBorrowed(book)){
                 Notification.show("Book cannot be deleted while it is rented");
             }else{
+                //This post might not be needed
                 AppEventBus.post(new AppEvent.EditObjectEvent());
                 masterController.getBookController().delete(book);
+                dataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
+                setDataProvider(dataProvider);
             }
         });
         return del;

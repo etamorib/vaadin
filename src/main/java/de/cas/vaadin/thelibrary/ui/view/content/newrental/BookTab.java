@@ -42,9 +42,10 @@ public class BookTab extends VerticalLayout {
         this.bookGridProvider = bookGridProvider;
         this.stateProvider = stateProvider;
         this.masterController = masterController;
+        listDataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
         AppEventBus.register(this);
         setCaption("Books");
-        listDataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
+
         addComponents(searchField(),buildGrid(), selectedCounter());
     }
 
@@ -52,7 +53,7 @@ public class BookTab extends VerticalLayout {
         initialFilter();
         bookGrid = bookGridProvider.get();
         bookGrid.setSizeFull();
-        bookGrid.setDataProvider(listDataProvider);
+        addDataProvider();
         state = stateProvider.get();
         state.setStyleName("dropdown-select");
         state.setItems(BookState.Available, BookState.Borrowed);
@@ -65,6 +66,11 @@ public class BookTab extends VerticalLayout {
            AppEventBus.post(new AppEvent.SelectedBooksEvent(e.getAllSelectedItems()));
         });
         return bookGrid;
+    }
+
+    private void addDataProvider(){
+        listDataProvider = new ListDataProvider<>(masterController.getBookController().getItems());
+        bookGrid.setDataProvider(listDataProvider);
     }
 
     private void addStateFilter() {
@@ -113,6 +119,11 @@ public class BookTab extends VerticalLayout {
 
         });
         return search;
+    }
+
+    @Subscribe
+    private void updateGrid(final AppEvent.EditObjectEvent e){
+        addDataProvider();
     }
 
 }

@@ -11,15 +11,12 @@ de\cas\vaadin\thelibrary\ui\view\content\newrental\ReaderTab.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\NewRentalView.class
 de\cas\vaadin\thelibrary\utils\UtilsModule.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookMenu.class
-de\cas\vaadin\thelibrary\ui\builder\ReaderTab.class
 de\cas\vaadin\thelibrary\event\AppEvent$CloseOpenedWindowsEvent.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderMenu.class
-de\cas\vaadin\thelibrary\ui\builder\TabBuilder.class
 de\cas\vaadin\thelibrary\ui\view\content\rentview\RentMenu.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookContent.class
 de\cas\vaadin\thelibrary\handler\AuthenticationFactory.class
 de\cas\vaadin\thelibrary\event\AppEvent$SelectedReaderEvent.class
-de\cas\vaadin\thelibrary\ui\builder\DeadlineTab.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderContent.class
 de\cas\vaadin\thelibrary\ui\view\content\waitlistview\WaitListView.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\NameCard.class
@@ -29,7 +26,6 @@ de\cas\vaadin\thelibrary\utils\MailTrapSender$1.class
 de\cas\vaadin\thelibrary\event\AppEvent$TabChangeEvent.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderView.class
 de\cas\vaadin\thelibrary\ui\view\content\rentview\RentContent.class
-de\cas\vaadin\thelibrary\ui\builder\BookTab.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\DeadlineTab.class
 de\cas\vaadin\thelibrary\ui\view\ViewModule.class
 de\cas\vaadin\thelibrary\handler\AuthenticationInterface.class

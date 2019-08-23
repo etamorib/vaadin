@@ -12,11 +12,13 @@ import org.vaadin.alump.fancylayouts.FancyCssLayout;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class DeadlineTab extends VerticalLayout {
 
     private ArrayList<Book> available;
     private ArrayList<Book> borrowed;
+    private Set<Book> selectedBooks=null;
     private Provider<Panel> panelProvider;
     private Provider<Label> labelProvider;
     private Provider<Button> buttonProvider;
@@ -58,22 +60,12 @@ public class DeadlineTab extends VerticalLayout {
 
     @Subscribe
     private void selectedBooks(final AppEvent.SelectedBooksEvent e){
-        available.clear();
-        borrowed.clear();
-        for(Book b: e.getBooks()){
-            if(b.getState()== BookState.Available){
-                available.add(b);
-            }
-            if(b.getState() == BookState.Borrowed){
-                borrowed.add(b);
-            }
-        }
-        System.out.println(available);
-
+        selectedBooks = e.getBooks();
+        System.out.println(selectedBooks);
     }
 
     private void build(){
-
+        books.removeAllComponents();
         VerticalLayout left = new VerticalLayout();
         FancyCssLayout right = new FancyCssLayout();
         if(Reader==null){
@@ -163,6 +155,18 @@ public class DeadlineTab extends VerticalLayout {
 
     @Subscribe
     private void update(final AppEvent.TabChangeEvent e){
+        available.clear();
+        borrowed.clear();
+        if(selectedBooks!=null && selectedBooks.size()>0) {
+            for (Book b : selectedBooks) {
+                if (b.getState() == BookState.Available) {
+                    available.add(b);
+                }
+                if (b.getState() == BookState.Borrowed) {
+                    borrowed.add(b);
+                }
+            }
+        }
         build();
     }
 
