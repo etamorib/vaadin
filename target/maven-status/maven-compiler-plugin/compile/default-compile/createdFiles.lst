@@ -2,6 +2,8 @@ de\cas\vaadin\thelibrary\ui\view\content\rentview\RentView.class
 de\cas\vaadin\thelibrary\ui\view\content\rentview\OngoingGrid.class
 de\cas\vaadin\thelibrary\event\AppEvent$SearchFilterEvent.class
 de\cas\vaadin\thelibrary\model\bean\Category.class
+de\cas\vaadin\thelibrary\ui\view\content\rentview\LateGrid.class
+de\cas\vaadin\thelibrary\ui\view\content\waitlistview\WaitListContent.class
 de\cas\vaadin\thelibrary\ui\view\loginview\LabelBuilder.class
 de\cas\vaadin\thelibrary\ui\view\loginview\LoginForm.class
 de\cas\vaadin\thelibrary\ui\view\loginview\FieldBuilder.class
@@ -19,6 +21,7 @@ de\cas\vaadin\thelibrary\handler\AuthenticationFactory.class
 de\cas\vaadin\thelibrary\event\AppEvent$SelectedReaderEvent.class
 de\cas\vaadin\thelibrary\ui\builder\DeadlineTab.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderContent.class
+de\cas\vaadin\thelibrary\ui\view\content\waitlistview\WaitListView.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\NameCard.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookView.class
 de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderEditWindow.class
@@ -39,6 +42,7 @@ de\cas\vaadin\thelibrary\ui\view\content\readerview\ReaderAddWindow.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\ImageResource.class
 de\cas\vaadin\thelibrary\ui\customcomponents\namecard\DropdownButton.class
 de\cas\vaadin\thelibrary\modules\AppModule.class
+de\cas\vaadin\thelibrary\ui\view\content\waitlistview\WaitListGrid.class
 de\cas\vaadin\thelibrary\ui\view\content\newrental\RentalTab.class
 de\cas\vaadin\thelibrary\controller\MasterController.class
 de\cas\vaadin\thelibrary\ui\view\content\bookview\BookGrid.class

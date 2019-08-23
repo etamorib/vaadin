@@ -106,4 +106,22 @@ public class WaitlistDAO implements DaoInterface<Waitlist> {
 		}
 	}
 
+	@Override
+	public boolean delete(Waitlist waitlist) {
+		try(Connection conn = DriverManager.getConnection(CONN);
+			PreparedStatement pst = conn.prepareStatement(DEL)
+		){
+
+			pst.setInt(1, waitlist.getBookId());
+			pst.setInt(2, waitlist.getReaderId());
+
+			int affected = pst.executeUpdate();
+			return affected == 1;
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

@@ -11,6 +11,7 @@ import de.cas.vaadin.thelibrary.ui.view.content.bookview.BookView;
 import de.cas.vaadin.thelibrary.ui.view.content.newrental.NewRentalView;
 import de.cas.vaadin.thelibrary.ui.view.content.readerview.ReaderView;
 import de.cas.vaadin.thelibrary.ui.view.content.rentview.RentView;
+import de.cas.vaadin.thelibrary.ui.view.content.waitlistview.WaitListView;
 
 public class ViewModule extends AbstractModule {
     @Override
@@ -21,7 +22,7 @@ public class ViewModule extends AbstractModule {
         contentBinder.addBinding().to(NewRentalView.class);
         contentBinder.addBinding().to(ReaderView.class);
         contentBinder.addBinding().to(RentView.class);
-        //contentBinder.addBinding().to(WaitList.class);
+        contentBinder.addBinding().to(WaitListView.class);
     }
 
     @Provides

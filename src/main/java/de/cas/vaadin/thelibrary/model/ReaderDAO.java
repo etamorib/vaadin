@@ -164,6 +164,7 @@ public class ReaderDAO implements DaoInterface<Reader>, ExtraDaoInterface<Reader
 		
 	}
 
+	@Override
 	public boolean delete(Reader reader) {
 		try(Connection conn = DriverManager.getConnection(CONN);
 			PreparedStatement pst = conn.prepareStatement(DEL)

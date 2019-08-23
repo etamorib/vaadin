@@ -73,8 +73,6 @@ public class ReaderGrid extends Grid<Reader> {
         del.addClickListener(e->{
             masterController.getReaderController().delete(reader);
             AppEventBus.post(new AppEvent.EditObjectEvent());
-
-
         });
         return del;
     }

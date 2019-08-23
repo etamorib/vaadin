@@ -133,6 +133,7 @@ public class BookDAO implements DaoInterface<Book>, ExtraDaoInterface<Book> {
 		}
 	}
 
+	@Override
 	public boolean delete(Book book) {
 		try(Connection conn = DriverManager.getConnection(CONN);
 			PreparedStatement pst = conn.prepareStatement(DEL_BOOK)

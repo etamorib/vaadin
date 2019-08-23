@@ -31,6 +31,11 @@ public class WaitlistController implements ControllerInterface<Waitlist> {
 	}
 
 	@Override
+	public boolean delete(Waitlist waitlist){
+		return dao.delete(waitlist);
+	}
+
+	@Override
 	public ArrayList<Waitlist> getItems() {
 		return dao.getItems();
 	}

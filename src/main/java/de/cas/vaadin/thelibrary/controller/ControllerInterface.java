@@ -15,4 +15,5 @@ public interface ControllerInterface<T extends DatabaseBean> {
 	boolean add(T bean);
 	boolean delete(Set<T> bean);
 	ArrayList<T> getItems();
+	boolean delete(T bean);
 }

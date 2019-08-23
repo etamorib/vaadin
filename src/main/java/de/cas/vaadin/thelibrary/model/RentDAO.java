@@ -125,9 +125,24 @@ public class RentDAO implements DaoInterface<Rent> {
 		return rent;
 		
 	}
-	
-	
 
-	
+	@Override
+	public boolean delete(Rent rent) {
+		try(Connection conn = DriverManager.getConnection(CONN);
+			PreparedStatement pst = conn.prepareStatement(DEL)
+		){
+
+			pst.setInt(1, rent.getBookId());
+			pst.setInt(2, rent.getReaderId());
+
+			int affected = pst.executeUpdate();
+			return affected == 1;
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 
 }

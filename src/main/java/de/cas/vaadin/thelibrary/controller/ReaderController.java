@@ -44,6 +44,7 @@ public class ReaderController implements ControllerInterface<Reader>, ExtraContr
 		return dao.findById(id);
 	}
 
+	@Override
 	public boolean delete(Reader r){
 		return dao.delete(r);
 	}

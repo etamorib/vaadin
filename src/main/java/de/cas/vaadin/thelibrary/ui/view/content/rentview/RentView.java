@@ -25,6 +25,7 @@ public class RentView extends HorizontalLayout implements CreateContent {
         rentContent = rentContentProvider.get();
         removeAllComponents();
         addComponent(rentContent);
+        setSizeFull();
     }
 
     @Override

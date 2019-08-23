@@ -30,10 +30,16 @@ public class RentController implements ControllerInterface<Rent> {
 	}
 
 	@Override
+	public boolean delete(Rent rent){
+		return dao.delete(rent);
+	}
+
+	@Override
 	public ArrayList<Rent> getItems() {
 		return dao.getItems();
 	}
-	
+
+
 	public Rent getRentByBookId(Integer id) {
 		return dao.getRentByBookId(id);
 	}

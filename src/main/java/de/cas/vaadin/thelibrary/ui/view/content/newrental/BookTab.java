@@ -115,10 +115,4 @@ public class BookTab extends VerticalLayout {
         return search;
     }
 
-
-
-
-
-
-
 }
