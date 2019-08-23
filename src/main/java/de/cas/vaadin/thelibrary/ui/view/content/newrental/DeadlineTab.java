@@ -61,7 +61,6 @@ public class DeadlineTab extends VerticalLayout {
     @Subscribe
     private void selectedBooks(final AppEvent.SelectedBooksEvent e){
         selectedBooks = e.getBooks();
-        System.out.println(selectedBooks);
     }
 
     private void build(){

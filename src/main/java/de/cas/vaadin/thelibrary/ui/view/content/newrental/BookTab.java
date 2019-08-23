@@ -27,6 +27,7 @@ public class BookTab extends VerticalLayout {
     private Provider<NativeSelect<BookState>> stateProvider;
     private Label counter;
     private MasterController masterController;
+    private static final int MAX_SELECTED = 5;
 
 
     @Inject
@@ -94,6 +95,10 @@ public class BookTab extends VerticalLayout {
     }
 
     private void updateCounter(){
+        if(bookGrid.getSelectedItems().size()>MAX_SELECTED){
+            bookGrid.deselect(bookGrid.getSelectedItems().iterator().next());
+            Notification.show("5 books can be selected at once!");
+        }
         counter.setValue(bookGrid.getSelectedItems().size()+ " book(s) is selected");
     }
 
